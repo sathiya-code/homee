@@ -20,7 +20,8 @@ import { api } from '../services';
 import { useFocusEffect } from '@react-navigation/core';
 import Loader from './Loader';
 import { AppBackground, HomeBgColor, SecondaryGreen } from '../helper/styles.helper';
-import Shimmer from 'react-native-shimmer';
+// import Shimmer from 'react-native-shimmer';
+import Shimmer from 'react-native-shimmer-placeholder';
 
 const Favourites = ({ navigation }) => {
   const { t, i18n } = useTranslation();

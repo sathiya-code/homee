@@ -52,8 +52,9 @@ import offerHorn from '../assets/img/offer_icon.png';
 import location_bar_icon from '../assets/img/location_bar_icon.png';
 import offerIcon2 from '../assets/img/offer_icon2.png';
 import { LinearTextGradient } from 'react-native-text-gradient';
-import Shimmer from 'react-native-shimmer';
-import { Calendar } from 'react-native-calendars';
+// import Shimmer from 'react-native-shimmer';
+import  Shimmer from 'react-native-shimmer-placeholder'
+// import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import FastImage from 'react-native-fast-image';
 import { checkForUpdate, toCamelCase } from '../helper/app.helper';
@@ -254,7 +255,7 @@ const HomeNew = ({ navigation, route }) => {
   };
 
   const render_Banner_Item = ({ item, index }) => {
-    // console.log('itemmm banner', item?.target, typeof item?.target);
+    console.log('itemmm banner', item?.target, typeof item?.target);
     return (
       <TouchableOpacity
         onPress={() => {
@@ -816,6 +817,7 @@ const HomeNew = ({ navigation, route }) => {
                   item.navigation_path == "PreOrder" ? navigation.navigate(item.navigation_path) :
                     item.navigation_path == "Plant" ? navigation.navigate("PlantVendor", { type: "garden" }) :
                       item.navigation_path == "PickAndDrop" ? navigation.navigate("PickAndDrop") :
+                      // item.navigation_path == "Groceries" ? navigation.navigate("Groceries") :
                         // item.navigation_path == "PickAndDrop" ? navigation.navigate("PndOrderTrack") :
                         // item.navigation_path == "PickAndDrop" ? navigation.navigate("ComingSoon", { type: 'Pick & Drop' }) :
                         navigation.navigate("ComingSoon", { type: item.service_name });

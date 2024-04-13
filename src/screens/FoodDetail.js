@@ -25,6 +25,7 @@ import {
   cartIcon,
   leftArrow,
   plant,
+  wishListFillRed
 } from '../assets/img/Images';
 import { api, storage } from '../services/index';
 import Loader from './Loader';
@@ -34,7 +35,7 @@ import { PrimaryGreen, SecondaryGreen } from '../helper/styles.helper';
 import StarSelectIcon from "../assets/img/star_select.png";
 import Fssai from "../assets/img/fssai.png";
 import vegNonveg from '../assets/img/veg-nonveg.png';
-import wishListFill from "../assets/img/favr_icon.png";
+// import wishListFill from "../assets/img/favr_icon.png";
 import { Portal, Modal as PaperModal } from 'react-native-paper';
 import TasteIcon from '../assets/img/taste.png';
 import QualityIcon from '../assets/img/quality.png';
@@ -934,7 +935,7 @@ const FoodDetail = ({ navigation, route }) => {
                           {toCamelCase(cook_details?.cook?.first_name)}
                         </Text>
                       </View>
-                      {cook_details?.cook?.cook_type != "garden" && <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', }}>
+                      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', }}>
                         <Text
                           style={{
                             // width: 100,
@@ -961,7 +962,7 @@ const FoodDetail = ({ navigation, route }) => {
                           <Image source={StarSelectIcon} style={{ width: 15, height: 15, marginRight: 2 }} />
                           <Image source={StarSelectIcon} style={{ width: 15, height: 15, marginRight: 2, tintColor: '#989898' }} />
                         </View> */}
-                      </View>}
+                      </View>
                     </View>
                     <View>
                       <Image source={cook_details?.cook?.cook_type == "garden" ? plant : vegNonveg} style={{ width: 60, height: 25, resizeMode: 'contain', marginTop: 10, marginLeft: -5 }} />
@@ -970,7 +971,7 @@ const FoodDetail = ({ navigation, route }) => {
                         style={{ marginTop: 15, justifyContent: 'flex-end', alignItems: 'center' }}>
                         {wishList ? (
                           <Image
-                            source={wishListFill}
+                            source={wishListFillRed}
                             style={{ width: 23.5, height: 20, }}
                           />
                         ) : (

@@ -533,7 +533,7 @@ const Search = ({ navigation }) => {
     return (
       <>
         <TouchableOpacity
-          onPress={() => navigation.navigate('FoodDetail', item)}
+          onPress={() => navigation.navigate('FoodDetail', item.id)}
           style={{ justifyContent: 'center', alignItems: 'center', }}>
           <View style={{ flexDirection: 'row', width: '100%', height: 100, alignItems: 'center' }}>
             {/* <View style={{ width: 100, height: 80, backgroundColor: '#000', borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}>
@@ -571,7 +571,7 @@ const Search = ({ navigation }) => {
       <>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('FoodDetail', item)
+            navigation.navigate('FoodDetail', item.id)
             getActivityAnalytics(item?.id);
           }}>
           <View style={{ flexDirection: 'row', width: '100%', height: 100, alignItems: 'center' }}>

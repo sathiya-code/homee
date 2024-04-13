@@ -1,4 +1,4 @@
-package com.homee
+package com.homeeuser
 
 import android.app.Application
 import com.facebook.react.PackageList

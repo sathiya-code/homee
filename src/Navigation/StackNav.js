@@ -3,7 +3,7 @@ import LogIn from '../screens/LogIn';
 import Otp from '../screens/Otp';
 import SignUp from '../screens/SignUp';
 import Address from '../screens/Address';
-import { createStackNavigator } from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import Wallet from '../screens/Wallet';
 import Home from '../screens/Home_New';
 import ProductList from '../screens/ProductList';
@@ -52,7 +52,7 @@ const StackNav = () => {
   return (
     <Stack.Navigator
       initialRouteName="Languages"
-      headerMode="none">
+      screenOptions={{headerMode: false}}>
       <Stack.Screen name="LogIn" component={LogIn} />
       <Stack.Screen name="Languages" component={Languages} />
       <Stack.Screen name="Otp" component={Otp} />
@@ -87,7 +87,10 @@ const StackNav = () => {
       <Stack.Screen name="CookSeeAll" component={CookSeeAll} />
       <Stack.Screen name="EditAddress" component={EditAddress} />
       <Stack.Screen name="TrackMap" component={TrackMap} />
-      <Stack.Screen name="LocationPermission" component={LocationPermissionScreen} />
+      <Stack.Screen
+        name="LocationPermission"
+        component={LocationPermissionScreen}
+      />
       <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
       <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
       <Stack.Screen name="AppIntro" component={AppIntro} />

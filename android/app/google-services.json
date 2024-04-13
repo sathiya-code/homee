@@ -1,0 +1,126 @@
+{
+  "project_info": {
+    "project_number": "38819959183",
+    "project_id": "homee-foodz-293af",
+    "storage_bucket": "homee-foodz-293af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38819959183:android:d787af9bfd7a1d026dfbfa",
+        "android_client_info": {
+          "package_name": "com.homeecook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38819959183-p1dve01ucn3dakaq8ahdr5h773ku42va.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxM9MfRNNrXqugnvcAUobJ6cpKznEauzI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38819959183-p1dve01ucn3dakaq8ahdr5h773ku42va.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "38819959183-tbulj7ojnm6pur09dbolgi6edip46q5q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ninos.cook"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38819959183:android:f15e79a5f9ebcf7a6dfbfa",
+        "android_client_info": {
+          "package_name": "com.homeeuser"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38819959183-r5umjibohvgs5hk65khvl31a61cmc4gm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.homeeuser",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "38819959183-p1dve01ucn3dakaq8ahdr5h773ku42va.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxM9MfRNNrXqugnvcAUobJ6cpKznEauzI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38819959183-p1dve01ucn3dakaq8ahdr5h773ku42va.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "38819959183-tbulj7ojnm6pur09dbolgi6edip46q5q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ninos.cook"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38819959183:android:debc2340968b14cb6dfbfa",
+        "android_client_info": {
+          "package_name": "com.homlyfood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38819959183-p1dve01ucn3dakaq8ahdr5h773ku42va.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxM9MfRNNrXqugnvcAUobJ6cpKznEauzI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38819959183-p1dve01ucn3dakaq8ahdr5h773ku42va.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "38819959183-tbulj7ojnm6pur09dbolgi6edip46q5q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ninos.cook"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

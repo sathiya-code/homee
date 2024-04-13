@@ -57,7 +57,7 @@ const PndOrderTrack = ({ navigation, route }) => {
         // getPndSearchMessages();
         const response = await api.getpndDeliveryInfo({ order_no });
         if (response.status = 'success') {
-            console.log("response.deliveryboyyyy", response);
+            console.log("response.deliveryboyyyy", response.deliveryboy_details);
             setDeliveryBoyDetails(response.deliveryboy_details)
             const newDeliveryBoyLocation = {
                 latitude: response.deliveryboy_details.current_latitude,
@@ -147,7 +147,7 @@ const PndOrderTrack = ({ navigation, route }) => {
                 {/* </View> */}
             </>
         )
-    }, [deliveryBoySearchMsg]);
+    }, [deliveryBoySearchMsg, setDeliveryBoyDetails, deliveryBoyDetails]);
 
     const DeliveryBoydetails = () => {
         return (
@@ -453,8 +453,8 @@ const PndOrderTrack = ({ navigation, route }) => {
                     snapPoints={snapPoints}
                 >
                     <BottomSheetScrollView>
-                        {!deliveryBoyDetails?.length && <SearchingDeliveryBoy />}
-                        {!!deliveryBoyDetails?.length && <DeliveryBoydetails />}
+                        {!(deliveryBoyDetails.length || deliveryBoyDetails.name) && <SearchingDeliveryBoy />}
+                        {!!(deliveryBoyDetails.length || deliveryBoyDetails.name) && <DeliveryBoydetails />}
                         {orderInfo && <ItemDetails />}
                         <BillingDetails />
                     </BottomSheetScrollView>

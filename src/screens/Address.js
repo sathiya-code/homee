@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, {useEffect, useState, useRef, useMemo, useContext} from 'react';
 import {
   View,
   ActivityIndicator,
@@ -15,38 +15,49 @@ import {
   Dimensions,
   ScrollView,
   KeyboardAvoidingView,
-  Keyboard
+  Keyboard,
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import { mapPin, locationImage, arrow, location_loading, ContactBook } from '../assets/img/Images';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
+import {
+  mapPin,
+  locationImage,
+  arrow,
+  location_loading,
+  ContactBook,
+} from '../assets/img/Images';
 import Geocoder from 'react-native-geocoding';
 import Loader from './Loader';
-import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
-import { api, storage } from '../services';
+import RadioGroup, {RadioButtonProps} from 'react-native-radio-buttons-group';
+import {api, storage} from '../services';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { set_Profile } from '../redux/actions/authAction';
-import { useTranslation } from 'react-i18next';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {useDispatch} from 'react-redux';
+import {set_Profile} from '../redux/actions/authAction';
+import {useTranslation} from 'react-i18next';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import LottieView from 'lottie-react-native';
-import LocationEnabler from 'react-native-location-enabler';
-import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
-import { useCallback } from 'react';
+// import LocationEnabler from 'react-native-location-enabler';
+import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import {useCallback} from 'react';
 import Contacts from 'react-native-contacts';
-import { checkContactPermissionStatus } from '../helper/checkContactsPermission';
+import {checkContactPermissionStatus} from '../helper/checkContactsPermission';
 import ContactsModal from '../helper/contactsModal';
+import {
+  checkLocationEnabled,
+  enableLocationHandler,
+} from '../helper/location-permission';
+import {PndContext} from '../context/pnd.context';
 
-const {
-  PRIORITIES: { HIGH_ACCURACY },
-  useLocationSettings,
-} = LocationEnabler;
+// const {
+//   PRIORITIES: { HIGH_ACCURACY },
+//   useLocationSettings,
+// } = LocationEnabler;
 
-const { width, height } = Dimensions.get('screen');
+const {width, height} = Dimensions.get('screen');
 
-const Address = ({ navigation, route }) => {
-  const { t, i18n } = useTranslation();
+const Address = ({navigation, route}) => {
+  const {t, i18n} = useTranslation();
   const dispatch = useDispatch();
   Geocoder.init('AIzaSyBHkDZcJWMhylGafddN7JyQCpZfZRz9pO4');
   const mapRef = useRef(null);
@@ -71,10 +82,12 @@ const Address = ({ navigation, route }) => {
   const [addressEditTempFix, setAddressEditTempFix] = useState(0);
   const [mapMarginBottom, setMapMarginBottom] = useState(1);
 
-  useEffect(() => {
-    if (!!address && addressEditTempFix === 0) {
+  const {setPickupAddressId, setDropAddressId} = useContext(PndContext);
 
-      console.log("address.typeaddress.type", address.type);
+  useEffect(() => {
+    console.log('addrestempfix', addressEditTempFix);
+    if (!!address && addressEditTempFix === 0) {
+      console.log('address.typeaddress.type', address.type);
       setDoor(address.door_no);
       setStreet(address.street);
       const radioButtonsData = [
@@ -82,71 +95,81 @@ const Address = ({ navigation, route }) => {
           id: '1',
           label: 'Home',
           value: 'Home',
-          selected: address?.type == "Home" || address?.type == "home" ? true : false,
+          selected:
+            address?.type == 'Home' || address?.type == 'home' ? true : false,
         },
         {
           id: '2',
           label: 'Work',
           value: 'Work',
-          selected: address?.type == "Work" || address?.type == "work" ? true : false,
+          selected:
+            address?.type == 'Work' || address?.type == 'work' ? true : false,
         },
         {
           id: '3',
           label: 'Other',
           value: 'Other',
-          selected: address?.type == "Other" || address?.type == "other" ? true : false,
+          selected:
+            address?.type == 'Other' || address?.type == 'other' ? true : false,
         },
       ];
       setRadioButtons(radioButtonsData);
-      if (address.type != "Home" && address.type != "home" && address.type != "Work" && address.type != "work") {
-        setOthers(true)
+      if (
+        address.type != 'Home' &&
+        address.type != 'home' &&
+        address.type != 'Work' &&
+        address.type != 'work'
+      ) {
+        setOthers(true);
         setAddressType(address.type);
       }
       setTimeout(() => {
         setAddressEditTempFix(1);
       }, 1500);
     }
-  }, [])
-
-  const [enabled, requestResolution] = useLocationSettings(
-    {
-      priority: HIGH_ACCURACY, // default BALANCED_POWER_ACCURACY
-      alwaysShow: true, // default false
-      needBle: true, // default false
-    },
-    false /* optional: default undefined */
-  );
-
-  const sheetRef = useRef(null);
-  const snapPoints = useMemo(() => ["30%", "40%", "50%", "60%"], []);
-  const addressAddType = route.params.type;
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      keyboardDidShow
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      keyboardDidHide
-    );
-
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
   }, []);
 
-  const keyboardDidShow = (event) => {
-    const height = event.endCoordinates.height;
-    // sheetRef?.current?.snapToIndex(5)
-    // setKeyboardHeight(height);
-  };
+  // const [enabled, requestResolution] = useLocationSettings(
+  //   {
+  //     priority: HIGH_ACCURACY, // default BALANCED_POWER_ACCURACY
+  //     alwaysShow: true, // default false
+  //     needBle: true, // default false
+  //   },
+  //   false /* optional: default undefined */
+  // );
 
-  const keyboardDidHide = () => {
-    // sheetRef?.current?.snapToIndex(3)
-    // setKeyboardHeight(0);
-  };
+  const sheetRef = useRef(null);
+  const snapPoints = useMemo(() => ['30%', '40%', '50%', '60%'], []);
+  const addressAddType = route.params.type;
+  const pndAddressSelectType = route.params.addressSelectType;
+  console.log('addressSelectType', pndAddressSelectType);
+
+  // useEffect(() => {
+  //   const keyboardDidShowListener = Keyboard.addListener(
+  //     'keyboardDidShow',
+  //     keyboardDidShow,
+  //   );
+  //   const keyboardDidHideListener = Keyboard.addListener(
+  //     'keyboardDidHide',
+  //     keyboardDidHide,
+  //   );
+
+  //   return () => {
+  //     keyboardDidShowListener.remove();
+  //     keyboardDidHideListener.remove();
+  //   };
+  // }, []);
+
+  // const keyboardDidShow = event => {
+  //   const height = event.endCoordinates.height;
+  //   // sheetRef?.current?.snapToIndex(5)
+  //   // setKeyboardHeight(height);
+  // };
+
+  // const keyboardDidHide = () => {
+  //   // sheetRef?.current?.snapToIndex(3)
+  //   // setKeyboardHeight(0);
+  // };
 
   // const handleAddressModel = (type) => {
   //   console.log("typeeee", type);
@@ -165,21 +188,32 @@ const Address = ({ navigation, route }) => {
   //   setIsGoodsImgModalOpen(false);
   // });
 
+  // useEffect(() => {
+  //   { !enabled && requestResolution() }
+  // }, [])
+
   useEffect(() => {
-    { !enabled && requestResolution() }
-  }, [])
+    (async () => {
+      const isLocationEnabled = await checkLocationEnabled();
+      if (!isLocationEnabled) {
+        await enableLocationHandler();
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     !!route.params.auto_detected && setModal(true);
-  }, [])
+    onChangeRegion();
+  }, []);
 
-  const onChangeRegion = location => {
-    console.log("location", location);
+  const onChangeRegion = (location = null) => {
+    console.log('location', location);
     if (!!address && addressEditTempFix === 0) {
       // !!address?.latitude ? parseFloat(address.latitude)
       updateAddress(address.latitude, address.longitude);
       setEditLocation(address);
-    } else {
+    }
+    if (!!location) {
       updateAddress(location.latitude, location.longitude);
       setEditLocation(location);
     }
@@ -190,9 +224,13 @@ const Address = ({ navigation, route }) => {
       .then(json => {
         var addressDetail = json.results[0].formatted_address;
         setAddressLocation(addressDetail);
+        console.log("address from geocoder", json);
         setAddressComponent(json.results[0].address_components);
 
-        console.log("response from loccccccc", json.results[0].address_components)
+        console.log(
+          'response from loccccccc',
+          json.results[0].address_components,
+        );
       })
       .catch(error => console.warn(error));
   };
@@ -217,20 +255,19 @@ const Address = ({ navigation, route }) => {
       }
     });
     if (street_err) {
-      ToastAndroid.show('Enter Your Street', ToastAndroid.SHORT)
+      ToastAndroid.show('Enter Your Street', ToastAndroid.SHORT);
       // alert("Enter your street");
       setModal(false);
     } else if (door_err) {
-      ToastAndroid.show('Enter Your Door No', ToastAndroid.SHORT)
+      ToastAndroid.show('Enter Your Door No', ToastAndroid.SHORT);
       setModal(false);
-    } else if (addressAddType == "PND" && !mobile) {
-      ToastAndroid.show('Enter Mobile Number', ToastAndroid.SHORT)
-    } else if (addressAddType == "PND" && !userName) {
-      ToastAndroid.show('Enter Name', ToastAndroid.SHORT)
+    } else if (addressAddType == 'PND' && !mobile) {
+      ToastAndroid.show('Enter Mobile Number', ToastAndroid.SHORT);
+    } else if (addressAddType == 'PND' && !userName) {
+      ToastAndroid.show('Enter Name', ToastAndroid.SHORT);
     } else {
-
-      console.warn('route.params.auto_detected', route.params);
-      if (!!route.params.type && route.params.type == "PND") {
+      // console.warn('route.params.auto_detected', route.params);
+      if (!!route.params.type && route.params.type == 'PND') {
         var parload = {
           door_no: door,
           street: street,
@@ -240,21 +277,34 @@ const Address = ({ navigation, route }) => {
           latitude: EditLocation.latitude,
           mobile,
           name: userName,
-
-        }
+        };
         console.log('payloadd', parload);
         let response = await api.pndAddAddresses(parload);
 
-        if (response.status = 'success') {
+        if ((response.status = 'success')) {
           const type = route?.params?.type;
           const addressSelectType = route?.params?.addressSelectType;
           const addressId = route?.params?.address?.id;
-          console.log("tttttttttttttttttttt", type, addressSelectType, addressId);
-          navigation.navigate('PickAndDrop', { type, addressSelectType, addressId });
+          console.log('tttttttttttttttttttt', {
+            type,
+            addressSelectType,
+            addressId,
+          });
+          if (addressSelectType == 'pickup') {
+            setPickupAddressId(response.user_address_id);
+          }
+          if (addressSelectType == 'drop') {
+            setDropAddressId(response.user_address_id);
+          }
+          navigation.navigate('PickAndDrop', {
+            type,
+            addressSelectType,
+            addressId,
+          });
         } else {
           Alert.alert('Unable to complete your request, try again later');
         }
-      } else if (!!route.params.type && route.params.type != "PND") {
+      } else if (!!route.params.type && route.params.type != 'PND') {
         var parload = {
           door_no: door,
           street: street,
@@ -264,18 +314,24 @@ const Address = ({ navigation, route }) => {
           latitude: EditLocation.latitude,
           mobile,
           name: userName,
-
-        }
+        };
         console.log('payloadd', parload);
         let response = await api.address(parload);
 
-        if (response.status = 'success') {
+        if ((response.status = 'success')) {
           navigation.navigate('Home');
         } else {
           Alert.alert('Unable to complete your request, try again later');
         }
-      } else if (!!route.params.auto_detected && addressLocation && addressComponent) {
-        console.log("JSON.stringify(addressComponent)", JSON.stringify(addressLocation));
+      } else if (
+        !!route.params.auto_detected &&
+        addressLocation &&
+        addressComponent
+      ) {
+        console.log(
+          'JSON.stringify(addressComponent)',
+          JSON.stringify(addressLocation),
+        );
         let payload = {
           mobile: route?.params?.mobile,
           door_no: door,
@@ -283,26 +339,28 @@ const Address = ({ navigation, route }) => {
           address: JSON.stringify(addressComponent),
           longitude: EditLocation.longitude,
           latitude: EditLocation.latitude,
-          auto_detected: route?.params?.auto_detected
+          auto_detected: route?.params?.auto_detected,
         };
-        console.log("payload", payload);
+        console.log('payload', payload);
         let response = await api.register(payload);
-        console.log("response from registerrrrrrrr", response);
-        setAutoProceed(2)
-        if (await response.status == 'success') {
+        console.log('response from registerrrrrrrr', response);
+        setAutoProceed(2);
+        if ((await response.status) == 'success') {
           await storage.setToken(response.token);
           await storage.setUserData(response.user);
           await dispatch(set_Profile(response.user));
           axios.defaults.headers.common['Authorization'] =
             'Bearer ' + response.token;
           await navigation.navigate('Home');
-        }
-        else {
+        } else {
           Alert.alert('Unable to complete your request');
         }
         setModal(false);
       } else {
-        console.log("JSON.stringify(addressComponent)222222222234e32", JSON.stringify(addressComponent));
+        console.log(
+          'JSON.stringify(addressComponent)222222222234e32',
+          JSON.stringify(addressComponent),
+        );
         let payload = {
           name: route.params.name,
           mobile: route.params.mobile,
@@ -318,7 +376,7 @@ const Address = ({ navigation, route }) => {
         setModal(true);
         let response = await api.register(payload);
         if (response.status == 'success') {
-          console.log("response from registerrrrsaffsdfcsd", response);
+          console.log('response from registerrrrsaffsdfcsd', response);
           await storage.setToken(response.token);
           await storage.setUserData(response.user);
           dispatch(set_Profile(response.user));
@@ -335,25 +393,34 @@ const Address = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    if (!!addressLocation && !!addressComponent && autoProceed == 1 && !route.params.type) {
+    if (
+      !!addressLocation &&
+      !!addressComponent &&
+      autoProceed == 1 &&
+      !route.params.type
+    ) {
       setModal(true);
-      const timeout = setTimeout(() => {
+      setTimeout(() => {
         addrConfirm();
-      }, 6000);
-      // return clearTimeout(timeout);
+      }, 1000);
     }
-  }, [requestResolution, addressComponent, setAddressComponent, addressLocation, setAddressLocation])
+  }, [
+    addressComponent,
+    setAddressComponent,
+    addressLocation,
+    setAddressLocation,
+  ]);
 
   async function requestLocationPermission() {
     try {
-      if (Platform.OS === "ios") {
+      if (Platform.OS === 'ios') {
         // your code using Geolocation and asking for authorisation with
         getCurrentLocation();
         Geolocation.setRNConfiguration({
           skipPermissionRequests: false,
           authorizationLevel: 'whenInUse',
         });
-        Geolocation.requestAuthorization()
+        Geolocation.requestAuthorization();
       } else {
         // ask for PermissionAndroid as written in your code
         const granted = await PermissionsAndroid.request(
@@ -371,15 +438,16 @@ const Address = ({ navigation, route }) => {
           Alert.alert('Location permission denied');
         }
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   const getCurrentLocation = () => {
-    if (!!address && addressEditTempFix === 0) changeRegion(address.latitude, address.longitude);
-    else Geolocation.getCurrentPosition(location => {
-      changeRegion(location.coords.latitude, location.coords.longitude);
-    });
+    if (!!address && addressEditTempFix === 0)
+      changeRegion(address.latitude, address.longitude);
+    else
+      Geolocation.getCurrentPosition(location => {
+        changeRegion(location.coords.latitude, location.coords.longitude);
+      });
   };
 
   const changeRegion = (latitude, longitude) => {
@@ -397,12 +465,14 @@ const Address = ({ navigation, route }) => {
   };
 
   const onMapReady = () => {
-    setTimeout(() => { setMapMarginBottom(0) }, 100);
+    setTimeout(() => {
+      setMapMarginBottom(0);
+    }, 100);
     requestLocationPermission();
   };
   const StreetChange = e => {
     setStreet(e);
-    if (e == null || e == "") {
+    if (e == null || e == '') {
       setStreet_err(true);
     } else {
       setStreet_err(false);
@@ -411,7 +481,7 @@ const Address = ({ navigation, route }) => {
 
   const doorChange = e => {
     setDoor(e);
-    if (e == null || e == "") {
+    if (e == null || e == '') {
       setDoor_err(true);
     } else {
       setDoor_err(false);
@@ -428,22 +498,29 @@ const Address = ({ navigation, route }) => {
       id: '2',
       label: 'Work',
       value: 'Work',
+      selected: false,
     },
     {
       id: '3',
       label: 'Other',
       value: 'Other',
+      selected: false,
     },
   ];
   const [radioButtons, setRadioButtons] = useState(radioButtonsData);
+  const [selectedRadioIndex, setSelectedRadioIndex] = useState('1');
 
-  const onPressRadioButton = radioButtonsArray => {
-    setRadioButtons(radioButtonsArray);
-    radioButtonsArray.forEach(type => {
-      console.log("tesssssss", type);
-      if (!!type.selected && type.label == "Other") setOthers(true)
-      else setOthers(false)
+  const onPressRadioButton = buttonIndex => {
+    setSelectedRadioIndex(buttonIndex);
+    console.log('buttonIndex', buttonIndex);
+    const newRadioButtons = [...radioButtons];
+    newRadioButtons.forEach(button => {
+      button.selected = false;
     });
+    newRadioButtons[buttonIndex - 1].selected = true;
+    setRadioButtons(newRadioButtons);
+    if (buttonIndex == 3) setOthers(true);
+    else setOthers(false);
   };
 
   const openContacts = async () => {
@@ -477,24 +554,25 @@ const Address = ({ navigation, route }) => {
     //     // x.x
     //   }
     // });
-  }
+  };
 
-  const onRequestClose = (onRequestCloseprop) => {
-    console.log("onRequestClose", onRequestCloseprop);
+  const onRequestClose = onRequestCloseprop => {
+    console.log('onRequestClose', onRequestCloseprop);
     setVisible(false);
-  }
+  };
 
-  const selectedContact = (number) => {
+  const selectedContact = number => {
     setMobile(number?.toString()?.replace(' ', '').slice(-10));
-    console.log("data", number);
+    console.log('data', number);
     setVisible(false);
-  }
-
+  };
 
   return (
-    <SafeAreaView style={{
-      flex: 1, flexDirection: 'column'
-    }}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        flexDirection: 'column',
+      }}>
       <>
         <View
           style={{
@@ -503,7 +581,7 @@ const Address = ({ navigation, route }) => {
             // borderBottomRightRadius: 25,
             justifyContent: 'center',
             height: 50,
-            zIndex: 999
+            zIndex: 999,
           }}>
           <Pressable
             onPress={() => navigation.goBack()}
@@ -511,21 +589,30 @@ const Address = ({ navigation, route }) => {
               flexDirection: 'row',
               paddingHorizontal: 15,
               height: 30,
-              alignItems: 'center'
+              alignItems: 'center',
             }}>
-            <Image style={{ width: 9, height: 16 }} source={arrow} />
-            <Text style={{
-              color: '#fff',
-              fontSize: 18,
-              fontFamily: 'Poppins-Bold',
-              paddingLeft: 10,
-              // marginTop: -5
-            }}>Back</Text>
+            <Image style={{width: 9, height: 16}} source={arrow} />
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 18,
+                fontFamily: 'Poppins-Bold',
+                paddingLeft: 10,
+                // marginTop: -5
+              }}>
+              Back
+            </Text>
           </Pressable>
         </View>
         <View
           style={{
-            position: 'absolute', top: 0, left: 0, zIndex: 111, width: '100%', backgroundColor: '#fff', marginTop: 50
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: 111,
+            width: '100%',
+            backgroundColor: '#fff',
+            marginTop: 50,
           }}>
           <GooglePlacesAutocomplete
             placeholder="Search Your Locality Here"
@@ -546,7 +633,7 @@ const Address = ({ navigation, route }) => {
               rankby: 'distance',
               type: 'cafe',
             }}
-            GooglePlacesDetailsQuery={{ fields: 'formatted_address' }}
+            GooglePlacesDetailsQuery={{fields: 'formatted_address'}}
             filterReverseGeocodingByTypes={[
               'locality',
               'administrative_area_level_3',
@@ -559,7 +646,7 @@ const Address = ({ navigation, route }) => {
             }}
             textInputProps={{
               placeholderTextColor: '#000',
-              returnKeyType: "search"
+              returnKeyType: 'search',
             }}
             styles={{
               textInputContainer: {
@@ -578,13 +665,17 @@ const Address = ({ navigation, route }) => {
             }}
           />
         </View>
-        <View style={{ flex: 7, width: '100%', marginTop: 50 }}>
+        <View style={{flex: 7, width: '100%', marginTop: 50}}>
           <MapView
             showsUserLocation={true}
             showsMyLocationButton={true}
             initialRegion={{
-              latitude: !!address?.latitude ? parseFloat(address.latitude) : 13.007519778022951,
-              longitude: !!address?.longitude ? parseFloat(address.longitude) : 80.25388327589093,
+              latitude: !!address?.latitude
+                ? parseFloat(address.latitude)
+                : 13.007519778022951,
+              longitude: !!address?.longitude
+                ? parseFloat(address.longitude)
+                : 80.25388327589093,
               latitudeDelta: 0.015,
               longitudeDelta: 0.0121,
             }}
@@ -623,7 +714,6 @@ const Address = ({ navigation, route }) => {
             description={'description'}
           />
 
-
           {/* <TouchableOpacity
         style={{
           position: 'absolute',
@@ -648,18 +738,18 @@ const Address = ({ navigation, route }) => {
           ref={sheetRef}
           // index={0}
           snapPoints={snapPoints}
-          keyboardBehavior='fillParent'
-        // onChange={handleSheetChanges}
-        // enablePanDownToClose
-        // onClose={() =>
-        //   sheetRef.current?.snapToIndex(0)
-        // }
-        // handleStyle={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
-        // backdropComponent={addressSelectType && CustomBackdrop}
+          keyboardBehavior="fillParent"
+          // onChange={handleSheetChanges}
+          // enablePanDownToClose
+          // onClose={() =>
+          //   sheetRef.current?.snapToIndex(0)
+          // }
+          // handleStyle={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
+          // backdropComponent={addressSelectType && CustomBackdrop}
         >
           <BottomSheetScrollView
             keyboardShouldPersistTaps={'always'}
-          // contentContainerStyle={styles.contentContainer}
+            // contentContainerStyle={styles.contentContainer}
           >
             <View
               style={{
@@ -686,7 +776,13 @@ const Address = ({ navigation, route }) => {
                   textAlign: 'justify',
                   marginTop: 15,
                 }}>
-                {t('addressPage.deliveryLocation')}
+                {`This Will be your ${
+                  pndAddressSelectType == 'pickup'
+                    ? 'Pickup'
+                    : pndAddressSelectType == 'drop'
+                    ? 'Drop'
+                    : 'Delivery'
+                } Location`}
               </Text>
               <Text
                 style={{
@@ -701,26 +797,28 @@ const Address = ({ navigation, route }) => {
                 }}>
                 {addressLocation}
               </Text>
-              {addressAddType == "PND" && <View>
-                <TextInput
-                  value={userName}
-                  onChangeText={(name) => setUserName(name)}
-                  placeholder="Enter Name"
-                  // keyboardType='phone-pad'
-                  placeholderTextColor={'#c9c9c9'}
-                  style={{
-                    borderColor: '#09b44d',
-                    borderStyle: 'solid',
-                    borderWidth: 1,
-                    paddingVertical: 5,
-                    paddingHorizontal: 15,
-                    marginVertical: 5,
-                    width: 300,
-                    borderRadius: 7,
-                    color: '#000',
-                  }}
-                />
-              </View>}
+              {addressAddType == 'PND' && (
+                <View>
+                  <TextInput
+                    value={userName}
+                    onChangeText={name => setUserName(name)}
+                    placeholder="Enter Name"
+                    // keyboardType='phone-pad'
+                    placeholderTextColor={'#c9c9c9'}
+                    style={{
+                      borderColor: !!userName ? '#09b44d' : 'tomato',
+                      borderStyle: 'solid',
+                      borderWidth: 1,
+                      paddingVertical: 5,
+                      paddingHorizontal: 15,
+                      marginVertical: 5,
+                      width: 300,
+                      borderRadius: 7,
+                      color: '#000',
+                    }}
+                  />
+                </View>
+              )}
               <View>
                 <TextInput
                   value={door}
@@ -728,7 +826,7 @@ const Address = ({ navigation, route }) => {
                   placeholder="Enter your Door No*"
                   placeholderTextColor={'#c9c9c9'}
                   style={{
-                    borderColor: '#09b44d',
+                    borderColor: !!door ? '#09b44d' :'tomato',
                     borderStyle: 'solid',
                     borderWidth: 1,
                     paddingVertical: 5,
@@ -741,7 +839,8 @@ const Address = ({ navigation, route }) => {
                 />
               </View>
               {door_err && (
-                <Text style={{ color: 'tomato', marginLeft: 10, marginBottom: 10 }}>
+                <Text
+                  style={{color: 'tomato', marginLeft: 10, marginBottom: 10}}>
                   Please Enter Door Number
                 </Text>
               )}
@@ -752,7 +851,7 @@ const Address = ({ navigation, route }) => {
                   placeholder="Enter your street Name*"
                   placeholderTextColor={'#c9c9c9'}
                   style={{
-                    borderColor: '#09b44d',
+                    borderColor: !!street ? '#09b44d' : 'tomato',
                     borderStyle: 'solid',
                     borderWidth: 1,
                     paddingVertical: 5,
@@ -765,67 +864,76 @@ const Address = ({ navigation, route }) => {
                 />
               </View>
               {street_err && (
-                <Text style={{ color: 'tomato', marginLeft: 10 }}>
+                <Text style={{color: 'tomato', marginLeft: 10}}>
                   {t('addressPage.streetErr')}
                 </Text>
               )}
-              {addressAddType == "PND" &&
-                <View style={{
-                  flexDirection: 'row',
-                  borderColor: '#09b44d',
-                  borderStyle: 'solid',
-                  borderWidth: 1,
-                  height: 40,
-                  // paddingVertical: 5,
-                  paddingHorizontal: 10,
-                  // marginVertical: 5,
-                  width: 300,
-                  borderRadius: 7,
-                }}>
+              {addressAddType == 'PND' && (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    borderColor: !!mobile ?  '#09b44d' : 'tomato',
+                    borderStyle: 'solid',
+                    borderWidth: 1,
+                    height: 40,
+                    // paddingVertical: 5,
+                    paddingHorizontal: 10,
+                    // marginVertical: 5,
+                    width: 300,
+                    borderRadius: 7,
+                  }}>
                   <TextInput
                     value={mobile}
                     maxLength={10}
-                    onChangeText={(number) => setMobile(number)}
+                    onChangeText={number => setMobile(number)}
                     placeholder="Enter Mobile"
-                    keyboardType='phone-pad'
+                    keyboardType="phone-pad"
                     placeholderTextColor={'#c9c9c9'}
                     style={{
-                      width: "90%",
+                      width: '90%',
                       color: '#000',
                     }}
                   />
-                  <TouchableOpacity style={{ justifyContent: 'center' }}
+                  <TouchableOpacity
+                    style={{justifyContent: 'center'}}
                     onPress={openContacts}>
-                    <Image source={ContactBook} style={{ width: 25, height: 25, tintColor: '#000' }} />
+                    <Image
+                      source={ContactBook}
+                      style={{width: 25, height: 25, tintColor: '#000'}}
+                    />
                   </TouchableOpacity>
-                </View>}
-              <View style={{ margin: 10 }}>
+                </View>
+              )}
+              <View style={{margin: 10}}>
                 <RadioGroup
                   layout="row"
+                  selectedId={selectedRadioIndex}
                   radioButtons={radioButtons}
                   onPress={onPressRadioButton}
                 />
-                {others && <View>
-                  <TextInput
-                    value={addressType}
-                    onChangeText={(type) => setAddressType(type)}
-                    placeholder="Address Type"
-                    placeholderTextColor={'#c9c9c9'}
-                    style={{
-                      borderColor: '#09b44d',
-                      borderStyle: 'solid',
-                      borderWidth: 1,
-                      paddingVertical: 5,
-                      paddingHorizontal: 15,
-                      marginBottom: 3,
-                      marginTop: 7,
-                      marginLeft: 5,
-                      width: 300,
-                      borderRadius: 7,
-                      color: '#000',
-                    }}
-                  />
-                </View>}
+                {others && (
+                  <View>
+                    <TextInput
+                      value={addressType}
+                      onChangeText={type => setAddressType(type)}
+                      placeholder="Address Type"
+                      placeholderTextColor={'#c9c9c9'}
+                      style={{
+                        borderColor: '#09b44d',
+                        borderStyle: 'solid',
+                        borderWidth: 1,
+                        paddingVertical: 5,
+                        paddingHorizontal: 15,
+                        marginBottom: 3,
+                        marginTop: 7,
+                        marginLeft: 5,
+                        width: 300,
+                        borderRadius: 7,
+                        color: '#000',
+                      }}
+                    />
+                  </View>
+                )}
               </View>
               <TouchableOpacity
                 disabled={street == null ? true : false}
@@ -836,22 +944,56 @@ const Address = ({ navigation, route }) => {
                   margin: 10,
                 }}
                 onPress={addrConfirm}>
-                <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 14, color: '#fff' }}>
+                <Text
+                  style={{
+                    fontFamily: 'Poppins-Bold',
+                    fontSize: 14,
+                    color: '#fff',
+                  }}>
                   {t('addressPage.confirmAddress')}
                 </Text>
               </TouchableOpacity>
               {/* </ScrollView> */}
-
             </View>
-            <ContactsModal visible={visible} onRequestClose={onRequestClose} selectedContact={selectedContact} />
+            <ContactsModal
+              visible={visible}
+              onRequestClose={onRequestClose}
+              selectedContact={selectedContact}
+            />
           </BottomSheetScrollView>
         </BottomSheet>
-
       </>
-      {!!route.params.auto_detected && modal && <View style={{ width, height, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5', position: 'absolute', zIndex: 99999 }}>
-        <LottieView source={location_loading} autoPlay useNativeLooping loop style={{ width: width / 1.5, height: height / 4, marginBottom: 25 }} />
-        <Text style={{ textAlign: 'center', fontFamily: 'Poppins-Bold', fontSize: 16, paddingHorizontal: 20, marginBottom: 150 }}>Hold Tight! {`\n`} We are getting your Location 📍{'\n'} To serve you better 🥰</Text>
-      </View>}
+      {!!route.params.auto_detected && modal && (
+        <View
+          style={{
+            width,
+            height,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#f5f5f5',
+            position: 'absolute',
+            zIndex: 99999,
+          }}>
+          <LottieView
+            source={location_loading}
+            autoPlay
+            useNativeLooping
+            loop
+            style={{width: width / 1.5, height: height / 4, marginBottom: 25}}
+          />
+          <Text
+            style={{
+              textAlign: 'center',
+              fontFamily: 'Poppins-Bold',
+              fontSize: 16,
+              paddingHorizontal: 20,
+              marginBottom: 150,
+            }}>
+            Hold Tight! {`\n`} We are getting your Location 📍{'\n'} To serve
+            you better 🥰
+          </Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };

@@ -22,6 +22,7 @@ import {
   arrow,
   logOutICon,
   wishListIcon,
+  wishListFillIcon,
   languageIcon,
   paymentIcon,
   walletIcon,
@@ -32,7 +33,8 @@ import {
   TrackOrder,
   wallet,
   manageAddress,
-  orderHistory
+  orderHistory,
+  wishListFillRed
 } from '../assets/img/Images';
 import { useTranslation } from 'react-i18next';
 import { api, storage } from '../services/index';
@@ -126,9 +128,11 @@ const Profile = ({ navigation }) => {
       <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
       <View
         style={{
-          justifyContent: 'center',
           height: 60,
           backgroundColor: HomeBgColor,
+          flexDirection:'row',
+          alignItems:'center',
+          justifyContent: 'space-between',
         }}>
         <TouchableOpacity
           style={{
@@ -150,10 +154,16 @@ const Profile = ({ navigation }) => {
               color: '#000',
               fontSize: 18,
               fontFamily: 'Poppins-Bold',
+              textAlignVertical:'top',
               paddingLeft: 10,
             }}>
             {t('profilePage.account')}
           </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+        style={{width:40}}
+        onPress={() =>navigation.navigate('Favourites')}>
+          <Image source={wishListFillRed} style={{ width:25, resizeMode:'contain' }}/>
         </TouchableOpacity>
       </View>
       <ScrollView style={{ backgroundColor: HomeBgColor }}>
@@ -223,7 +233,7 @@ const Profile = ({ navigation }) => {
                 </View>
               </View>
             </TouchableOpacity>
-            <View
+            {/* <View
               style={{
                 width: '90%',
                 height: 85,
@@ -287,7 +297,7 @@ const Profile = ({ navigation }) => {
                 </TouchableOpacity>
                 <Text>Language</Text>
               </View>
-            </View>
+            </View> */}
             <View
               style={{
                 margin: 20,

@@ -1,6 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Header, Image, StyleSheet, Modal, TouchableOpacity } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  Header,
+  Image,
+  StyleSheet,
+  Modal,
+  TouchableOpacity,
+} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import {
   home,
@@ -13,30 +21,30 @@ import {
   searchIconUnsel,
   cartIconUnsel,
   homeeIcon,
-  homeeLogo
+  homeeLogo,
 } from '../assets/img/Images';
 //import DashBoard from '../screens/DashBoard1';
 import Home from '../screens/Home';
 import Search from '../screens/Search';
 import Profile from '../screens/Profile';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import Cart from '../screens/Cart_New';
-import { storage } from '../services';
+import {storage} from '../services';
 import HomeNew from '../screens/Home_New';
 
 const Tab = createBottomTabNavigator();
 
-const BottomTab = ({ navigation, route }) => {
+const BottomTab = ({navigation, route}) => {
   const [cartStatus, setCartStatus] = useState(null);
   const getCartStatus = async () => {
     let status = await storage.getCartStatus();
     setCartStatus(status);
   };
 
-  const { t, i18n } = useTranslation();
+  const {t, i18n} = useTranslation();
   return (
     <Tab.Navigator
-      initialRouteName={route.params?.type == 'Profile' ? "Account" : "Home"}
+      initialRouteName={route.params?.type == 'Profile' ? 'Account' : 'Home'}
       tabBarOptions={{
         showLabel: false,
         style: {
@@ -59,7 +67,7 @@ const BottomTab = ({ navigation, route }) => {
         }}
         options={{
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({focused}) => (
             <View
               style={{
                 alignItems: 'center',
@@ -77,7 +85,7 @@ const BottomTab = ({ navigation, route }) => {
               <Text
                 style={[
                   styles.btmTabText,
-                  { color: focused ? '#09b44d' : '#B2B2B2' },
+                  {color: focused ? '#09b44d' : '#B2B2B2'},
                 ]}>
                 {t('bottomTabPage.home')}
               </Text>
@@ -96,7 +104,7 @@ const BottomTab = ({ navigation, route }) => {
         }}
         options={{
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({focused}) => (
             <View
               style={{
                 alignItems: 'center',
@@ -130,7 +138,7 @@ const BottomTab = ({ navigation, route }) => {
               <Text
                 style={[
                   styles.btmTabText,
-                  { color: focused ? '#09b44d' : '#B2B2B2' },
+                  {color: focused ? '#09b44d' : '#B2B2B2'},
                 ]}>
                 {t('bottomTabPage.cart')}
               </Text>
@@ -150,8 +158,22 @@ const BottomTab = ({ navigation, route }) => {
         options={{
           headerShown: false,
           tabBarButton: () => (
-            <View style={{ width: 65, height: 65, justifyContent: 'center', alignItems: 'center', borderRadius: 100, backgroundColor: '#fff', elevation: 5, marginTop: -7 }} onPress={null} >
-              <Image source={homeeLogo} style={{ width: 40, height: 40, resizeMode: 'contain' }} />
+            <View
+              style={{
+                width: 65,
+                height: 65,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 100,
+                backgroundColor: '#fff',
+                elevation: 1,
+                marginTop: -7,
+              }}
+              onPress={null}>
+              <Image
+                source={homeeLogo}
+                style={{width: 40, height: 40, resizeMode: 'contain'}}
+              />
             </View>
           ),
           // tabBarIcon: ({ focused }) => (
@@ -184,7 +206,7 @@ const BottomTab = ({ navigation, route }) => {
         }}
         options={{
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({focused}) => (
             <View
               style={{
                 alignItems: 'center',
@@ -202,7 +224,7 @@ const BottomTab = ({ navigation, route }) => {
               <Text
                 style={[
                   styles.btmTabText,
-                  { color: focused ? '#09b44d' : '#B2B2B2' },
+                  {color: focused ? '#09b44d' : '#B2B2B2'},
                 ]}>
                 {t('bottomTabPage.search')}
               </Text>
@@ -221,7 +243,7 @@ const BottomTab = ({ navigation, route }) => {
         }}
         options={{
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({focused}) => (
             <View
               style={{
                 alignItems: 'center',
@@ -239,7 +261,7 @@ const BottomTab = ({ navigation, route }) => {
               <Text
                 style={[
                   styles.btmTabText,
-                  { color: focused ? '#09b44d' : '#B2B2B2' },
+                  {color: focused ? '#09b44d' : '#B2B2B2'},
                 ]}>
                 {t('bottomTabPage.account')}
               </Text>
@@ -255,7 +277,7 @@ const styles = StyleSheet.create({
   btmTabIcon: {
     width: 25,
     height: 20,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   },
   btmTabText: {
     fontFamily: 'NexaBold',

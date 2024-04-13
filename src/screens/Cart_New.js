@@ -1625,7 +1625,7 @@ const Cart = ({ navigation, route }) => {
                   </View>
                   <View
                     style={{
-                      width: '50%',
+                      maxWidth: '60%',
                       justifyContent: 'center',
                       padding: 5,
                       paddingVertical: 10,
@@ -1847,6 +1847,7 @@ const Cart = ({ navigation, route }) => {
                   style={{
                     width: '100%',
                     backgroundColor: '#09b44d',
+                    // marginBottom: 50,
                     borderTopLeftRadius: 25,
                     borderTopRightRadius: 25,
                     height: 60,

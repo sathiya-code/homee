@@ -17,13 +17,13 @@ import {
     useOtpVerify,
 } from 'react-native-otp-verify';
 import deviceInfoModule from 'react-native-device-info';
-import LocationEnabler from 'react-native-location-enabler';
+// import LocationEnabler from 'react-native-location-enabler';
 import Loader from './Loader';
 
-const {
-    PRIORITIES: { HIGH_ACCURACY },
-    useLocationSettings,
-} = LocationEnabler;
+// const {
+//     PRIORITIES: { HIGH_ACCURACY },
+//     useLocationSettings,
+// } = LocationEnabler;
 
 
 const window = Dimensions.get('window');
@@ -38,18 +38,18 @@ export default function LocationPermissionScreen({ navigation, route }) {
     const [loaderModal, setLoaderModal] = useState(false);
 
 
-    const [enabled, requestResolution] = useLocationSettings(
-        {
-            priority: HIGH_ACCURACY, // default BALANCED_POWER_ACCURACY
-            alwaysShow: true, // default false
-            needBle: true, // default false
-        },
-        false /* optional: default undefined */
-    );
+    // const [enabled, requestResolution] = useLocationSettings(
+    //     {
+    //         priority: HIGH_ACCURACY, // default BALANCED_POWER_ACCURACY
+    //         alwaysShow: true, // default false
+    //         needBle: true, // default false
+    //     },
+    //     false /* optional: default undefined */
+    // );
 
-    useEffect(() => {
-        { !enabled && requestResolution() }
-    }, [])
+    // useEffect(() => {
+    //     { !enabled && requestResolution() }
+    // }, [])
 
 
     const getActivityStatus = async () => {
@@ -103,9 +103,9 @@ export default function LocationPermissionScreen({ navigation, route }) {
         }
         // console.log('onproceed22', payload);
 
+        console.log("resresresresresres",payload);
         let res = await api.login(payload);
         if (res?.user) {
-            // console.log(res.user.otp);
             setLoaderModal(false);
             navigation.navigate('Otp', { user: res.user });
             if (mobileNumber == ('6381024264' || '9514619276') && res?.user?.otp) {
@@ -173,7 +173,7 @@ export default function LocationPermissionScreen({ navigation, route }) {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#f4fbf8' }}>
-            <LottieView source={require('../assets/img/json.json')} autoPlay loop style={{ position: 'absolute', height: '100%', width: 'auto', }} autoSize />
+            <LottieView source={require('../assets/img/json.json')} autoPlay loop style={{ position: 'absolute', height:"105%", width: '100%' }} resizeMode='cover' autoSize />
             <View style={styles.content}>
                 <Text style={styles.textSmall}>Ready to start from top cooks?</Text>
                 <Text style={styles.textBold}>Share Your Location</Text>

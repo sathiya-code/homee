@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, SafeAreaView, StatusBar, Image, Alert, BackHandler, FlatList, ScrollView, Dimensions, TextInput, ToastAndroid, } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { Calendar } from 'react-native-calendars';
+// import { Calendar } from 'react-native-calendars';
+import {Calendar} from 'react-native-calendars';
 import { api, storage } from '../services/index';
 import { arrow, leftArrow, deleteIcon } from '../assets/img/Images';
 import { usePreOrderHook } from '../helper/usePreOrderHook';
@@ -359,7 +360,7 @@ const PreOrder = ({ navigation, route }) => {
     };
 
     const AddButton = ({ item }) => {
-        console.log("itemmmmmmmmmmmmm", item);
+        // console.log("itemmmmmmmmmmmmm", item);
         const cartDetail = JSON.parse(item?.cart_details);
         const [itemQuantity, setItemQuantity] = useState(cartDetail?.quantity);
 
@@ -580,7 +581,7 @@ const PreOrder = ({ navigation, route }) => {
                         const menuList = JSON.parse(item?.menu_list);
                         const cookDetails = JSON.parse(item?.cook_details);
                         const [open, setOpen] = useState(false);
-                        console.log("itemmmmmmmmmmmmmmmmmmmm", menuList);
+                        // console.log("itemmmmmmmmmmmmmmmmmmmm", menuList);
                         return (<>
                             <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', marginBottom: 7, marginTop: 7 }}>
                                 <TouchableOpacity onPress={() => preOrderRemoveCart(item?.cartId)}>

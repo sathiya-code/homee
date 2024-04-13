@@ -131,13 +131,14 @@ const get = async (url, config) => {
 
 }
 const post = async (url, data, config) => {
-    // console.log(url);
-    // console.log(data);
+    console.log(url);
+    console.log(data);
     try {
         let res = await axios.post(url, data, config);
         // console.warn("rannn", res)
         return prepareResponse(res);
     } catch (err) {
+        console.log("errrrrrrrrrrrrrrrrrrrr", err, url);
         return handleException(err, url);
     }
 }
@@ -179,10 +180,10 @@ const handleException = (err, url) => {
                 // Alert.alert('Status Failed', `server returns ${status}, URL: ${url}, msg: ${data?.message}`);
             }
         } else {
-            Alert.alert('Information', 'Someting went worng or Check your Internet');
+            Alert.alert('Information', 'Something went worng or Check your Internet');
         }
     } catch (error) {
-        Alert.alert('Information', 'Someting went worng or Check your Internet', `url: ${url}`, [
+        Alert.alert('Information', 'Something went worng or Check your Internet', `url: ${url}`, [
             {
                 text: 'Ok',
                 onPress: () => {

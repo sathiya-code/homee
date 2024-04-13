@@ -3,16 +3,19 @@ import React from 'react'
 import * as Images from '../assets/img/Images'
 import LottieView from 'lottie-react-native';
 import { PrimaryGreen } from '../helper/styles.helper';
-import Shimmer from 'react-native-shimmer';
+// import Shimmer from 'react-native-shimmer';
+import Shimmer from 'react-native-shimmer-placeholder';
 
 const ComingSoon = ({ navigation, route }) => {
 
     const { width, height } = Dimensions.get('window');
 
     console.log("route?.params?.typeroute?.params?.type", route?.params);
+    
+    const pageType = route?.params.type;
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: route?.params?.type == 'Pick & Drop' ? '#fff' : '#dff0e3', }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: pageType == 'Pick & Drop' ? '#fff' : '#dff0e3', }}>
             <View
                 style={{
                     flexDirection: 'column',
@@ -41,22 +44,22 @@ const ComingSoon = ({ navigation, route }) => {
                     }}>Back</Text>
                 </TouchableOpacity>
             </View>
-            {route?.params?.type == 'Pick & Drop' ?
+            {pageType == 'Pick & Drop' ?
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
                     <Image source={Images.pnd_comming} style={{ height: height / 2, aspectRatio: 1, resizeMode: 'center', padding: 0, margin: 0, marginBottom: 25, }} />
                 </View>
                 :
                 <>
                     <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
-                        <Image source={Images.services_comming_soon} style={{ height: height / 2.2, aspectRatio: 1, resizeMode: 'center', padding: 0, margin: 0, marginVertical: 25, }} />
-                        <Shimmer tilt={30} duration={100} pauseDuration={1500}>
+                        <Image source={ pageType == 'Groceries & Meat' ? Images.Groceries : Images.services_comming_soon} style={{ height: height / 2.2, aspectRatio: 1, resizeMode: 'center', padding: 0, margin: 0, marginVertical: 25, }} />
+                        {/* <Shimmer tilt={30} duration={100} pauseDuration={1500}> */}
                             <Text style={{ fontFamily: 'Poppins-Medium', fontSize: 24, color: PrimaryGreen, textAlign: 'center' }}>
                                 {`${!!route?.params?.type ? route?.params?.type : ''} \n`}
                                 <Text style={{ fontFamily: 'Poppins-Medium', fontSize: 24, color: PrimaryGreen, textAlign: 'center' }}>
                                     Comming Soon
                                 </Text>
                             </Text>
-                        </Shimmer>
+                        {/* </Shimmer> */}
                     </View>
                 </>}
         </SafeAreaView>
