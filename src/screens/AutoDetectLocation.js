@@ -20,7 +20,8 @@ const AutoDetectLocation = ({ navigation, route }) => {
 
     const dispatch = useDispatch();
 
-    Geocoder.init('AIzaSyBHkDZcJWMhylGafddN7JyQCpZfZRz9pO4');
+    console.log("fromAutoDetectLocation", );
+    Geocoder.init('AIzaSyAT-XE0L77pBWbwTL3PC04JUGSykZ3uB_Q');
 
     console.log("propss fromAutoDetectLocation", route.params);
     const mobile = route.params;

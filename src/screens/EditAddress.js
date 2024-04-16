@@ -28,7 +28,7 @@ import AnimatedSearchbox from '../helper/animatedSearchBar';
 const EditAddress = ({ navigation, route }) => {
     const { t, i18n } = useTranslation();
     const dispatch = useDispatch();
-    Geocoder.init('AIzaSyBHkDZcJWMhylGafddN7JyQCpZfZRz9pO4');
+    Geocoder.init('AIzaSyAT-XE0L77pBWbwTL3PC04JUGSykZ3uB_Q');
     const mapRef = useRef(null);
     const [modal, setModal] = useState(false);
     const [street, setStreet] = useState(route?.params?.street);
@@ -259,7 +259,7 @@ const EditAddress = ({ navigation, route }) => {
                     ]}
                     debounce={200}
                     query={{
-                        key: 'AIzaSyBHkDZcJWMhylGafddN7JyQCpZfZRz9pO4',
+                        key: 'AIzaSyAT-XE0L77pBWbwTL3PC04JUGSykZ3uB_Q',
                         language: 'en',
                         type: 'establishment',
                     }}
@@ -282,6 +282,7 @@ const EditAddress = ({ navigation, route }) => {
                             color: '#1faadb',
                         },
                     }}
+                    onFail={err=>console.log("error in maps autocomplete", err)}
                 />
             </View>
 

@@ -57,9 +57,10 @@ import {PndContext} from '../context/pnd.context';
 const {width, height} = Dimensions.get('screen');
 
 const Address = ({navigation, route}) => {
+  console.log("address started");
   const {t, i18n} = useTranslation();
   const dispatch = useDispatch();
-  Geocoder.init('AIzaSyBHkDZcJWMhylGafddN7JyQCpZfZRz9pO4');
+  Geocoder.init('AIzaSyAT-XE0L77pBWbwTL3PC04JUGSykZ3uB_Q');
   const mapRef = useRef(null);
   const [modal, setModal] = useState(false);
   const [street, setStreet] = useState(null);
@@ -640,7 +641,7 @@ const Address = ({navigation, route}) => {
             ]}
             debounce={200}
             query={{
-              key: 'AIzaSyBHkDZcJWMhylGafddN7JyQCpZfZRz9pO4',
+              key: 'AIzaSyAT-XE0L77pBWbwTL3PC04JUGSykZ3uB_Q',
               language: 'en',
               type: 'establishment',
             }}

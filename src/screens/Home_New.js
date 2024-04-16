@@ -135,7 +135,7 @@ const HomeNew = ({ navigation, route }) => {
     else setModal(false);
   }, [ourServices, setOurServices, food_types, setFood_types]);
 
-  Geocoder.init('AIzaSyBHkDZcJWMhylGafddN7JyQCpZfZRz9pO4');
+  Geocoder.init('AIzaSyAT-XE0L77pBWbwTL3PC04JUGSykZ3uB_Q');
 
   const eatHappyRef = useRef();
   const setOneToOneCooks = async () => {

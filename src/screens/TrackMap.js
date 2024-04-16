@@ -50,7 +50,7 @@ function normalize(size) {
 
 const TrackMap = ({ navigation, route }) => {
     const mapRef = useRef(null);
-    Geocoder.init('AIzaSyBHkDZcJWMhylGafddN7JyQCpZfZRz9pO4');
+    Geocoder.init('AIzaSyAT-XE0L77pBWbwTL3PC04JUGSykZ3uB_Q');
     const [status, setStatus] = useState(1);
     const [addressLocation, setAddressLocation] = useState(null);
     const [addressComponent, setAddressComponent] = useState(null);
@@ -236,7 +236,7 @@ const TrackMap = ({ navigation, route }) => {
                                                 latitude: parseFloat(orderDetails?.cook?.address?.latitude),
                                                 longitude: parseFloat(orderDetails?.cook?.address?.longitude)
                                             }}
-                                            apikey={'AIzaSyBHkDZcJWMhylGafddN7JyQCpZfZRz9pO4'}
+                                            apikey={'AIzaSyAT-XE0L77pBWbwTL3PC04JUGSykZ3uB_Q'}
                                             strokeColor={'#09b44d'}
                                             strokeWidth={5}
                                             optimizeWaypoints={true}
@@ -252,7 +252,7 @@ const TrackMap = ({ navigation, route }) => {
                                                 latitude: parseFloat(orderDetails?.address_info?.latitude),
                                                 longitude: parseFloat(orderDetails?.address_info?.longitude)
                                             }}
-                                            apikey={'AIzaSyBHkDZcJWMhylGafddN7JyQCpZfZRz9pO4'}
+                                            apikey={'AIzaSyAT-XE0L77pBWbwTL3PC04JUGSykZ3uB_Q'}
                                             strokeColor={'#09b44d'}
                                             strokeWidth={5}
                                             optimizeWaypoints={true}
@@ -269,7 +269,7 @@ const TrackMap = ({ navigation, route }) => {
                                 latitude: 13.050985,
                                 longitude: 80.208726,
                             }}
-                            apikey={'AIzaSyBHkDZcJWMhylGafddN7JyQCpZfZRz9pO4'}
+                            apikey={'AIzaSyAT-XE0L77pBWbwTL3PC04JUGSykZ3uB_Q'}
                             strokeColor={'#09b44d'}
                             strokeWidth={5}
                             optimizeWaypoints={true}
