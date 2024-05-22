@@ -80,8 +80,8 @@ android {
         applicationId "com.homeeuser"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 33
-        versionName "3.3.0"    }
+        versionCode 35
+        versionName "3.5.0"    }
     signingConfigs {
         debug {
             storeFile file('debug.keystore')

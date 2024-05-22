@@ -35,7 +35,7 @@ export default function LocationPermissionScreen({ navigation, route }) {
     const [fcm_token, setFcm_token] = useState(null);
     const [mobileNumber, setMobileNumber] = useState();
     const [hash, setHash] = useState();
-    const [loaderModal, setLoaderModal] = useState(false);
+    const [loaderModal, setLoaderModal] = useState(true);
 
 
     // const [enabled, requestResolution] = useLocationSettings(
@@ -64,9 +64,9 @@ export default function LocationPermissionScreen({ navigation, route }) {
     const get_Token = async () => {
         // setModal(true);
         await storage.setDiffLocationAlert("TRUE");
-        var fcm_token = await messaging().getToken();
+        var fcm_tkn = await messaging().getToken();
         //  console.log('token*****',fcm_token);
-        setFcm_token(fcm_token);
+        setFcm_token(fcm_tkn);
         var id = await storage.getToken();
         if (id != null) {
             console.log("Bearer Token", id);
@@ -78,7 +78,7 @@ export default function LocationPermissionScreen({ navigation, route }) {
             });
             navigation.navigate('Home');
         }
-        // setModal(false);
+        setLoaderModal(false);
     };
 
     useEffect(() => {

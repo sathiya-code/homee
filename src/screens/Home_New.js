@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect, useState, useRef } from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   ScrollView,
   View,
@@ -33,12 +33,12 @@ import {
   coming_soon,
   deliverySoon,
 } from '../assets/img/Images';
-import { api, storage } from '../services/index';
-import { useSelector } from 'react-redux';
+import {api, storage} from '../services/index';
+import {useSelector} from 'react-redux';
 import Loader from './Loader';
 // import { FlatList } from 'react-native-gesture-handler';
-import { useTranslation } from 'react-i18next';
-import { useFocusEffect } from '@react-navigation/core';
+import {useTranslation} from 'react-i18next';
+import {useFocusEffect} from '@react-navigation/core';
 import {
   AppBackground,
   HomeBgColor,
@@ -51,13 +51,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import offerHorn from '../assets/img/offer_icon.png';
 import location_bar_icon from '../assets/img/location_bar_icon.png';
 import offerIcon2 from '../assets/img/offer_icon2.png';
-import { LinearTextGradient } from 'react-native-text-gradient';
+import {LinearTextGradient} from 'react-native-text-gradient';
 // import Shimmer from 'react-native-shimmer';
-import  Shimmer from 'react-native-shimmer-placeholder'
+import Shimmer from 'react-native-shimmer-placeholder';
 // import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import FastImage from 'react-native-fast-image';
-import { checkForUpdate, toCamelCase } from '../helper/app.helper';
+import {checkForUpdate, toCamelCase} from '../helper/app.helper';
 import checkVersion from 'react-native-store-version';
 import deviceInfoModule from 'react-native-device-info';
 import NoServiceArea from './NoServiceArea';
@@ -68,10 +68,10 @@ import Geocoder from 'react-native-geocoding';
 
 const BannerCarouselImg = Dimensions.get('window').width;
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
-const HomeNew = ({ navigation, route }) => {
-  const { t, i18n } = useTranslation();
+const HomeNew = ({navigation, route}) => {
+  const {t, i18n} = useTranslation();
   const [user, setUser] = useState(null);
   const [modal, setModal] = useState(false);
   const [banner, setBanner] = useState([]);
@@ -98,34 +98,35 @@ const HomeNew = ({ navigation, route }) => {
   const [showTrackOrder, setShowTrackOrder] = useState(false);
   const [comingSoonModal, setComingSoonModal] = useState(false);
   const [serviceTitle, setServiceTitle] = useState({
-    ourServices: "Our Services",
-    byCategory: "Homee Delivers Doorstep",
-    topPicks: "Top Homee Picks For You",
-    nearBy: "All Cooks Nearby"
-
-  })
+    ourServices: 'Our Services',
+    byCategory: 'Homee Delivers Doorstep',
+    topPicks: 'Top Homee Picks For You',
+    nearBy: 'All Cooks Nearby',
+  });
+  const [isDefaultAddAutoChnaged, setIsDefaultAddAutoChnaged] = useState(false);
 
   const getServiceTitles = async () => {
     setModal(true);
     let response = await api.getServicesTitle();
     if (response.status == 'success') {
       setServiceTitle(response);
-      console.log("title reesponse", response);
+      // console.log("title reesponse", response);
     }
-  }
+  };
 
   const getCurrentOrders = async () => {
     setModal(true);
-    console.log("listItemslistItems",);
+    // console.log("listItemslistItems",);
     let response = await api.currentOrders();
     if (response?.status == 'success') {
       setListItems(response?.orders?.[0]);
       setpndListItems(response?.pndOrders?.[0]);
-      (!!response?.orders?.[0] || !!response?.pndOrders?.[0]) && setShowTrackOrder(true);
-      console.log("listItemslistItems", response?.orders[0]);
+      (!!response?.orders?.[0] || !!response?.pndOrders?.[0]) &&
+        setShowTrackOrder(true);
+      // console.log("listItemslistItems", response?.orders[0]);
     }
     setModal(false);
-  }
+  };
 
   const scrollViewRef = useRef(null);
   const targetViewRef = useRef(null);
@@ -158,7 +159,6 @@ const HomeNew = ({ navigation, route }) => {
     return focusHandler;
   }, []);
 
-
   const get_Token = async () => {
     // setModal(true);
     var user = await storage.getUserData();
@@ -168,7 +168,7 @@ const HomeNew = ({ navigation, route }) => {
   // console.log("addddddddddddddddddddddddddddddd", defaultAddress);
   const getUserAddress = async () => {
     const address = await api.getUserAddress();
-    console.log('adddddddd222222', address);
+    // console.log('adddddddd222222', address);
     if (
       defaultAddress == undefined ||
       (defaultAddress.latitude != address.useraddress.latitude &&
@@ -227,8 +227,8 @@ const HomeNew = ({ navigation, route }) => {
   };
 
   const getActivityAnalytics = async cook_id => {
-    console.log('cook_id', cook_id);
-    await api.getActivityStatus({ history_type: 2, cook_id });
+    // console.log('cook_id', cook_id);
+    await api.getActivityStatus({history_type: 2, cook_id});
   };
 
   const getBestFour = async () => {
@@ -254,8 +254,8 @@ const HomeNew = ({ navigation, route }) => {
     setModal(false);
   };
 
-  const render_Banner_Item = ({ item, index }) => {
-    console.log('itemmm banner', item?.target, typeof item?.target);
+  const render_Banner_Item = ({item, index}) => {
+    // console.log('itemmm banner', item?.target, typeof item?.target);
     return (
       <TouchableOpacity
         onPress={() => {
@@ -272,10 +272,10 @@ const HomeNew = ({ navigation, route }) => {
             item?.target != 'preorder' &&
             item?.target != null
           )
-            navigation.navigate('FoodDetail', item?.target);
+            navigation.navigate('FoodDetail', {id: item?.target});
         }}>
         <Image
-          source={{ uri: item?.image }}
+          source={{uri: item?.image}}
           style={{
             width: width * 0.96,
             height: 200,
@@ -288,7 +288,7 @@ const HomeNew = ({ navigation, route }) => {
       </TouchableOpacity>
     );
   };
-  const _renderItem = ({ item, index }) => {
+  const _renderItem = ({item, index}) => {
     // index == 0 && console.log("itemmmmm ind 00", item);
     let backgroundImg = null;
     // if (index % 2) {
@@ -298,17 +298,17 @@ const HomeNew = ({ navigation, route }) => {
     // }
     return (
       <>
-        <View style={{ height: 170, width: 120, marginRight: 15 }}>
+        <View style={{height: 170, width: 120, marginRight: 15}}>
           <FastImage
             style={styles.couponBack}
-            source={{ uri: item?.bg_img, cache: 'cacheOnly' }}
+            source={{uri: item?.bg_img, cache: 'cacheOnly'}}
           />
-          <View style={{ marginHorizontal: 10 }}>
-            <Text style={[styles.package, { color: item?.font_color }]}>
+          <View style={{marginHorizontal: 10}}>
+            <Text style={[styles.package, {color: item?.font_color}]}>
               upto
             </Text>
             <Text style={styles.percentage}>{item?.value}%</Text>
-            <Text style={[styles.offer, { color: item?.font_color }]}>
+            <Text style={[styles.offer, {color: item?.font_color}]}>
               offers on
             </Text>
             <Text style={styles.offerName}>{item?.coupon_name}</Text>
@@ -322,7 +322,7 @@ const HomeNew = ({ navigation, route }) => {
               position: 'absolute',
             }}>
             <FastImage
-              source={{ uri: item?.image }}
+              source={{uri: item?.image}}
               style={{
                 width: 60,
                 aspectRatio: 1,
@@ -340,14 +340,14 @@ const HomeNew = ({ navigation, route }) => {
     );
   };
 
-  const _renderItem1 = ({ item, index }) => {
+  const _renderItem1 = ({item, index}) => {
     // index == 0 && console.log("featured cook item", item)
     return (
       <TouchableOpacity
-        style={{ marginRight: 20 }}
-        onPress={() => navigation.navigate('FoodDetail', item.cook_id)}>
+        style={{marginRight: 20}}
+        onPress={() => navigation.navigate('FoodDetail', {id: item.cook_id})}>
         <View
-          style={{ width: 110, justifyContent: 'center', alignItems: 'center' }}>
+          style={{width: 110, justifyContent: 'center', alignItems: 'center'}}>
           <View
             style={{
               flexDirection: 'row',
@@ -363,13 +363,13 @@ const HomeNew = ({ navigation, route }) => {
             }}>
             <Image
               source={offerHorn}
-              style={{ height: 14, width: 14, marginRight: 5 }}
+              style={{height: 14, width: 14, marginRight: 5}}
             />
-            <Text style={{ textAlign: 'center', color: '#fff' }}>Special</Text>
+            <Text style={{textAlign: 'center', color: '#fff'}}>Special</Text>
           </View>
         </View>
         <FastImage
-          source={{ uri: item.image, cache: 'cacheOnly', priority: 'high' }}
+          source={{uri: item.image, cache: 'cacheOnly', priority: 'high'}}
           style={{
             width: 110,
             aspectRatio: 1,
@@ -387,11 +387,11 @@ const HomeNew = ({ navigation, route }) => {
             marginLeft: 5,
             justifyContent: 'space-between',
           }}>
-          <Image source={starSelect} style={{ width: 17, height: 17 }} />
-          <Image source={starSelect} style={{ width: 17, height: 17 }} />
-          <Image source={starSelect} style={{ width: 17, height: 17 }} />
-          <Image source={starSelect} style={{ width: 17, height: 17 }} />
-          <Image source={starUnSelect} style={{ width: 17, height: 17 }} />
+          <Image source={starSelect} style={{width: 17, height: 17}} />
+          <Image source={starSelect} style={{width: 17, height: 17}} />
+          <Image source={starSelect} style={{width: 17, height: 17}} />
+          <Image source={starSelect} style={{width: 17, height: 17}} />
+          <Image source={starUnSelect} style={{width: 17, height: 17}} />
         </View>
         <View
           style={{
@@ -414,7 +414,7 @@ const HomeNew = ({ navigation, route }) => {
             {item.menuName}
             {/* {item?.cook_name.length > 15 ? `${item.cook_name.slice(0, 12)}...` : item.cook_name} */}
           </Text>
-          <View style={{ width: '45%' }}>
+          <View style={{width: '45%'}}>
             {/* <Text style={{
                             fontFamily: 'Poppins-Regular',
                             fontSize: 9,
@@ -439,10 +439,10 @@ const HomeNew = ({ navigation, route }) => {
     );
   };
 
-  const poprenderItem = ({ item, index }) => {
+  const poprenderItem = ({item, index}) => {
     // console.log("indx", index, happyIndex);
     return (
-      <View style={{ marginLeft: 10 }}>
+      <View style={{marginLeft: 10}}>
         <TouchableOpacity
           onPress={() => navigation.navigate('FoodListFilter', item)}
           style={{
@@ -468,8 +468,8 @@ const HomeNew = ({ navigation, route }) => {
               alignItems: 'center',
             }}>
             <FastImage
-              source={{ uri: item.icon }}
-              style={{ width: 50, height: 45, borderRadius: 50 }}
+              source={{uri: item.icon}}
+              style={{width: 50, height: 45, borderRadius: 50}}
             />
           </View>
           <View
@@ -495,21 +495,21 @@ const HomeNew = ({ navigation, route }) => {
     );
   };
 
-  const newrenderItem = ({ item, index }) => {
+  const newrenderItem = ({item, index}) => {
     // console.log("featured cook item fom new cooksssssss", item)
     return (
       <>
         <TouchableOpacity
           onPress={() => {
             getActivityAnalytics(item?.id);
-            navigation.navigate('FoodDetail', item.id);
+            navigation.navigate('FoodDetail', {id: item.id});
           }}
           style={{
             // flexDirection: 'row',
             paddingHorizontal: 10,
             marginBottom: 10,
           }}>
-          <View style={{ width: 80 }}>
+          <View style={{width: 80}}>
             <View
               style={{
                 width: '100%',
@@ -521,7 +521,7 @@ const HomeNew = ({ navigation, route }) => {
                             style={{ width: 75, height: 90, borderRadius: 15 }}
                         /> */}
               <Image
-                source={{ uri: item?.food_image }}
+                source={{uri: item?.food_image}}
                 style={{
                   width: 75,
                   height: 90,
@@ -557,13 +557,13 @@ const HomeNew = ({ navigation, route }) => {
     );
   };
 
-  const cooksNearbyrenderItem = ({ item, index }) => {
+  const cooksNearbyrenderItem = ({item, index}) => {
     // index == 0 && console.log("itemmmm nearby", item)
     return (
       <TouchableOpacity
         onPress={() => {
           getActivityAnalytics(item?.id);
-          navigation.navigate('FoodDetail', item.id);
+          navigation.navigate('FoodDetail', {id: item.id});
         }}
         key={index.toString()}
         style={{
@@ -583,7 +583,7 @@ const HomeNew = ({ navigation, route }) => {
           {/* <View style={{ width: '100%', borderRadius: 5 }}> */}
           {item?.image ? (
             <FastImage
-              source={{ uri: item?.image }}
+              source={{uri: item?.image}}
               style={{
                 width: '45%',
                 height: 120,
@@ -626,14 +626,14 @@ const HomeNew = ({ navigation, route }) => {
             />
           )}
           {/* </View> */}
-          <View style={{ justifyContent: 'space-between', width: '50%' }}>
+          <View style={{justifyContent: 'space-between', width: '50%'}}>
             <Text
               style={{
                 fontSize: 15,
                 fontFamily: 'Poppins-Medium',
                 fontWeight: '600',
                 lineHeight: 20,
-                marginVertical: 3
+                marginVertical: 3,
               }}
               numberOfLines={2}>
               {toCamelCase(item.first_name)}
@@ -653,7 +653,7 @@ const HomeNew = ({ navigation, route }) => {
                 backgroundColor: '#f4fbf8',
                 // paddingRight: 10,
                 borderRadius: 7,
-                paddingHorizontal: 5
+                paddingHorizontal: 5,
               }}>
               {item.viewmenuitem.cuisine.userlanguage.name}
             </Text>
@@ -667,7 +667,7 @@ const HomeNew = ({ navigation, route }) => {
                 // lineHeight: 23,
                 justifyContent: 'center',
                 color: '#989898',
-                marginTop: 3
+                marginTop: 3,
               }}
               numberOfLines={2}>
               {item?.area}
@@ -688,7 +688,7 @@ const HomeNew = ({ navigation, route }) => {
 
             {item.cook_offer == 1 ? (
               <View style={styles.delLoc}>
-                <Image style={{ width: 18, height: 18 }} source={offerIcon} />
+                <Image style={{width: 18, height: 18}} source={offerIcon} />
                 <Text
                   style={{
                     fontSize: 14.5,
@@ -707,14 +707,15 @@ const HomeNew = ({ navigation, route }) => {
     );
   };
 
-  const topHomeePicksRender2 = ({ item, index }) => {
+  const topHomeePicksRender2 = ({item, index}) => {
     return (
       <>
         <TouchableOpacity
           onPress={() => {
             getActivityAnalytics(item?.id);
-            !!item?.cookdistancecal ?
-              navigation.navigate('FoodDetail', item.id) : setComingSoonModal(true);
+            !!item?.cookdistancecal
+              ? navigation.navigate('FoodDetail', {id: item.id})
+              : setComingSoonModal(true);
             // console.log("camelllcase", toCamelCase(item?.first_name))
           }}
           style={{
@@ -734,7 +735,7 @@ const HomeNew = ({ navigation, route }) => {
               borderColor: '#dedede',
             }}>
             <Image
-              source={{ uri: item?.cook_image }}
+              source={{uri: item?.cook_image}}
               style={{
                 width: '100%',
                 height: 120,
@@ -745,7 +746,7 @@ const HomeNew = ({ navigation, route }) => {
                 marginTop: -10,
               }}
             />
-            <View style={{ padding: '4%' }}>
+            <View style={{padding: '4%'}}>
               <Text
                 style={{
                   fontSize: 15,
@@ -761,10 +762,10 @@ const HomeNew = ({ navigation, route }) => {
                   justifyContent: 'space-between',
                   paddingBottom: 5,
                 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                   <Image
                     source={starSelect}
-                    style={{ width: 14, height: 14, marginRight: 3 }}
+                    style={{width: 14, height: 14, marginRight: 3}}
                   />
                   <Text
                     style={{
@@ -804,30 +805,42 @@ const HomeNew = ({ navigation, route }) => {
     );
   };
 
-  const ourServicesRender = ({ item, index }) => {
+  const ourServicesRender = ({item, index}) => {
     return (
       <>
         <TouchableOpacity
           onPress={() => {
-            console.log("item?.navigation_path", item?.navigation_path);
+            // console.log("item?.navigation_path", item?.navigation_path);
             try {
-              console.log("navigation pathh", item?.navigation_path);
-              item.navigation_path == "Home" ? scrollToSection("home") :
-                item.navigation_path == "Restaurant" ? scrollToSection("restaurant") :
-                  item.navigation_path == "PreOrder" ? navigation.navigate(item.navigation_path) :
-                    item.navigation_path == "Plant" ? navigation.navigate("PlantVendor", { type: "garden" }) :
-                      item.navigation_path == "PickAndDrop" ? navigation.navigate("PickAndDrop") :
-                      // item.navigation_path == "Groceries" ? navigation.navigate("Groceries") :
-                        // item.navigation_path == "PickAndDrop" ? navigation.navigate("PndOrderTrack") :
-                        // item.navigation_path == "PickAndDrop" ? navigation.navigate("ComingSoon", { type: 'Pick & Drop' }) :
-                        navigation.navigate("ComingSoon", { type: item.service_name });
-            } catch (err) { console.log("error from ourServices", err); ToastAndroid.show("Scroll Below to explore Available Service", ToastAndroid.BOTTOM) }
+              // console.log("navigation pathh", item?.navigation_path);
+              item.navigation_path == 'Home'
+                ? scrollToSection('home')
+                : item.navigation_path == 'Restaurant'
+                ? scrollToSection('restaurant')
+                : item.navigation_path == 'PreOrder'
+                ? navigation.navigate(item.navigation_path)
+                : item.navigation_path == 'Plant'
+                ? navigation.navigate('PlantVendor', {type: 'garden'})
+                : item.navigation_path == 'PickAndDrop'
+                ? navigation.navigate('PickAndDrop')
+                : item.navigation_path == 'Groceries'
+                ? navigation.navigate('GroceryHome', {type: item.service_name})
+                : // item.navigation_path == "PickAndDrop" ? navigation.navigate("PndOrderTrack") :
+                  // item.navigation_path == "PickAndDrop" ? navigation.navigate("ComingSoon", { type: 'Pick & Drop' }) :
+                  navigation.navigate('ComingSoon', {type: item.service_name});
+            } catch (err) {
+              console.log('error from ourServices', err);
+              ToastAndroid.show(
+                'Scroll Below to explore Available Service',
+                ToastAndroid.BOTTOM,
+              );
+            }
           }}
           style={{
             // flexDirection: 'row',
             width: width / 3,
             marginVertical: 5,
-            backgroundColor: 'transparent'
+            backgroundColor: 'transparent',
             // backgroundColor: '#fff'
           }}
           key={index.toString()}>
@@ -846,7 +859,7 @@ const HomeNew = ({ navigation, route }) => {
               overflow: 'hidden',
             }}>
             <Image
-              source={{ uri: item?.image }}
+              source={{uri: item?.image}}
               style={{
                 width: 80,
                 // height: 80,
@@ -858,11 +871,11 @@ const HomeNew = ({ navigation, route }) => {
                 paddingBottom: 2,
                 shadowColor: SecondaryGreen,
               }}
-              resizeMode='center'
+              resizeMode="center"
               borderRadius={200}
             />
           </View>
-          <View style={{ padding: '4%', zIndex: 999 }}>
+          <View style={{padding: '4%', zIndex: 999}}>
             <Text
               style={{
                 fontSize: 13,
@@ -879,7 +892,7 @@ const HomeNew = ({ navigation, route }) => {
     );
   };
 
-  const FilterSlider = ({ index }) => {
+  const FilterSlider = ({index}) => {
     return (
       <View
         style={{
@@ -927,7 +940,6 @@ const HomeNew = ({ navigation, route }) => {
 
   const servicableAreaCheck = async () => {
     const response = await api.getServicableArea();
-    console.log('ranjith oru nalla paiyan', response);
     setServiceable(response.isServicable);
   };
   // console.log("defaultAddressdefaultAddressdefaultAddress", defaultAddress);
@@ -939,159 +951,286 @@ const HomeNew = ({ navigation, route }) => {
     });
   };
 
-  const checkDefaultAddressChange = async () => {
-    await getCurrentLocation();
-    if (!!defaultAddress) {
-      const selectedLat = defaultAddress.latitude;
-      const selectedLng = defaultAddress.longitude;
+  // const checkDefaultAddressChange = async () => {
+  //   await getCurrentLocation();
+  //   if (!!defaultAddress) {
+  //     const selectedLat = defaultAddress.latitude;
+  //     const selectedLng = defaultAddress.longitude;
 
-      const currentLat = currentLocation.latitude;
-      const currentLng = currentLocation.longitude;
+  //     const currentLat = currentLocation.latitude;
+  //     const currentLng = currentLocation.longitude;
 
-      const totalDistance = distance(
-        selectedLat,
-        selectedLng,
-        currentLat,
-        currentLng,
-      );
+  //     const response = await api.changeDefaultAddressAuto({
+  //       currentLat,
+  //       currentLng,
+  //     });
+  //     if (response.status == 'success' && !!response.isNear)
+  //       setIsDefaultAddAutoChnaged(response.isNear);
+  //     console.log('response from changeDefaultAddress', response);
+  //     // const totalDistance = distance(
+  //     //   selectedLat,
+  //     //   selectedLng,
+  //     //   currentLat,
+  //     //   currentLng,
+  //     // );
 
-      const show = await storage.getDiffLocationAlert();
-      if (!!totalDistance && totalDistance > 1 && show == 'TRUE') {
-        Alert.alert(
-          'Oh no, We lost you!',
-          `You are on a different location, \nAre you sure want to continue?`,
-          [
-            {
-              text: 'Change/Add New Address',
-              style: 'destructive',
-              isPreferred: true,
-              onPress: () => {
-                setModal(true);
-                navigation.navigate('AddressChoose', {
-                  type: 'Home',
-                  profile: home_page,
-                });
-              },
-            },
-            { text: 'Continue with Selected', style: 'cancel' },
-          ],
-        );
-        await storage.setDiffLocationAlert('FALSE');
-      }
-      await Geocoder.from(defaultAddress.latitude, defaultAddress.longitude)
-        .then(json => {
-          var addressDetail = json.results[0].address_components;
-          // console.log(
-          //   'addressDetail: ',
-          //   addressDetail,
-          //   defaultAddress.latitude,
-          //   defaultAddress.longitude,
-          // );
-          // const  = addressDetail.filter((item) => {
-          const pincode = addressDetail.filter(address => {
-            // console.log('addressDessssssss', address.long_name);
-            if (
-              address.types == 'postal_code' &&
-              address.long_name.startsWith('5')
-            )
-              setCookTypeHome(false);
-            else setCookTypeHome(true);
-            // return address.address_components.some(component => {
-            //     return component.types.includes("postal_code") && component.short_name.toString().startsWith("5");
-            // });
-          });
-          //     return item.types.includes("postal_code");
-          // });
-          // if (!!pincode && pincode.long_name.toString().startsWith("5")) setCookTypeHome(false)
-          console.log('ranjdgd', cookTypeHome);
-        })
-        .catch(error => console.warn(error));
-    }
-  };
+  //     // const show = await storage.getDiffLocationAlert();
+  //     // if (!!totalDistance && totalDistance > 1 && show == 'TRUE') {
+  //     //   Alert.alert(
+  //     //     'Oh no, We lost you!',
+  //     //     `You are on a different location, \nAre you sure want to continue?`,
+  //     //     [
+  //     //       {
+  //     //         text: 'Change/Add New Address',
+  //     //         style: 'destructive',
+  //     //         isPreferred: true,
+  //     //         onPress: () => {
+  //     //           setModal(true);
+  //     //           navigation.navigate('AddressChoose', {
+  //     //             type: 'Home',
+  //     //             profile: home_page,
+  //     //           });
+  //     //         },
+  //     //       },
+  //     //       { text: 'Continue with Selected', style: 'cancel' },
+  //     //     ],
+  //     //   );
+  //     //   await storage.setDiffLocationAlert('FALSE');
+  //     // }
+  //     // await Geocoder.from(defaultAddress.latitude, defaultAddress.longitude)
+  //     //   .then(json => {
+  //     //     var addressDetail = json.results[0].address_components;
+  //     //     // console.log(
+  //     //     //   'addressDetail: ',
+  //     //     //   addressDetail,
+  //     //     //   defaultAddress.latitude,
+  //     //     //   defaultAddress.longitude,
+  //     //     // );
+  //     //     // const  = addressDetail.filter((item) => {
+  //     //     const pincode = addressDetail.filter(address => {
+  //     //       // console.log('addressDessssssss', address.long_name);
+  //     //       if (
+  //     //         address.types == 'postal_code' &&
+  //     //         address.long_name.startsWith('5')
+  //     //       )
+  //     //         setCookTypeHome(false);
+  //     //       else setCookTypeHome(true);
+  //     //       // return address.address_components.some(component => {
+  //     //       //     return component.types.includes("postal_code") && component.short_name.toString().startsWith("5");
+  //     //       // });
+  //     //     });
+  //     //     //     return item.types.includes("postal_code");
+  //     //     // });
+  //     //     // if (!!pincode && pincode.long_name.toString().startsWith("5")) setCookTypeHome(false)
+  //     //     console.log('ranjdgd', cookTypeHome);
+  //     //   })
+  //     //   .catch(error => console.warn(error));
+  //   }
+  // };
 
-  useEffect(() => {
-    checkDefaultAddressChange();
-  }, [defaultAddress, setDefaultAddress]);
+  // useEffect(() => {
+  //   checkDefaultAddressChange();
+  // }, [defaultAddress, setDefaultAddress]);
 
-
-  const scrollToSection = (sectionId) => {
+  const scrollToSection = sectionId => {
     // console.log("sectionId", sectionId, "height", height);
     // scrollViewRef.current.scrollTo({ x: 0, y: Number(height) * 2.5, animated: true });
     // Get the y-position of the section
     // targetViewRef.current.measure((x, y, width, height, pageX, pageY) => {
     // });
-    if (sectionId == "home") {
+    if (sectionId == 'home') {
       setCookTypeHome(true);
-      targetViewRef.current.measureLayout(
-        scrollViewRef.current,
-        (x, y) => {
-          scrollViewRef.current.scrollTo({ y, animated: true });
-        });
+      targetViewRef.current.measureLayout(scrollViewRef.current, (x, y) => {
+        scrollViewRef.current.scrollTo({y, animated: true});
+      });
     }
-    if (sectionId == "restaurant") {
+    if (sectionId == 'restaurant') {
       setCookTypeHome(false);
-      targetViewRef.current.measureLayout(
-        scrollViewRef.current,
-        (x, y) => {
-          scrollViewRef.current.scrollTo({ y, animated: true });
-        });
-
+      targetViewRef.current.measureLayout(scrollViewRef.current, (x, y) => {
+        scrollViewRef.current.scrollTo({y, animated: true});
+      });
     }
   };
 
   const ShowTrackInHomePage = () => {
     return (
       <>
-        {showTrackOrder && listItems?.delivery_status >= 3 && listItems?.delivery_status <= 5 &&
-          <View style={{ position: 'absolute', width, backgroundColor: '#8A5D3B', zIndex: 999, bottom: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingRight: 7 }}>
+        {showTrackOrder &&
+          listItems?.delivery_status >= 3 &&
+          listItems?.delivery_status <= 5 && (
             <View
-              tilt={30} duration={1500} pauseDuration={5000}
-              style={{ justifyContent: 'center', width: '70%' }}>
-              <Text style={{ color: '#fff', fontSize: 14, paddingTop: 7, paddingBottom: 2, fontFamily: 'Poppins-Medium', lineHeight: 15, textAlign: 'left', paddingLeft: 5 }}>
-                {/* {listItems?.delivery_status == 3 ? "Your Order is Under Prearation" : listItems?.delivery_status == 4 ? listItems?.delivery?.deliveryboy?.name + " will pickup the order once it is ready" : listItems?.delivery_status == 5 ? listItems?.delivery?.deliveryboy?.name + " is on his way to deliver your order." : "Track Your Last Order"} */}
-                {listItems?.delivery_message}
-              </Text>
+              style={{
+                position: 'absolute',
+                width,
+                backgroundColor: '#8A5D3B',
+                zIndex: 999,
+                bottom: 0,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingRight: 7,
+              }}>
+              <View
+                tilt={30}
+                duration={1500}
+                pauseDuration={5000}
+                style={{justifyContent: 'center', width: '70%'}}>
+                <Text
+                  style={{
+                    color: '#fff',
+                    fontSize: 14,
+                    paddingTop: 7,
+                    paddingBottom: 2,
+                    fontFamily: 'Poppins-Medium',
+                    lineHeight: 15,
+                    textAlign: 'left',
+                    paddingLeft: 5,
+                  }}>
+                  {/* {listItems?.delivery_status == 3 ? "Your Order is Under Prearation" : listItems?.delivery_status == 4 ? listItems?.delivery?.deliveryboy?.name + " will pickup the order once it is ready" : listItems?.delivery_status == 5 ? listItems?.delivery?.deliveryboy?.name + " is on his way to deliver your order." : "Track Your Last Order"} */}
+                  {listItems?.delivery_message}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('TrackMap', {id: listItems.id})
+                }
+                style={{
+                  borderWidth: 0.5,
+                  borderColor: '#989898',
+                  borderRadius: 7,
+                  paddingHorizontal: 10,
+                  marginVertical: 5,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 14,
+                    fontFamily: 'Poppins-Medium',
+                  }}>
+                  Track
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setShowTrackOrder(false)}
+                style={{
+                  borderRadius: 100,
+                  borderWidth: 0.5,
+                  borderColor: '#989898',
+                  paddingHorizontal: 5,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#fff',
+                }}>
+                <Text
+                  style={{
+                    color: '#000a',
+                    fontSize: 12,
+                    fontFamily: 'Poppins-Medium',
+                    lineHeight: 20,
+                    textAlign: 'center',
+                  }}>
+                  X
+                </Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('TrackMap', { id: listItems.id })} style={{ borderWidth: 0.5, borderColor: '#989898', borderRadius: 7, paddingHorizontal: 10, marginVertical: 5, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ color: 'white', fontSize: 14, fontFamily: 'Poppins-Medium' }}>Track</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setShowTrackOrder(false)} style={{ borderRadius: 100, borderWidth: 0.5, borderColor: '#989898', paddingHorizontal: 5, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
-              <Text style={{ color: '#000a', fontSize: 12, fontFamily: 'Poppins-Medium', lineHeight: 20, textAlign: 'center' }}>
-                X
-              </Text>
-            </TouchableOpacity>
-          </View>}
-        {showTrackOrder && pndListItems?.delivery_status >= 1 && pndListItems?.delivery_status < 5 &&
-          <View style={{ position: 'absolute', width, backgroundColor: '#8A5D3B', zIndex: 999, bottom: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingRight: 7 }}>
+          )}
+        {showTrackOrder &&
+          pndListItems?.delivery_status >= 1 &&
+          pndListItems?.delivery_status < 5 && (
             <View
-              tilt={30} duration={1500} pauseDuration={5000}
-              style={{ justifyContent: 'center', width: '70%' }}>
-              <Text style={{ color: '#fff', fontSize: 14, paddingTop: 7, paddingBottom: 2, fontFamily: 'Poppins-Medium', lineHeight: 15, textAlign: 'left', paddingLeft: 5 }}>
-                {/* {listItems?.delivery_status == 3 ? "Your Order is Under Prearation" : listItems?.delivery_status == 4 ? listItems?.delivery?.deliveryboy?.name + " will pickup the order once it is ready" : listItems?.delivery_status == 5 ? listItems?.delivery?.deliveryboy?.name + " is on his way to deliver your order." : "Track Your Last Order"} */}
-                {pndListItems?.delivery_message}
-              </Text>
+              style={{
+                position: 'absolute',
+                width,
+                backgroundColor: '#8A5D3B',
+                zIndex: 999,
+                bottom: 0,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingRight: 7,
+              }}>
+              <View
+                tilt={30}
+                duration={1500}
+                pauseDuration={5000}
+                style={{justifyContent: 'center', width: '70%'}}>
+                <Text
+                  style={{
+                    color: '#fff',
+                    fontSize: 14,
+                    paddingTop: 7,
+                    paddingBottom: 2,
+                    fontFamily: 'Poppins-Medium',
+                    lineHeight: 15,
+                    textAlign: 'left',
+                    paddingLeft: 5,
+                  }}>
+                  {/* {listItems?.delivery_status == 3 ? "Your Order is Under Prearation" : listItems?.delivery_status == 4 ? listItems?.delivery?.deliveryboy?.name + " will pickup the order once it is ready" : listItems?.delivery_status == 5 ? listItems?.delivery?.deliveryboy?.name + " is on his way to deliver your order." : "Track Your Last Order"} */}
+                  {pndListItems?.delivery_message}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('PndOrderTrack', {
+                    id: pndListItems.order_no,
+                  })
+                }
+                style={{
+                  borderWidth: 0.5,
+                  borderColor: '#989898',
+                  borderRadius: 7,
+                  paddingHorizontal: 10,
+                  marginVertical: 5,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 14,
+                    fontFamily: 'Poppins-Medium',
+                  }}>
+                  Track
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setShowTrackOrder(false)}
+                style={{
+                  borderRadius: 100,
+                  borderWidth: 0.5,
+                  borderColor: '#989898',
+                  paddingHorizontal: 5,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#fff',
+                }}>
+                <Text
+                  style={{
+                    color: '#000a',
+                    fontSize: 12,
+                    fontFamily: 'Poppins-Medium',
+                    lineHeight: 20,
+                    textAlign: 'center',
+                  }}>
+                  X
+                </Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('PndOrderTrack', { id: pndListItems.order_no })} style={{ borderWidth: 0.5, borderColor: '#989898', borderRadius: 7, paddingHorizontal: 10, marginVertical: 5, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ color: 'white', fontSize: 14, fontFamily: 'Poppins-Medium' }}>Track</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setShowTrackOrder(false)} style={{ borderRadius: 100, borderWidth: 0.5, borderColor: '#989898', paddingHorizontal: 5, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
-              <Text style={{ color: '#000a', fontSize: 12, fontFamily: 'Poppins-Medium', lineHeight: 20, textAlign: 'center' }}>
-                X
-              </Text>
-            </TouchableOpacity>
-          </View>}
+          )}
       </>
-    )
-  }
-
+    );
+  };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{flex: 1}}>
       <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
       <ShowTrackInHomePage />
       {modal == false && (
         <>
-          <ScrollView style={{ flex: 1 }}
+          <ScrollView
+            style={{flex: 1}}
             ref={scrollViewRef}
             showsVerticalScrollIndicator={false}>
             <View
@@ -1111,7 +1250,7 @@ const HomeNew = ({ navigation, route }) => {
                     profile: home_page,
                   })
                 }
-                style={{ backgroundColor: '#fff' }}>
+                style={{backgroundColor: '#fff'}}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -1122,9 +1261,9 @@ const HomeNew = ({ navigation, route }) => {
                   }}>
                   <Image
                     source={location_bar_icon}
-                    style={{ width: 22, aspectRatio: 1, resizeMode: 'stretch' }}
+                    style={{width: 22, aspectRatio: 1, resizeMode: 'stretch'}}
                   />
-                  <View style={{ height: 40 }}>
+                  <View style={{height: 40}}>
                     {!!defaultAddress ? (
                       <>
                         <Text
@@ -1177,12 +1316,12 @@ const HomeNew = ({ navigation, route }) => {
             </View>
             <LinearGradient
               colors={['#7bffb0', '#fede1d', '#09b44d']}
-              style={{ width: '100%', height: 3 }}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
+              style={{width: '100%', height: 3}}
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 0}}
             />
             {serviceable ? (
-              <View style={{ backgroundColor: HomeBgColor }}>
+              <View style={{backgroundColor: HomeBgColor}}>
                 <View>
                   {banner && banner.length > 0 ? (
                     // <>
@@ -1193,7 +1332,7 @@ const HomeNew = ({ navigation, route }) => {
                       }}>
                       <Carousel
                         enableSnap
-                        style={{ borderRadius: 25, overflow: 'hidden' }}
+                        style={{borderRadius: 25, overflow: 'hidden'}}
                         loop
                         data={banner}
                         renderItem={render_Banner_Item}
@@ -1237,57 +1376,58 @@ const HomeNew = ({ navigation, route }) => {
                       height: 15,
                     }}
                   />
-                  {ourServices && ourServices.length > 0 && <>
-                    <View
-                      style={{
-                        justifyContent: 'center',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        paddingTop: 15,
-                      }}>
-                      <Text
+                  {ourServices && ourServices.length > 0 && (
+                    <>
+                      <View
                         style={{
-                          color: '#09b44d',
-                          fontFamily: 'Poppins-Bold',
-                          fontSize: 18,
+                          justifyContent: 'center',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          paddingTop: 15,
                         }}>
-                        {serviceTitle.ourServices}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        backgroundColor: '#09b44d',
-                        width: '35%',
-                        height: 1.5,
-                        alignSelf: 'center',
-                        marginBottom: 5
-                      }}
-                    />
-                    <View
-                      style={{
-                        marginLeft: 0,
-                        paddingTop: 5,
-                        alignItems: 'center',
-                      }}>
-                      <FlatList
-                        data={ourServices}
-                        renderItem={ourServicesRender}
-                        listKey={(item, index) =>
-                          `_key${index.toString()}`
-                        }
-                        keyExtractor={(item, index) =>
-                          `_key${index.toString()}`
-                        }
-                        key={'our_services'}
-                        numColumns={3}
+                        <Text
+                          style={{
+                            color: '#09b44d',
+                            fontFamily: 'Poppins-Bold',
+                            fontSize: 18,
+                          }}>
+                          {serviceTitle.ourServices}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          backgroundColor: '#09b44d',
+                          width: '35%',
+                          height: 1.5,
+                          alignSelf: 'center',
+                          marginBottom: 5,
+                        }}
                       />
-                    </View>
-                  </>}
+                      <View
+                        style={{
+                          marginLeft: 0,
+                          paddingTop: 5,
+                          alignItems: 'center',
+                        }}>
+                        <FlatList
+                          data={ourServices}
+                          renderItem={ourServicesRender}
+                          listKey={(item, index) => `_key${index.toString()}`}
+                          keyExtractor={(item, index) =>
+                            `_key${index.toString()}`
+                          }
+                          key={'our_services'}
+                          numColumns={3}
+                        />
+                      </View>
+                    </>
+                  )}
                   <View
                     style={{
                       backgroundColor: '#deece5',
                       height: 15,
-                    }} />
+                    }}
+                  />
                   {food_types && food_types.length > 0 && (
                     <>
                       <Text
@@ -1300,7 +1440,7 @@ const HomeNew = ({ navigation, route }) => {
                         }}>
                         {serviceTitle.byCategory}
                       </Text>
-                      <View style={{ height: 60 }}>
+                      <View style={{height: 60}}>
                         <Carousel
                           enableSnap
                           data={food_types}
@@ -1347,7 +1487,7 @@ const HomeNew = ({ navigation, route }) => {
                   )}
                   {((top_rated_cooks && top_rated_cooks.length > 0) ||
                     (nearby_cooks && nearby_cooks.length > 0)) &&
-                    oneToOne?.cookIds?.length == 0 ? (
+                  oneToOne?.cookIds?.length == 0 ? (
                     <View>
                       {top_rated_cooks && top_rated_cooks.length > 0 && (
                         <View
@@ -1475,7 +1615,7 @@ const HomeNew = ({ navigation, route }) => {
                             />
                           </View>
                           <View>
-                            <View style={{ marginLeft: 0 }}>
+                            <View style={{marginLeft: 0}}>
                               <Carousel
                                 enableSnap
                                 loop
@@ -1499,8 +1639,7 @@ const HomeNew = ({ navigation, route }) => {
                       )}
 
                       {nearby_cooks && nearby_cooks.length > 0 && (
-
-                        <View style={{ width: width * 1 }} ref={targetViewRef}>
+                        <View style={{width: width * 1}} ref={targetViewRef}>
                           <Text
                             style={{
                               color: '#262626',
@@ -1647,7 +1786,7 @@ const HomeNew = ({ navigation, route }) => {
                               key={'nearby_cooks_scroll'}>
                               <FlatList
                                 key={'nearby_cooks'}
-                                style={{ marginVertical: 10, marginLeft: 0 }}
+                                style={{marginVertical: 10, marginLeft: 0}}
                                 data={nearby_cooks}
                                 listKey={(item, index) =>
                                   `_key${index.toString()}`
@@ -1657,7 +1796,7 @@ const HomeNew = ({ navigation, route }) => {
                                 }
                                 renderItem={cooksNearbyrenderItem}
                                 onEndReachedThreshold={0}
-                              // numColumns={2}
+                                // numColumns={2}
                               />
                             </ScrollView>
                           )}
@@ -1706,7 +1845,7 @@ const HomeNew = ({ navigation, route }) => {
                               key={'restaurantCooks_scroll'}>
                               <FlatList
                                 key={'restaurantCooks'}
-                                style={{ marginVertical: 10, marginLeft: 0 }}
+                                style={{marginVertical: 10, marginLeft: 0}}
                                 data={restaurantCooks}
                                 listKey={(item, index) =>
                                   `_key${index.toString()}`
@@ -1716,7 +1855,7 @@ const HomeNew = ({ navigation, route }) => {
                                 }
                                 renderItem={cooksNearbyrenderItem}
                                 onEndReachedThreshold={0}
-                              // numColumns={2}
+                                // numColumns={2}
                               />
                             </ScrollView>
                           )}
@@ -1745,10 +1884,11 @@ const HomeNew = ({ navigation, route }) => {
                                 marginLeft: 15,
                                 marginBottom: -10,
                               }}>
-                              {`Home${oneToOne?.cookIds?.length > 1
-                                ? ' Cooks '
-                                : ' Cook '
-                                }for you`}
+                              {`Home${
+                                oneToOne?.cookIds?.length > 1
+                                  ? ' Cooks '
+                                  : ' Cook '
+                              }for you`}
                             </Text>
                             <Text
                               style={{
@@ -1757,10 +1897,11 @@ const HomeNew = ({ navigation, route }) => {
                                 fontSize: 13,
                                 marginLeft: 20,
                               }}>
-                              {`Discover Your Favourite Recipes From ${oneToOne?.cookIds?.length > 1
-                                ? 'These Cooks'
-                                : 'This Cook'
-                                }`}
+                              {`Discover Your Favourite Recipes From ${
+                                oneToOne?.cookIds?.length > 1
+                                  ? 'These Cooks'
+                                  : 'This Cook'
+                              }`}
                             </Text>
                             <ScrollView
                               nestedScrollEnabled
@@ -1847,7 +1988,7 @@ const HomeNew = ({ navigation, route }) => {
                                 }
                                 renderItem={cooksNearbyrenderItem}
                                 onEndReachedThreshold={0}
-                              // numColumns={2}
+                                // numColumns={2}
                               />
                             </ScrollView>
                           </>
@@ -1916,10 +2057,12 @@ const HomeNew = ({ navigation, route }) => {
                               marginLeft: 15,
                               marginBottom: -10,
                             }}>
-                            {`${(oneToOne?.cookIds?.length > 1 || restaurantCooks.length > 1)
-                              ? ' Restaurants '
-                              : ' Restaurant '
-                              }for you`}
+                            {`${
+                              oneToOne?.cookIds?.length > 1 ||
+                              restaurantCooks.length > 1
+                                ? ' Restaurants '
+                                : ' Restaurant '
+                            }for you`}
                           </Text>
                           <Text
                             style={{
@@ -1928,19 +2071,21 @@ const HomeNew = ({ navigation, route }) => {
                               fontSize: 13,
                               marginLeft: 20,
                             }}>
-                            {`Discover Your Favourite Recipes From ${(oneToOne?.cookIds?.length > 1 || restaurantCooks.length > 1)
-                              ? 'These Restaurants'
-                              : 'This Restaurant'
-                              }`}
+                            {`Discover Your Favourite Recipes From ${
+                              oneToOne?.cookIds?.length > 1 ||
+                              restaurantCooks.length > 1
+                                ? 'These Restaurants'
+                                : 'This Restaurant'
+                            }`}
                           </Text>
                           <ScrollView
                             nestedScrollEnabled
-                            style={{ paddingHorizontal: 10 }}
+                            style={{paddingHorizontal: 10}}
                             overScrollMode="never"
                             key={'allnearByHomeCooks_scroll'}>
                             <FlatList
                               key={'allnearByHomeCooks'}
-                              style={{ marginVertical: 10, marginLeft: 0 }}
+                              style={{marginVertical: 10, marginLeft: 0}}
                               data={restaurantCooks}
                               listKey={(item, index) =>
                                 `_key${index.toString()}`
@@ -1950,14 +2095,13 @@ const HomeNew = ({ navigation, route }) => {
                               }
                               renderItem={cooksNearbyrenderItem}
                               onEndReachedThreshold={0}
-                            // numColumns={2}
+                              // numColumns={2}
                             />
                           </ScrollView>
                         </>
                       )}
                     </>
                   )}
-
 
                   <View
                     style={{
@@ -1968,7 +2112,7 @@ const HomeNew = ({ navigation, route }) => {
                     }}>
                     <Image
                       source={footerImage1}
-                      style={{ width, maxHeight: 230 }}
+                      style={{width, maxHeight: 230}}
                     />
                   </View>
                 </View>
@@ -1977,14 +2121,37 @@ const HomeNew = ({ navigation, route }) => {
               <NoServiceArea />
             )}
           </ScrollView>
-          {comingSoonModal &&
-            <View style={{ width, height, backgroundColor: 'rgba(0,0,0,0.8)', position: 'absolute' }} onPress={() => setComingSoonModal(false)}>
-              <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                <TouchableOpacity onPress={() => setComingSoonModal(false)} activeOpacity={1}>
-                  <Image source={deliverySoon} style={{ height: height / 2.5, aspectRatio: 1, resizeMode: 'contain', }} />
+          {comingSoonModal && (
+            <View
+              style={{
+                width,
+                height,
+                backgroundColor: 'rgba(0,0,0,0.8)',
+                position: 'absolute',
+              }}
+              onPress={() => setComingSoonModal(false)}>
+              <View
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <TouchableOpacity
+                  onPress={() => setComingSoonModal(false)}
+                  activeOpacity={1}>
+                  <Image
+                    source={deliverySoon}
+                    style={{
+                      height: height / 2.5,
+                      aspectRatio: 1,
+                      resizeMode: 'contain',
+                    }}
+                  />
                 </TouchableOpacity>
               </View>
-            </View>}
+            </View>
+          )}
         </>
       )}
       <View>

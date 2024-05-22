@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   SafeAreaView,
   Text,
@@ -14,32 +14,44 @@ import {
   StatusBar,
   Pressable,
   ImageBackground,
-  BackHandler
+  BackHandler,
 } from 'react-native';
-import { ticIcon1, arrow, splashNew, splash, Oboard1 } from '../assets/img/Images';
-import { api, storage } from '../services';
+import {
+  ticIcon1,
+  arrow,
+  splashNew,
+  splash,
+  Oboard1,
+} from '../assets/img/Images';
+import {api, storage} from '../services';
 import Loader from './Loader';
 import messaging from '@react-native-firebase/messaging';
-import { useFocusEffect } from '@react-navigation/core';
-import { set_Profile } from '../redux/actions/authAction';
-import { useDispatch } from 'react-redux';
-import { checkLocationPermission, LocationRequest } from '../helper/location-permission';
-import { PrimaryGreen } from '../helper/styles.helper';
+import {useFocusEffect} from '@react-navigation/core';
+import {set_Profile} from '../redux/actions/authAction';
+import {useDispatch} from 'react-redux';
+import {
+  checkLocationPermission,
+  LocationRequest,
+} from '../helper/location-permission';
+import {PrimaryGreen} from '../helper/styles.helper';
 import LottieView from 'lottie-react-native';
 // import SplashScreen from '../assets/img/home_cook-new.json';
-import SplashJson from '../assets/img/userApp_Splash.json'
+import SplashJson from '../assets/img/userApp_Splash.json';
+import Geolocation from '@react-native-community/geolocation';
 // import RNBootSplash from "react-native-bootsplash";
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
-const Languages = ({ navigation, route }) => {
-  const { t, i18n } = useTranslation();
+const Languages = ({navigation, route}) => {
+  const {t, i18n} = useTranslation();
   const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
   const [checked, setChecked] = useState(2);
   const [language, setLanguage] = useState('english');
   const [loader, setLoader] = useState(false);
   const [user, setUser] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState(null);
+
   // const [showSlider, setShowSlider] = useState(true);
 
   useEffect(() => {
@@ -84,26 +96,75 @@ const Languages = ({ navigation, route }) => {
   const timeout = ms => {
     return new Promise(resolve => setTimeout(resolve, ms));
   };
+
+  // const getCurrentLocation = () => {
+  //   Geolocation.getCurrentPosition(location => {
+  //     console.log('locaaaaaa', location);
+  //     setCurrentLocation(location.coords);
+  //   });
+  // };
+
+  // const checkDefaultAddressChange = async () => {
+  //   await getCurrentLocation();
+
+  //   const currentLat = currentLocation.latitude;
+  //   const currentLng = currentLocation.longitude;
+
+  //   const response = await api.changeDefaultAddressAuto({
+  //     currentLat,
+  //     currentLng,
+  //   });
+  //   // if (response.status == 'success' && !!response.isNear)
+  //   console.log('response from changeDefaultAddress', response);
+  // };
+
+  // useEffect(() => {
+  //   checkDefaultAddressChange();
+  // }, []);
+
+  const checkDefaultAddressChange = async id => {
+    // await getCurrentLocation();
+    await Geolocation.getCurrentPosition(async location => {
+      console.log('locaaaaaa', location);
+      // setCurrentLocation(location.coords);
+      const currentLat = location.coords.latitude;
+      const currentLng = location.coords.longitude;
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + id;
+
+      const response = await api.changeDefaultAddressAuto({
+        currentLat,
+        currentLng,
+      });
+      if (response.status == 'success') {
+        await navigation.navigate('Home');
+      }
+      //   if (response.status == 'success' && !!response.isNear)
+      // setIsDefaultAddAutoChnaged(response.isNear);
+      console.log('response from changeDefaultAddress', response);
+    });
+  };
+
   const get_Token = async () => {
     var id = await storage.getToken();
     const isNewUser = await storage.getIsOldUser();
-    if (id == null && !isNewUser) {
-      navigation.navigate('AppIntro')
+    if (!id && !isNewUser) {
+      navigation.navigate('AppIntro');
     }
-    console.log("isneeeeewuser", isNewUser);
+    console.log('isneeeeewuser', isNewUser);
     if (route?.params?.type == 'Change') {
     } else {
-      await timeout(2000);
+      // await timeout(2000);
       if (id != null) {
         get_UserData();
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + id;
-        navigation.navigate('Home');
+        setModal(true);
+        await checkDefaultAddressChange(id);
+        // axios.defaults.headers.common['Authorization'] = 'Bearer ' + id;
+        // await navigation.navigate('Home');
       }
       setModal(true);
     }
   };
   useEffect(() => {
-
     // checkLocationPermission({ navigation });
     // requestLocationPermission({ navigation });
     get_Token();
@@ -120,12 +181,12 @@ const Languages = ({ navigation, route }) => {
   // );
 
   var gender = [
-    { name: 'தமிழ்', backName: 'தமிழ்', id: 1, value: 'tamil' },
-    { name: 'ENGLISH', backName: 'ENG', id: 2, value: 'english' },
-    { name: 'हिंदी', backName: 'हिंदी', id: 3, value: 'hindi' },
-    { name: 'తెలుగు', backName: 'తెలుగు', id: 5, value: 'malayalam' },
-    { name: 'മലയാളം', backName: 'മലയാ', id: 4, value: 'telugu' },
-    { name: 'ಕನ್ನಡ', backName: 'ಕನ್ನಡ', id: 6, value: 'kannada' },
+    {name: 'தமிழ்', backName: 'தமிழ்', id: 1, value: 'tamil'},
+    {name: 'ENGLISH', backName: 'ENG', id: 2, value: 'english'},
+    {name: 'हिंदी', backName: 'हिंदी', id: 3, value: 'hindi'},
+    {name: 'తెలుగు', backName: 'తెలుగు', id: 5, value: 'malayalam'},
+    {name: 'മലയാളം', backName: 'മലയാ', id: 4, value: 'telugu'},
+    {name: 'ಕನ್ನಡ', backName: 'ಕನ್ನಡ', id: 6, value: 'kannada'},
   ];
   const changeLanguage = async () => {
     setLoader(true);
@@ -145,10 +206,10 @@ const Languages = ({ navigation, route }) => {
     setLoader(false);
   };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
-      {modal == true && (
-        loader != true && (
+    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+      <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
+      {
+        modal == true && loader != true && (
           <>
             <View
               style={{
@@ -157,30 +218,31 @@ const Languages = ({ navigation, route }) => {
                 height: 60,
                 borderBottomLeftRadius: 25,
                 borderBottomRightRadius: 25,
-                justifyContent: 'center'
+                justifyContent: 'center',
               }}>
               {route?.params?.type == 'Change' && (
-
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('Home', { type: 'Profile' })}
+                  onPress={() => navigation.navigate('Home', {type: 'Profile'})}
                   style={{
                     flexDirection: 'row',
                     paddingHorizontal: 15,
                   }}>
-                  <Image style={{ width: 9, height: 16 }} source={arrow} />
-                  <Text style={{
-                    color: '#fff',
-                    fontSize: 18,
-                    fontFamily: 'Poppins-Bold',
-                    paddingLeft: 10
-
-                  }}>Languages</Text>
+                  <Image style={{width: 9, height: 16}} source={arrow} />
+                  <Text
+                    style={{
+                      color: '#fff',
+                      fontSize: 18,
+                      fontFamily: 'Poppins-Bold',
+                      paddingLeft: 10,
+                    }}>
+                    Languages
+                  </Text>
                 </TouchableOpacity>
               )}
             </View>
 
             <View>
-              <View style={{ margin: 30, alignItems: 'center' }}>
+              <View style={{margin: 30, alignItems: 'center'}}>
                 <Text
                   style={{
                     fontFamily: 'Poppins-Bold',
@@ -218,7 +280,10 @@ const Languages = ({ navigation, route }) => {
                           <Text
                             style={[
                               styles.lantext,
-                              { color: checked == item.id ? '#fff' : PrimaryGreen },
+                              {
+                                color:
+                                  checked == item.id ? '#fff' : PrimaryGreen,
+                              },
                             ]}>
                             {item.name}
                           </Text>
@@ -244,14 +309,18 @@ const Languages = ({ navigation, route }) => {
                 position: 'absolute',
                 bottom: 20,
               }}>
-              <Text style={{ color: '#fff', fontFamily: 'Poppins-Bold', fontSize: 20 }}>
+              <Text
+                style={{
+                  color: '#fff',
+                  fontFamily: 'Poppins-Bold',
+                  fontSize: 20,
+                }}>
                 {' '}
                 {t('languagesPage.submit')}{' '}
               </Text>
             </TouchableOpacity>
           </>
         )
-      )
         // : (
         //   <View style={{ width, height: '100%', justifyContent: 'center', alignItems: 'center' }}>
         //     <Image source={splashNew} style={{ width: 240, height: 830, resizeMode: 'center' }} />

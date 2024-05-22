@@ -7,6 +7,9 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
+  Alert,
+  Linking,
+  Platform,
 } from 'react-native';
 import Contacts from 'react-native-contacts';
 
@@ -18,36 +21,91 @@ const ContactsModal = ({visible, onRequestClose, selectedContact}) => {
     setSearchText('');
   }, []);
 
+  // const requestContactPermission = async () => {
+  //   const permissionStatus = await Contacts.checkPermission();
+
+  //   if (permissionStatus !== 'authorized') {
+  //     const request = await Contacts.requestPermission();
+
+  //     if (request === 'authorized') {
+  //       console.log('Permission granted.');
+  //     } else if (request === 'denied') {
+  //       console.log('Permission denied.');
+  //       Alert.alert(
+  //         'Permission Required',
+  //         'Contacts permission is needed to proceed.',
+  //         [{text: 'OK'}],
+  //       );
+  //     }
+  //   } else {
+  //     console.log('Already authorized.');
+  //   }
+  // };
+
+  const showAlert = () => {
+    Alert.alert(
+      'Error in getting Contact Permission',
+      'Please enable contacts permission manually',
+      [
+        {
+          text: 'Open Settings',
+          isPreferred: true,
+          onPress: () => {
+            if (Platform.OS === 'android') {
+              const intentUri = `package:com.homeeuser`; // Intent URI to open app info
+              Linking.openSettings(); 
+            } else {
+              // iOS does not have a direct way to open App Info; use app settings instead
+              Linking.openURL('app-settings:');
+            }
+          },
+        },
+      ],
+    );
+  }
+
   const contactsPermissionHandler = async () => {
-    const contactPermission = await Contacts.checkPermission();
-    // Contacts.PERMISSION_AUTHORIZED || Contacts.PERMISSION_UNDEFINED || Contacts.PERMISSION_DENIED
-    if (contactPermission === 'undefined') {
-      const request = await Contacts.requestPermission();
-      console.log('request', request);
-    }
-    if (contactPermission === 'authorized') {
-      console.log('authorizedauthorized');
-      const data = await Contacts.getAllWithoutPhotos();
-      // console.log("dataaaaaa", await data[0].phoneNumbers?.[0].number);
-      const contactsArray = [];
-      data?.forEach((contact, index) => {
-        const name = contact?.displayName;
-        const mobile = contact?.phoneNumbers?.[0]?.number
-          .replace(/[\s-]+/g, '')
-          .replace(' ', '');
-        contact?.displayName == 'Saranya (c. f)' &&
-          console.log('contacccccc', contact);
-        const props = {name, mobile};
-        if (!!mobile && mobile.length >= 10) {
-          contactsArray.push(props);
-        }
-      });
-      contactsArray.sort((a, b) => a.name.localeCompare(b.name));
-      setContacts(contactsArray);
-    }
-    if (contactPermission === 'denied') {
-      const request = await Contacts.requestPermission();
-      console.log('request', request);
+    try {
+      const contactPermission = await Contacts.checkPermission();
+      console.log("contact perrrrrrrrrrrr, ", contactPermission, contactPermission.length);
+      // Contacts.PERMISSION_AUTHORIZED || Contacts.PERMISSION_UNDEFINED || Contacts.PERMISSION_DENIED
+      if (contactPermission == 'undefined') {
+        const request = await Contacts.requestPermission();
+        console.log('request from undef', request);
+      }
+      if (contactPermission == 'denied') {
+        showAlert();
+        const request = await Contacts.requestPermission();
+        console.log('request from denied', request);
+      }
+      if (contactPermission != 'authorized') {
+        const request = await Contacts.requestPermission();
+        console.log('request from not authorised', request);
+      }
+      if (contactPermission === 'authorized') {
+        console.log('authorizedauthorized');
+        const data = await Contacts.getAllWithoutPhotos();
+        console.log('dataaaaaa', data[0]);
+        const contactsArray = [];
+        data?.forEach((contact, index) => {
+          const name = contact?.displayName;
+          const mobile = contact?.phoneNumbers?.[0]?.number
+            .replace(/[\s-]+/g, '')
+            .replace(' ', '');
+          index == 0 && console.log('contacccccc', contact);
+          const props = {name, mobile};
+          if (!!mobile && mobile.length >= 10) {
+            contactsArray.push(props);
+          }
+        });
+        contactsArray.sort((a, b) => a.name.localeCompare(b.name));
+        setContacts(contactsArray);
+      }
+    } catch (err) {
+      console.log("err", err);
+      // const request = await C
+      showAlert();
+      // console.log('request', request);
     }
   };
 

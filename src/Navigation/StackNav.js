@@ -45,6 +45,9 @@ import ComingSoon from '../screens/ComingSoon';
 import PlantVendor from '../screens/PlantVendorList';
 import PickAndDrop from '../screens/PickAndDrop/PickAndDrop';
 import PndOrderTrack from '../screens/PickAndDrop/OrderTrack';
+import GroceryHome from '../screens/grocery/GroceryHome';
+import OfferProducts from '../screens/grocery/Categories';
+import VendorDetailPage from '../screens/grocery/VendorDetail';
 
 const Stack = createStackNavigator();
 
@@ -101,6 +104,11 @@ const StackNav = () => {
       {/* pick and drop */}
       <Stack.Screen name="PickAndDrop" component={PickAndDrop} />
       <Stack.Screen name="PndOrderTrack" component={PndOrderTrack} />
+      {/*  */}
+      
+      {/* grocery Screens */}
+      <Stack.Screen name="GroceryHome" component={GroceryHome} />
+      <Stack.Screen name="GroceryVendorDetails" component={VendorDetailPage} />
       {/*  */}
     </Stack.Navigator>
   );

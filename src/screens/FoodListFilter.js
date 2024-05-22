@@ -27,6 +27,7 @@ import Loader from './Loader';
 import moment from 'moment';
 
 const FoodListFilter = ({ navigation, route }) => {
+  console.log("ro", route.params);
   const { t, i18 } = useTranslation();
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -211,7 +212,7 @@ const FoodListFilter = ({ navigation, route }) => {
               textAlignVertical: 'center',
               marginTop: 3,
             }}>
-            {route?.params?.userlanguage?.name}
+            {route?.params?.englanguage?.name ?? route?.params?.userlanguage?.name}
           </Text>
         </TouchableOpacity>
       </View>

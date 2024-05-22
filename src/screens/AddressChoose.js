@@ -36,7 +36,7 @@ const AddressChoose = ({ navigation, route }) => {
   const addressList = async () => {
     setModal(true);
     let response = await api.addressList();
-    console.log("areeeededsfs", response);
+    // console.log("areeeededsfs", response);
     setListItems(response.user_addresses);
     setModal(false);
   }

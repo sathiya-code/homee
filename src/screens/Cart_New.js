@@ -1000,7 +1000,7 @@ const Cart = ({ navigation, route }) => {
                     fontSize: 14,
                   }}
                   onPress={() =>
-                    navigation.navigate('FoodDetail', cardDetails?.cook?.id)
+                    navigation.navigate('FoodDetail', {id: cardDetails?.cook?.id})
                   }>
                   {`+Add more from ${cardDetails?.cook?.first_name
                     ? cardDetails?.cook?.first_name

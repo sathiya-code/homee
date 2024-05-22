@@ -50,6 +50,7 @@ export const URL = {
   QUICK_FILTER_MENU_LIST: '/menufilter/list/', // menu iten id has to add in url
   ADDRESS_LIST: '/user/many/addresses',
   CHANGE_DEFAULT_ADDRESS: '/user/default/', //address id has to add in url
+  CHANGE_DEFAULT_ADDRESS_AUTO: '/home/change-default-address-auto', //address id has to add in url
   USER_DETAIL: '/user/detail',
   USER_PRFILE_EDIT: '/user/edit',
   ADDRESS_DELETE: '/user/address/delete/', // address id has to add in url
@@ -110,4 +111,12 @@ export const URL = {
   GET_PND_ORDER_INFO: '/pickndrop/orderinfo',
   GET_PND_SEARCH_MESSAGES: '/pickndrop/getSearchMessages',
   GET_PND_DELIVERY_INFO: '/pickndrop/deliveryinfo',
+  ///////////
+  //Groceries//
+  GET_GROCERY_BANNERS: '/grocery/getBanners',
+  GET_GROCERY_CATEGORIES: '/grocery/getCategories',
+  GET_GROCERY_NEARBY_VENDORS: '/grocery/getNearbyVendors/',
+
+  ////search Page
+  GET_OUR_SERVICES: '/filter/getOurServices',
 };

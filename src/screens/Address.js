@@ -27,7 +27,7 @@ import {
   location_loading,
   ContactBook,
 } from '../assets/img/Images';
-import Geocoder from 'react-native-geocoding';
+// import Geocoder from 'react-native-geocoding';
 import Loader from './Loader';
 import RadioGroup, {RadioButtonProps} from 'react-native-radio-buttons-group';
 import {api, storage} from '../services';
@@ -48,6 +48,7 @@ import {
   enableLocationHandler,
 } from '../helper/location-permission';
 import {PndContext} from '../context/pnd.context';
+import {formatAddress} from '../helper/addressFormatter';
 
 // const {
 //   PRIORITIES: { HIGH_ACCURACY },
@@ -57,10 +58,10 @@ import {PndContext} from '../context/pnd.context';
 const {width, height} = Dimensions.get('screen');
 
 const Address = ({navigation, route}) => {
-  console.log("address started");
+  console.log('address started');
   const {t, i18n} = useTranslation();
   const dispatch = useDispatch();
-  Geocoder.init('AIzaSyAT-XE0L77pBWbwTL3PC04JUGSykZ3uB_Q');
+  // Geocoder.init('AIzaSyAT-XE0L77pBWbwTL3PC04JUGSykZ3uB_Q');
   const mapRef = useRef(null);
   const [modal, setModal] = useState(false);
   const [street, setStreet] = useState(null);
@@ -211,7 +212,7 @@ const Address = ({navigation, route}) => {
     console.log('location', location);
     if (!!address && addressEditTempFix === 0) {
       // !!address?.latitude ? parseFloat(address.latitude)
-      updateAddress(address.latitude, address.longitude);
+      updateAddress(parseFloat(address.latitude), parseFloat(address.longitude));
       setEditLocation(address);
     }
     if (!!location) {
@@ -220,29 +221,25 @@ const Address = ({navigation, route}) => {
     }
   };
 
-  const updateAddress = (latitude, longitude) => {
-    Geocoder.from(latitude, longitude)
-      .then(json => {
-        var addressDetail = json.results[0].formatted_address;
-        setAddressLocation(addressDetail);
-        console.log("address from geocoder", json);
-        setAddressComponent(json.results[0].address_components);
-
-        console.log(
-          'response from loccccccc',
-          json.results[0].address_components,
-        );
-      })
-      .catch(error => console.warn(error));
+  const updateAddress = async (latitude, longitude) => {
+    const parsedAddress = await mapRef.current.addressForCoordinate({
+      latitude,
+      longitude,
+    });
+    console.log('parsed', parsedAddress);
+    const formattedAddress = formatAddress(parsedAddress);
+    setAddressLocation(formattedAddress);
+    setAddressComponent(parsedAddress);
   };
 
   const updateLocation = (data, address = null) => {
-    Geocoder.from(address.formatted_address)
-      .then(json => {
-        var location = json.results[0].geometry.location;
-        changeRegion(location.lat, location.lng);
-      })
-      .catch(error => console.warn(error));
+    console.log('daaaaaaaaaaaa', address);
+    changeRegion(address?.geometry?.location?.lat, address?.geometry?.location?.lng);
+    // Geocoder.from(address.formatted_address)
+    //   .then(json => {
+    //     var location = json.results[0].geometry.location;
+    //   })
+    //   .catch(error => console.warn(error));
   };
   // console.log("ran", route?.params);
 
@@ -444,7 +441,7 @@ const Address = ({navigation, route}) => {
 
   const getCurrentLocation = () => {
     if (!!address && addressEditTempFix === 0)
-      changeRegion(address.latitude, address.longitude);
+      changeRegion(parseFloat(address.latitude), parseFloat(address.longitude));
     else
       Geolocation.getCurrentPosition(location => {
         changeRegion(location.coords.latitude, location.coords.longitude);
@@ -616,11 +613,13 @@ const Address = ({navigation, route}) => {
             marginTop: 50,
           }}>
           <GooglePlacesAutocomplete
+          enableHighAccuracyLocation={true}
             placeholder="Search Your Locality Here"
+            onFail={(err)=>console.log("errrr", err)}
             minLength={2}
             autoFocus={false}
             returnKeyType={'search'}
-            listViewDisplayed="auto"
+            // listViewDisplayed="auto"
             fetchDetails={true}
             renderDescription={row => row.description}
             onPress={updateLocation}
@@ -628,20 +627,21 @@ const Address = ({navigation, route}) => {
             currentLocation={false}
             currentLocationLabel="Current location"
             nearbyPlacesAPI="GooglePlacesSearch"
-            GoogleReverseGeocodingQuery={{}}
+            // GoogleReverseGeocodingQuery={{}}
             enablePoweredByContainer={false}
             GooglePlacesSearchQuery={{
               rankby: 'distance',
-              type: 'cafe',
+              location:'IN'
+              // type: 'cafe',
             }}
-            GooglePlacesDetailsQuery={{fields: 'formatted_address'}}
+            GooglePlacesDetailsQuery={{fields: 'geometry,formatted_address'}}
             filterReverseGeocodingByTypes={[
               'locality',
               'administrative_area_level_3',
             ]}
-            debounce={200}
+            debounce={500}
             query={{
-              key: 'AIzaSyAT-XE0L77pBWbwTL3PC04JUGSykZ3uB_Q',
+              key: 'AIzaSyBw1Ju4RtlNJUJHqt7y8VW03zBUesUfUak',
               language: 'en',
               type: 'establishment',
             }}
@@ -792,7 +792,7 @@ const Address = ({navigation, route}) => {
                   fontSize: 13,
                   lineHeight: 21,
                   textAlign: 'justify',
-                  paddingBottom: 0,
+                  paddingBottom: 10,
                   paddingTop: 5,
                   // height: 80,
                 }}>
@@ -827,7 +827,7 @@ const Address = ({navigation, route}) => {
                   placeholder="Enter your Door No*"
                   placeholderTextColor={'#c9c9c9'}
                   style={{
-                    borderColor: !!door ? '#09b44d' :'tomato',
+                    borderColor: !!door ? '#09b44d' : 'tomato',
                     borderStyle: 'solid',
                     borderWidth: 1,
                     paddingVertical: 5,
@@ -873,7 +873,7 @@ const Address = ({navigation, route}) => {
                 <View
                   style={{
                     flexDirection: 'row',
-                    borderColor: !!mobile ?  '#09b44d' : 'tomato',
+                    borderColor: !!mobile ? '#09b44d' : 'tomato',
                     borderStyle: 'solid',
                     borderWidth: 1,
                     height: 40,

@@ -50,7 +50,7 @@ const { width, height } = Dimensions.get('screen');
 
 
 const FoodDetail = ({ navigation, route }) => {
-  // console.log("navigation in food details page", route.params);
+  // console.log("navigation in food details page", route?.params?.id);
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const [modal, setModal] = useState(true);
@@ -96,9 +96,9 @@ const FoodDetail = ({ navigation, route }) => {
   // console.log('cook_details', recommended[0]?.timingstatus);
 
   const get_Cook_Profile = async () => {
-    console.log("response from params", route.params);
+    console.log("response from params?.id", route?.params?.id);
     setModal(true);
-    let response = await api.cook_profile(route.params);
+    let response = await api.cook_profile(route?.params?.id);
     console.log("response from cookProfile", response.cuisines_list);
     setCook_details(response)
     setCookCuisines([...response.cuisines_list]);
@@ -108,12 +108,12 @@ const FoodDetail = ({ navigation, route }) => {
     // response.cuisines.map((item, index) => {
     //   setPaginate([paginate[index] = 0]);
     // })
-    // console.log("response from params", response.cuisines_list);
+    // console.log("response from params?.id", response.cuisines_list);
   }
 
   // const get_Cook_Profile = async () => {
   //   if (paginate > 1) {
-  //     let payload = { cook_id: route.params.id };
+  //     let payload = { cook_id: route?.params?.id.id };
   //     let response = await api.cook_profile(payload);
   //     console.log("response from food details screen paginate > 1", response?.cuisines);
   //     // setCook_details(cook_details?.concat(response));
@@ -123,7 +123,7 @@ const FoodDetail = ({ navigation, route }) => {
   //     setWishList(wishList?.concat(response?.favourite_status));
   //   }
   //   else {
-  //     let payload = { cook_id: route.params.id, page: paginate };
+  //     let payload = { cook_id: route?.params?.id.id, page: paginate };
   //     let response = await api.cook_profile(payload);
   //     console.log("response from food details screen paginate", response?.cuisines);
   //     setCook_details(response);
@@ -141,7 +141,7 @@ const FoodDetail = ({ navigation, route }) => {
 
   const get_menu_list = async () => {
     const payload = {
-      cook_id: route.params
+      cook_id: route?.params?.id
     }
     // console.log("response fro menu list Payload", payload);
     const response = await api.getMenuList(payload)
@@ -160,7 +160,7 @@ const FoodDetail = ({ navigation, route }) => {
   const get_menu_by_cuisines = async (pageNumber = null, queryText = '') => {
     // console.log("response fro page", page);
     setIsLoading(true);
-    const response = await api.getMenuByCook(route.params, pageNumber == 0 ? pageNumber : paginate + 1, queryText)
+    const response = await api.getMenuByCook(route?.params?.id, pageNumber == 0 ? pageNumber : paginate + 1, queryText)
     console.log("page number", pageNumber, paginate, queryText);
     setPaginate(paginate => paginate + 1);
     // console.log("response fro menu list", response?.menu_items);
@@ -185,7 +185,7 @@ const FoodDetail = ({ navigation, route }) => {
       console.log("1");
       setIsLoading(true);
       console.log("2");
-      const response = await api.getMenuByCook(route.params, paginate + 1, query);
+      const response = await api.getMenuByCook(route?.params?.id, paginate + 1, query);
       console.log("3");
 
       setPaginate(paginate => paginate + 1);
@@ -678,10 +678,21 @@ const FoodDetail = ({ navigation, route }) => {
   }, [navigation]);
 
   const [query, setQuery] = useState('');
+
+  
+  useEffect(()=> {
+    const searchText = route?.params?.searchText;
+    if(!!searchText) handleSearch(searchText);
+  }, [])
+
   const handleSearch = (text) => {
     setQuery(text);
     setPaginate(1);
-    get_menu_by_cuisines(0, text.toString());
+    let timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(async()=> {
+      await get_menu_by_cuisines(0, text.toString());
+    }, 1000);
   };
 
   const filteredData = recommended?.filter((item) => {
@@ -1052,14 +1063,16 @@ const FoodDetail = ({ navigation, route }) => {
               <TextInput
                 style={{
                   width: '100%',
-                  // height: ,
+                  top:5,
+                  fontSize:16,
                   paddingHorizontal: 10,
                   fontFamily: 'Poppins-Medium',
                   justifyContent: 'center',
                   color: PrimaryGreen,
                 }}
+                value={query}
                 onChangeText={handleSearch}
-                placeholder='Discover your cravings'
+                placeholder='Discover your Favourites'
                 placeholderTextColor={PrimaryGreen} />
             </View>
             {filteredData && filteredData.length > 0 && <View

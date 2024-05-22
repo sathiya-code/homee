@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   TextInput,
   View,
@@ -15,7 +15,7 @@ import {
   ImageBackground,
   BackHandler,
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 import {
   searchIcon,
   emptyIcon,
@@ -26,23 +26,25 @@ import {
   riceBowl,
   shop,
   bgvector,
-  searchPageBg
+  searchPageBg,
+  itemsImage,
 } from '../assets/img/Images';
 import TopTab from '../Navigation/MenuTopTab';
-import { Picker } from '@react-native-picker/picker';
-import { applyMiddleware } from 'redux';
-import { api } from '../services/index';
-import { useFocusEffect } from '@react-navigation/core';
+import {Picker} from '@react-native-picker/picker';
+import {applyMiddleware} from 'redux';
+import {api} from '../services/index';
+import {useFocusEffect} from '@react-navigation/core';
 import Loader from './Loader';
-import { Dropdown } from 'react-native-element-dropdown';
-import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
+import {Dropdown} from 'react-native-element-dropdown';
+import {backgroundColor} from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 import axios from 'axios';
-import { checkForUpdate } from '../helper/app.helper';
+import {checkForUpdate} from '../helper/app.helper';
+import SelectList from '../helper/animatedDropDownSelect';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
-const Search = ({ navigation }) => {
-  const { t, i18n } = useTranslation();
+const Search = ({navigation, route}) => {
+  const {t, i18n} = useTranslation();
   const [emptySearch, setEmptySearch] = useState(false);
   const [searchText, setSearchText] = useState(null);
   const [searchType, setSearchType] = useState('dish');
@@ -59,7 +61,10 @@ const Search = ({ navigation }) => {
   const [pagination, setPagination] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
-  const [sortby, setSortby] = useState({ LH: false, HL: false });
+  const [sortby, setSortby] = useState({LH: false, HL: false});
+  const [filterType, setFilterType] = useState(null);
+  const [services, setServices] = useState([]);
+  
 
   useEffect(() => {
     const focusHandler = navigation.addListener('focus', () => {
@@ -82,19 +87,42 @@ const Search = ({ navigation }) => {
     return () => backHandler.remove();
   }, [navigation]);
 
-
-
   let sort_list = [
     {
       label: t('searchPage.priceLowToHigh'),
-      value: 'LH'
+      value: 'LH',
     },
     {
       label: t('searchPage.priceHighToLow'),
-      value: 'HL'
+      value: 'HL',
     },
-  ]
+  ];
   var arr = [];
+
+  const searchHandler = async e => {
+    console.log('enrere');
+    let res = await axios.get(
+      `http://live.homeefoodz.com:3000/search?searchText=${e}&sortBy=${sortType}&vendorType=${filterType}`,
+    );
+    // console.log("response from ranjith in new node api", sortType, sortby);
+    const response = await JSON.stringify(res.data);
+    console.log('response from ranjith in new node api', response);
+    const foodList = res.data.filter(item => {
+      if (item?.food_image) return item;
+    });
+    setFoodList(foodList);
+    const cookList = res.data.filter(item => {
+      if (!item?.food_image) return item;
+    });
+    setCookList(cookList);
+    // console.log("ranjith", cookList);
+    // setListItems(res.data);
+    // try {
+    //   // return;
+    // } catch (err) {
+    // }
+    setLoader(false);
+  };
 
   // const searchOperation = async value => {
   //   if (value !== '') {
@@ -140,25 +168,14 @@ const Search = ({ navigation }) => {
   //   }
   // };
   const searchChange = async e => {
-    console.log("ranjith", e);
+    // console.log('ranjith', e);
+    let timeout;
     if (e != null && e != '' && e.length > 0) {
-      console.log("enrere");
       setSearchText(e);
-      let res = await axios.get(`http://live.homeefoodz.com:3000/search?searchText=${e}&sortBy=${sortType}`);
-      // console.log("response from ranjith in new node api", sortType, sortby);
-      const response = await JSON.stringify(res.data);
-      console.log("response from ranjith in new node api", response);
-      const foodList = res.data.filter(item => { if (item?.food_image) return item })
-      setFoodList(foodList);
-      const cookList = res.data.filter(item => { if (!item?.food_image) return item })
-      setCookList(cookList);
-      // console.log("ranjith", cookList);
-      // setListItems(res.data);
-      // try {
-      //   // return;
-      // } catch (err) {
-      // }
-      setLoader(false);
+      clearTimeout(timeout);
+      timeout = setTimeout(async () => {
+        await searchHandler(e);
+      }, 1500);
     } else {
       setListItems([]);
       setFoodList([]);
@@ -167,37 +184,44 @@ const Search = ({ navigation }) => {
     }
   };
 
-  const changeFilter = (filterType) => {
-    console.log("anivemvvrvvrevre", filterType);
-    if (filterType == "LH") {
+  const changeFilter = filterType => {
+    console.log('anivemvvrvvrevre', filterType);
+    if (filterType == 'LH') {
       if (sortby.LH) {
-        setSortby({ LH: false, HL: false })
-        setSortType("LH")
-      }
-      else if (!sortby.LH) {
-        setSortType("LH")
-        setSortby({ LH: true, HL: false })
+        setSortby({LH: false, HL: false});
+        setSortType('LH');
+      } else if (!sortby.LH) {
+        setSortType('LH');
+        setSortby({LH: true, HL: false});
         // searchChange(searchText);
       }
-    }
-    else if (filterType == "HL") {
+    } else if (filterType == 'HL') {
       if (sortby.HL) {
-        setSortby({ LH: false, HL: false })
-        setSortType("LH")
-      }
-      else {
-        console.log("donrrrr");
-        setSortType("HL");
-        setSortby({ LH: false, HL: true })
+        setSortby({LH: false, HL: false});
+        setSortType('LH');
+      } else {
+        console.log('donrrrr');
+        setSortType('HL');
+        setSortby({LH: false, HL: true});
         // searchChange(searchText);
       }
     }
-  }
+  };
+
+  const getServices = async () => {
+    const response = await api.getOurServices();
+    console.log('response for ser title in search page', response);
+    if (response.status == 'success') setServices(response.services);
+  };
+
+  useEffect(() => {
+    getServices();
+  }, []);
 
   useEffect(() => {
     // (sortby.HL == true && sortby.LH != true) ? setSortType("HL") : setSortType("LH");
     searchChange(searchText);
-  }, [sortType])
+  }, [sortType]);
 
   const searchSubmit = async () => {
     //   setLoader(true);
@@ -215,8 +239,7 @@ const Search = ({ navigation }) => {
     //     }
     //   }
     //   setLoader(false);
-  }
-
+  };
 
   // const getFoodTypes = async () => {
   //   setModal(true);
@@ -329,7 +352,7 @@ const Search = ({ navigation }) => {
   //   }
   //   setLoader(false);
   // };
-  const _rederCookList = ({ item, index }) => {
+  const _rederCookList = ({item, index}) => {
     return (
       <View
         style={{
@@ -341,20 +364,20 @@ const Search = ({ navigation }) => {
             flexDirection: 'row',
             paddingHorizontal: 10,
           }}>
-          <View style={{ flex: 2 }}>
-            <View style={{ width: '100%', borderRadius: 5, height: 100 }}>
+          <View style={{flex: 2}}>
+            <View style={{width: '100%', borderRadius: 5, height: 100}}>
               <Image
                 source={{
                   uri: item?.viewmenuitem?.image
                     ? item.viewmenuitem.image
                     : null,
                 }}
-                style={{ width: '100%', borderRadius: 5, height: '100%' }}
+                style={{width: '100%', borderRadius: 5, height: '100%'}}
               />
             </View>
           </View>
-          <View style={{ flex: 5, paddingLeft: 8, marginBottom: 20, }}>
-            <Text style={{ fontSize: 16, fontFamily: 'Poppins-Bold' }}>
+          <View style={{flex: 5, paddingLeft: 8, marginBottom: 20}}>
+            <Text style={{fontSize: 16, fontFamily: 'Poppins-Bold'}}>
               {item?.first_name}
             </Text>
             <View
@@ -379,7 +402,7 @@ const Search = ({ navigation }) => {
                 flexDirection: 'row',
                 marginTop: 5,
               }}>
-              <Image style={{ width: 18, height: 18 }} source={timingIcon} />
+              <Image style={{width: 18, height: 18}} source={timingIcon} />
               <Text
                 style={{
                   fontSize: 13.5,
@@ -415,27 +438,35 @@ const Search = ({ navigation }) => {
       </View>
     );
   };
-  const _renderMenuList = ({ item, index }) => {
+  const _renderMenuList = ({item, index}) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('FoodDetail', { id: item?.cook_id })}>
+        onPress={() => navigation.navigate('FoodDetail', {id: item?.cook_id})}>
         <View
           style={{
             flexDirection: 'row',
             paddingHorizontal: 10,
             marginBottom: 10,
-            elevation: 5
+            elevation: 5,
           }}>
-          <View style={{ flex: 2 }}>
-            <View style={{ width: '100%', borderRadius: 5, height: 110 }}>
+          <View style={{flex: 2}}>
+            <View style={{width: '100%', borderRadius: 5, height: 110}}>
               <Image
-                source={{ uri: item?.image ? item.image : null }}
-                style={{ width: '100%', borderRadius: 5, height: '100%' }}
+                source={{uri: item?.image ? item.image : null}}
+                style={{width: '100%', borderRadius: 5, height: '100%'}}
               />
             </View>
           </View>
-          <View style={{ flex: 5, paddingLeft: 8, backgroundColor: '#fff', paddingRight: 10 }}>
-            <Text style={{ fontSize: 13, fontFamily: 'Poppins-Bold' }} numberOfLines={2}>
+          <View
+            style={{
+              flex: 5,
+              paddingLeft: 8,
+              backgroundColor: '#fff',
+              paddingRight: 10,
+            }}>
+            <Text
+              style={{fontSize: 13, fontFamily: 'Poppins-Bold'}}
+              numberOfLines={2}>
               {' '}
               {item?.userlanguage?.name ? item.userlanguage.name : null}
             </Text>
@@ -447,7 +478,8 @@ const Search = ({ navigation }) => {
                 justifyContent: 'center',
                 marginLeft: 4,
                 // marginTop: 5,
-              }} numberOfLines={1}>
+              }}
+              numberOfLines={1}>
               {item?.cook?.first_name ? item.cook.first_name : null}
             </Text>
             <View
@@ -455,7 +487,7 @@ const Search = ({ navigation }) => {
                 flexDirection: 'row',
                 marginTop: 2,
               }}>
-              <Image style={{ width: 15, height: 15 }} source={timingIcon} />
+              <Image style={{width: 15, height: 15}} source={timingIcon} />
               <Text
                 style={{
                   fontSize: 12,
@@ -486,7 +518,7 @@ const Search = ({ navigation }) => {
       </TouchableOpacity>
     );
   };
-  const _renderFilterItem = ({ item, index }) => {
+  const _renderFilterItem = ({item, index}) => {
     return (
       <TouchableOpacity
         onPress={() => selectedFoodType(item.id, index)}
@@ -514,84 +546,215 @@ const Search = ({ navigation }) => {
             fontSize: 14,
             fontFamily: 'Poppins-Bold',
             flexGrow: 1,
-            marginTop: -5
+            marginTop: -5,
           }}>
           {item?.userlanguage?.name ? item.userlanguage.name : null}
         </Text>
       </TouchableOpacity>
     );
   };
-  const getActivityAnalytics = async (cook_id) => {
+  const getActivityAnalytics = async cook_id => {
     // console.log("cook_id", cook_id);
-    await api.getActivityStatus({ history_type: 2, cook_id })
+    await api.getActivityStatus({history_type: 2, cook_id});
   };
 
-
-  const _renderFoodList = ({ item, index }) => {
+  const _renderFoodList = ({item, index}) => {
     // console.log("item type1111", item);
 
     return (
       <>
         <TouchableOpacity
-          onPress={() => navigation.navigate('FoodDetail', item.id)}
-          style={{ justifyContent: 'center', alignItems: 'center', }}>
-          <View style={{ flexDirection: 'row', width: '100%', height: 100, alignItems: 'center' }}>
+          onPress={() => navigation.navigate('FoodDetail', {id: item.id, searchText})}
+          style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+              height: 100,
+              alignItems: 'center',
+            }}>
             {/* <View style={{ width: 100, height: 80, backgroundColor: '#000', borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}>
               <Text style={{ color: '#fff' }}>Food  Image</Text>
             </View> */}
-            <Image source={{ uri: "https://homeefoodz-test.fra1.digitaloceanspaces.com/" + item?.food_image }} style={{ width: 100, height: 80, borderRadius: 15, justifyContent: 'center', alignItems: 'center', marginLeft: 10 }} />
+            <Image
+              source={{
+                uri:
+                  'https://homeefoodz-test.fra1.digitaloceanspaces.com/' +
+                  item?.food_image,
+              }}
+              style={{
+                width: 100,
+                height: 80,
+                borderRadius: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginLeft: 10,
+              }}
+            />
             <View>
-              <View style={{ width: "60%", flexDirection: 'row', paddingVertical: 3 }}>
-                <Image source={riceBowl} style={{ width: 20, height: 20, marginHorizontal: 10 }} />
-                <Text numberOfLines={1} style={{ width: "75%", color: "#2C2C2C", fontFamily: "Poppins-Medium", letterSpacing: 1.2 }}>{item?.name}</Text>
+              <View
+                style={{
+                  width: '60%',
+                  flexDirection: 'row',
+                  paddingVertical: 3,
+                }}>
+                <Image
+                  source={riceBowl}
+                  style={{width: 20, height: 20, marginHorizontal: 10}}
+                />
+                <Text
+                  numberOfLines={1}
+                  style={{
+                    width: '75%',
+                    color: '#2C2C2C',
+                    fontFamily: 'Poppins-Medium',
+                    letterSpacing: 1.2,
+                  }}>
+                  {item?.name}
+                </Text>
               </View>
-              <View style={{ width: "65%", flexDirection: 'row', paddingVertical: 3 }}>
-                <Image source={shop} style={{ width: 20, height: 20, marginHorizontal: 10 }} />
-                <Text numberOfLines={1} style={{ width: "80%", color: "#9F0114", fontFamily: 'Poppins-Medium' }}>{item?.first_name}</Text>
+              <View
+                style={{
+                  width: '65%',
+                  flexDirection: 'row',
+                  paddingVertical: 3,
+                }}>
+                <Image
+                  source={shop}
+                  style={{width: 20, height: 20, marginHorizontal: 10}}
+                />
+                <Text
+                  numberOfLines={1}
+                  style={{
+                    width: '80%',
+                    color: '#9F0114',
+                    fontFamily: 'Poppins-Medium',
+                  }}>
+                  {item?.first_name}
+                </Text>
               </View>
-              <View style={{ width: "65%", flexDirection: 'row', paddingVertical: 3, alignItems: 'center', justifyContent: 'space-between' }}>
-                <View style={{ width: "80%", flexDirection: 'row', paddingVertical: 3 }}>
-                  <Image source={location1} style={{ width: 20, height: 20, marginHorizontal: 10 }} />
-                  <Text numberOfLines={1} style={{ width: '75%', color: "#8D9601", fontFamily: 'Poppins-Regular' }}>{!!item?.street && item?.street != 'null' ? item?.street : !!item?.area ? item?.area : item?.cit}</Text>
+              <View
+                style={{
+                  width: '65%',
+                  flexDirection: 'row',
+                  paddingVertical: 3,
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}>
+                <View
+                  style={{
+                    width: '80%',
+                    flexDirection: 'row',
+                    paddingVertical: 3,
+                  }}>
+                  <Image
+                    source={location1}
+                    style={{width: 20, height: 20, marginHorizontal: 10}}
+                  />
+                  <Text
+                    numberOfLines={1}
+                    style={{
+                      width: '75%',
+                      color: '#8D9601',
+                      fontFamily: 'Poppins-Regular',
+                    }}>
+                    {!!item?.street && item?.street != 'null'
+                      ? item?.street
+                      : !!item?.area
+                      ? item?.area
+                      : item?.cit}
+                  </Text>
                 </View>
-                <Text style={{ width: "80%", fontFamily: 'Poppins-Bold', fontSize: 14, color: '#000000' }}>₹ {item?.final_price}</Text>
+                <Text
+                  style={{
+                    width: '80%',
+                    fontFamily: 'Poppins-Bold',
+                    fontSize: 14,
+                    color: '#000000',
+                  }}>
+                  ₹ {item?.final_price}
+                </Text>
               </View>
             </View>
-          </View >
-          <View style={{ width: '85%', height: 1, backgroundColor: '#F6F6F6' }} />
-        </TouchableOpacity >
+          </View>
+          <View style={{width: '85%', height: 1, backgroundColor: '#F6F6F6'}} />
+        </TouchableOpacity>
       </>
-    )
-  }
+    );
+  };
 
-  const _renderCookList = ({ item, index }) => {
+  const _renderCookList = ({item, index}) => {
     // console.log("item type1111", item?.food_image);
 
     return (
       <>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('FoodDetail', item.id)
+            navigation.navigate('FoodDetail', item.id);
             getActivityAnalytics(item?.id);
           }}>
-          <View style={{ flexDirection: 'row', width: '100%', height: 100, alignItems: 'center' }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+              height: 100,
+              alignItems: 'center',
+            }}>
             {/* <View style={{ width: 100, height: 80, backgroundColor: '#000', borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}>
               <Text style={{ color: '#fff' }}>Food  Image</Text>
             </View> */}
-            <Image source={item?.cook_image ? { uri: "https://homeefoodz-test.fra1.digitaloceanspaces.com/" + item?.cook_image } : null} style={{ width: 100, height: 80, borderRadius: 15, justifyContent: 'center', alignItems: 'center', marginLeft: 10 }} />
+            <Image
+              source={
+                item?.cook_image
+                  ? {
+                      uri:
+                        'https://homeefoodz-test.fra1.digitaloceanspaces.com/' +
+                        item?.cook_image,
+                    }
+                  : null
+              }
+              style={{
+                width: 100,
+                height: 80,
+                borderRadius: 15,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginLeft: 10,
+              }}
+            />
             <View>
-              <View style={{ flexDirection: 'row', paddingVertical: 3 }}>
-                <Image source={shop} style={{ width: 20, height: 20, marginHorizontal: 10 }} />
-                <Text numberOfLines={1} style={{ width: "65%", color: "#9F0114", fontFamily: 'Poppins-Medium' }}>{item?.first_name}</Text>
+              <View style={{flexDirection: 'row', paddingVertical: 3}}>
+                <Image
+                  source={shop}
+                  style={{width: 20, height: 20, marginHorizontal: 10}}
+                />
+                <Text
+                  numberOfLines={1}
+                  style={{
+                    width: '65%',
+                    color: '#9F0114',
+                    fontFamily: 'Poppins-Medium',
+                  }}>
+                  {item?.first_name}
+                </Text>
               </View>
-              <View style={{ flexDirection: 'row', paddingVertical: 3 }}>
-                <Image source={location1} style={{ width: 20, height: 20, marginHorizontal: 10 }} />
-                <Text style={{ color: "#8D9601", fontFamily: 'Poppins-Regular' }}>{!!item?.street && item?.street != 'null' ? item?.street : !!item?.area ? item?.area : item?.city}</Text>
+              <View style={{flexDirection: 'row', paddingVertical: 3}}>
+                <Image
+                  source={location1}
+                  style={{width: 20, height: 20, marginHorizontal: 10}}
+                />
+                <Text style={{color: '#8D9601', fontFamily: 'Poppins-Regular'}}>
+                  {!!item?.street && item?.street != 'null'
+                    ? item?.street
+                    : !!item?.area
+                    ? item?.area
+                    : item?.city}
+                </Text>
               </View>
             </View>
-          </View >
-          <View style={{ width: '85%', height: 1, backgroundColor: '#F6F6F6' }} />
-        </TouchableOpacity >
+          </View>
+          <View style={{width: '85%', height: 1, backgroundColor: '#F6F6F6'}} />
+        </TouchableOpacity>
         {/* <View style={{ justifyContent: 'center', alignItems: 'center', }}>
           <View style={{ flexDirection: 'row', width: '100%', height: 100, alignItems: 'center', }}>
             <Image source={{ uri: "https://homeefoodz-test.fra1.digitaloceanspaces.com/" + item?.cook_image }} style={{ width: 100, height: 80, borderRadius: 15, justifyContent: 'center', alignItems: 'center', marginLeft: 10 }} />
@@ -608,8 +771,8 @@ const Search = ({ navigation }) => {
           </View >
         </View > */}
       </>
-    )
-  }
+    );
+  };
 
   return (
     <SafeAreaView
@@ -619,14 +782,13 @@ const Search = ({ navigation }) => {
         // marginBottom: 35,
         // paddingTop: 15,
       }}>
-      <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
+      <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
       {modal != true && (
         <>
           <ImageBackground
             source={bgvector}
             resizeMode="cover"
-            style={{ width: '100%', height: '100%' }}
-          >
+            style={{width: '100%', height: '100%'}}>
             <View
               style={{
                 width: '95%',
@@ -641,7 +803,7 @@ const Search = ({ navigation }) => {
                 marginVertical: 10,
                 // justifyContent: 'center'
               }}>
-              <View style={{ flexDirection: 'row', width: '90%' }}>
+              <View style={{flexDirection: 'row', width: '90%'}}>
                 <Image
                   source={searchIcon}
                   style={{
@@ -653,7 +815,7 @@ const Search = ({ navigation }) => {
                   }}
                 />
                 <TextInput
-                  placeholder="Search for Food or Cooks"
+                  placeholder="Search for Your Favourites"
                   placeholderTextColor={'#000'}
                   value={searchText}
                   onChangeText={searchChange}
@@ -679,7 +841,7 @@ const Search = ({ navigation }) => {
                     setPagination(null);
                     setPaginate(1);
                     setSelectedFoodTypesArr([]);
-                    setSortby({ LH: false, HL: false })
+                    setSortby({LH: false, HL: false});
                   }}
                   style={{
                     // position: 'absolute',
@@ -707,40 +869,93 @@ const Search = ({ navigation }) => {
                 </TouchableOpacity>
               )}
             </View>
-            <ScrollView keyboardShouldPersistTaps={"always"}>
-              <View style={{ width: '100%', flexDirection: 'row', height: 50, justifyContent: 'center', alignItems: 'center' }}>
+            <SelectList
+              setSelected={val => setFilterType(val)}
+              data={services}
+              search={false}
+              boxStyles={styles.dropdown}
+              dropdownStyles={[styles.dropdown, {height: 'auto'}]}
+              fontFamily="Poppins-Medium"
+              dropdownTextStyles={styles.selectText}
+              placeholder={'Item Type'}
+              placeholderLeftIcon={itemsImage}
+            />
+            <ScrollView keyboardShouldPersistTaps={'always'}>
+              {/* <View style={{ width: '100%', flexDirection: 'row', height: 50, justifyContent: 'center', alignItems: 'center' }}>
                 <View style={{ paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: '#C8C8C8', borderRadius: 50, marginHorizontal: 5, backgroundColor: sortby.LH ? '#5CC20A' : '#fff', opacity: 0.74 }}>
                   <Text style={{ fontSize: 12, color: sortby.LH ? '#fff' : '#000' }} onPress={() => changeFilter("LH")}>{'Price  (Low - High)'}</Text>
                 </View>
                 <View style={{ paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: '#C8C8C8', borderRadius: 50, marginHorizontal: 5, backgroundColor: sortby.HL ? '#5CC20A' : '#fff', opacity: 0.74 }}>
                   <Text style={{ fontSize: 12, color: sortby.HL ? '#fff' : '#000' }} onPress={() => changeFilter("HL")}>{'Price  (High - Low)'}</Text>
                 </View>
-              </View>
-              {(foodList?.length > 0 || cookList?.length > 0) ?
-                <View style={{ paddingHorizontal: 5 }}>
-                  {foodList.length > 0 && <Text style={{ fontFamily: 'Poppins-Bold', fontWeight: '800', fontSize: 18, marginLeft: 10 }}>Dishes</Text>}
+              </View> */}
+              {foodList?.length > 0 || cookList?.length > 0 ? (
+                <View style={{paddingHorizontal: 5}}>
+                  {foodList.length > 0 && (
+                    <Text
+                      style={{
+                        fontFamily: 'Poppins-Bold',
+                        fontWeight: '800',
+                        fontSize: 18,
+                        marginLeft: 10,
+                      }}>
+                      Menu
+                    </Text>
+                  )}
                   <FlatList
-                    keyboardShouldPersistTaps={"always"}
+                    keyboardShouldPersistTaps={'always'}
                     data={foodList}
                     renderItem={_renderFoodList}
                     keyExtractor={(item, index) => index.toString()}
-                    style={{ backgroundColor: '#FEFEFE', elevation: 20, borderRadius: 15, margin: 5, }} />
-                  {cookList.length > 0 && <Text style={{ fontFamily: 'Poppins-Bold', fontWeight: '800', fontSize: 18, marginTop: 15, marginLeft: 10 }}>Cook</Text>}
+                    style={{
+                      backgroundColor: '#FEFEFE',
+                      elevation: 20,
+                      borderRadius: 15,
+                      margin: 5,
+                    }}
+                  />
+                  {cookList.length > 0 && (
+                    <Text
+                      style={{
+                        fontFamily: 'Poppins-Bold',
+                        fontWeight: '800',
+                        fontSize: 18,
+                        marginTop: 15,
+                        marginLeft: 10,
+                      }}>
+                      Vendor
+                    </Text>
+                  )}
                   <FlatList
-                    keyboardShouldPersistTaps={"always"}
+                    keyboardShouldPersistTaps={'always'}
                     data={cookList}
                     renderItem={_renderCookList}
                     keyExtractor={(item, index) => index.toString()}
-                    style={{ backgroundColor: '#FEFEFE', elevation: 20, borderRadius: 15, margin: 5, }}
+                    style={{
+                      backgroundColor: '#FEFEFE',
+                      elevation: 20,
+                      borderRadius: 15,
+                      margin: 5,
+                    }}
                   />
-                </View> : <View style={{ justifyContent: 'center', alignItems: 'center', }}>
-                  <Image style={{ width: 250, height: 400, resizeMode: 'cover', marginTop: 50 }} source={searchPageBg} />
-                </View>}
+                </View>
+              ) : (
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <Image
+                    style={{
+                      width: 250,
+                      height: 400,
+                      resizeMode: 'cover',
+                      marginTop: 50,
+                    }}
+                    source={searchPageBg}
+                  />
+                </View>
+              )}
             </ScrollView>
           </ImageBackground>
         </>
-      )
-      }
+      )}
 
       <View
         style={{
@@ -753,7 +968,7 @@ const Search = ({ navigation }) => {
           </Modal>
         )}
       </View>
-    </SafeAreaView >
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
@@ -831,7 +1046,7 @@ const styles = StyleSheet.create({
   },
   checkBox: {
     flexDirection: 'row',
-    marginTop: 15
+    marginTop: 15,
   },
   checkLabel: {
     fontFamily: 'Poppins-Bold',
@@ -842,6 +1057,19 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     fontSize: 16,
     color: '#fff',
+  },
+  dropdown: {
+    width: '90%',
+    borderRadius: 7,
+    backgroundColor: '#fff',
+    borderWidth: 0,
+    height: 50,
+    // marginBottom: 20,
+    marginHorizontal: '5%',
+  },
+  selectText: {
+    fontSize: 14,
+    color: '#4D4D4D',
   },
 });
 export default Search;

@@ -1,6 +1,6 @@
 {
   "name": "homee",
-  "version": "3.3.0",
+  "version": "3.5.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -82,6 +82,7 @@
     "@react-native/metro-config": "0.73.4",
     "@react-native/typescript-config": "0.73.1",
     "@types/react": "^18.2.6",
+    "@types/react-native-snap-carousel": "^3.8.11",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.6.3",
     "eslint": "^8.19.0",

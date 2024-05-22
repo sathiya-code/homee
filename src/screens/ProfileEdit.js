@@ -136,7 +136,7 @@ const ProfileEdit = ({ navigation, route }) => {
           <View>
             <Text
               style={{
-                fontFamily: 'Poppins-Regular',
+                fontFamily: 'Poppins-SemiBold',
                 fontSize: 15,
                 color: '#09b44d',
                 marginBottom: 0,
@@ -154,6 +154,7 @@ const ProfileEdit = ({ navigation, route }) => {
                 paddingVertical: 5,
                 color: '#000',
               }}
+              placeholderTextColor={'#000'}
               value={nameProfileInput}
               onChangeText={nameChange}
               placeholder={"Please Enter Your Name"}
@@ -165,9 +166,10 @@ const ProfileEdit = ({ navigation, route }) => {
             )}
             <Text
               style={{
-                fontFamily: 'Poppins-Regular',
+                fontFamily: 'Poppins-SemiBold',
                 fontSize: 15,
-                color: '#bcd8c8',
+                color: '#09B44D',
+                opacity:0.5,
                 marginBottom: 0,
                 marginTop: 20,
               }}>
@@ -181,6 +183,7 @@ const ProfileEdit = ({ navigation, route }) => {
                 borderColor: '#d7ecdf',
                 paddingHorizontal: 0,
                 paddingVertical: 5,
+                opacity:0.5,
                 color: '#000',
               }}
               value={MobileProfileInput}
@@ -188,7 +191,7 @@ const ProfileEdit = ({ navigation, route }) => {
             />
             <Text
               style={{
-                fontFamily: 'Poppins-Regular',
+                fontFamily: 'Poppins-SemiBold',
                 fontSize: 15,
                 color: '#09b44d',
                 marginBottom: 0,
@@ -211,6 +214,7 @@ const ProfileEdit = ({ navigation, route }) => {
               autoCorrect={false}
               keyboardType={'email-address'}
               autoCapitalize="none"
+              placeholderTextColor={'#000'}
               placeholder={"Please Enter Your Email"}
             />
           </View>

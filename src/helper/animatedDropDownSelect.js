@@ -176,7 +176,7 @@ const SelectList = ({
                         {/* {selectedval == "" && <Image source={placeholderLeftIcon} style={styles.placeHolderIcon} />} */}
                         <View style={styles.placeHolderDiv}>
                             {selectedval == "" && <Image source={placeholderLeftIcon} style={styles.placeHolderIcon} />}
-                            {!!selectedvalImg && <Image source={{ uri: selectedvalImg }} style={styles.placeHolderIcon} />}
+                            {!!selectedvalImg && <Image source={{ uri: selectedvalImg }} style={styles.placeHolderIcon} borderRadius={4}/>}
                             <Text style={[styles.placeHolderText, { fontFamily: selectedval ? 'Poppins-Regular' : fontFamily }, inputStyles]}>
                                 {(selectedval == "") ? (placeholder) ? placeholder : 'Select option' : selectedval}
                             </Text>
@@ -204,15 +204,15 @@ const SelectList = ({
                             <View style={styles.itemsContainer}>
                                 {
                                     (filtereddata.length >= 1)
-                                        ?
-                                        filtereddata.map((item, index) => {
+                                    ?
+                                    filtereddata.map((item, index) => {
                                             let key = item.id ?? item.name ?? item;
                                             let value = item.name ?? item;
                                             let disabled = item.disabled ?? false;
                                             if (disabled) {
                                                 return (
                                                     <TouchableOpacity style={[styles.disabledoption, disabledItemStyles]} key={index} onPress={() => { }}>
-                                                        {!!item?.icon && <Image source={{ uri: item?.icon }} style={styles.icon} />}
+                                                        {!!item?.icon && <Image source={{ uri: item?.icon }} style={styles.icon}  borderRadius={4} />}
                                                         <Text style={styles.optionsText} >{value}</Text>
                                                     </TouchableOpacity>
                                                 )
@@ -230,7 +230,7 @@ const SelectList = ({
                                                         slideup()
                                                         setTimeout(() => { setFilteredData(data) }, 800)
 
-                                                    }}>{!!item?.icon && <Image source={{ uri: item?.icon }} style={styles.icon} />}
+                                                    }}>{!!item?.icon && <Image source={{ uri: item?.icon }} style={styles.icon}  borderRadius={4} />}
                                                         <Text style={styles.optionsText} >{value}</Text>
                                                     </TouchableOpacity>
                                                 )
@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
     icon: {
         width: 20,
         height: 20,
-        tintColor: '#03894E',
+        // tintColor: '#03894E',
         resizeMode: 'contain',
         marginRight: 5
     },
@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
     placeHolderIcon: {
         width: 20,
         height: 20,
-        tintColor: '#03894E',
+        // tintColor: '#03894E',
         resizeMode: 'contain',
         marginRight: 5
     },

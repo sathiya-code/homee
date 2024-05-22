@@ -55,7 +55,7 @@ const PlantVendor = ({ navigation, route }) => {
     const newrenderItem = ({ item, index }) => {
         return (
             <TouchableOpacity
-                onPress={() => navigation.navigate('FoodDetail', item?.id)}
+                onPress={() => navigation.navigate('FoodDetail', {id:item?.id})}
                 style={{
                     flexDirection: 'row',
                     height: 80,

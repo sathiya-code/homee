@@ -74,7 +74,7 @@ const Favourites = ({ navigation }) => {
       <TouchableOpacity
         onPress={() => {
           getActivityAnalytics(item?.id);
-          navigation.navigate('FoodDetail', item?.id)
+          navigation.navigate('FoodDetail', {id: item?.id})
         }}
         style={{
           flexDirection: 'row',
