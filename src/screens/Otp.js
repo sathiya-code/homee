@@ -61,7 +61,7 @@ const Otp = ({ navigation, route }) => {
     let otpInput = useRef(null);
     const lengthOtp = 4;
     var clockCall;
-    const { params: { user: { id = 0, mobile = 0 } = {} } = {} } = route;
+    const { params: { user: { id = 0, mobile = 0 } = {} } = {} } = route || {};
     const defaultCountdown = 30;
     const [otpValue, setOtpValue] = useState('');
     const [countDown, setCountDown] = useState(defaultCountdown);

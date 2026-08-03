@@ -34,7 +34,7 @@ const PndOrderTrack = ({ navigation, route }) => {
     const [deliveryBoyLocation, setDeliveryBoyLocation] = useState(0);
     const [deliveryBoyPrevLocation, setDeliveryBoyPrevLocation] = useState(0);
 
-    const order_no = route.params.id;
+    const order_no = route?.params?.id || null;
 
     const sheetRef = useRef(null);
     const snapPoints = useMemo(() => ["50%", "60%", "70%", "80%", "90%", "92.3%"], []);
@@ -43,7 +43,7 @@ const PndOrderTrack = ({ navigation, route }) => {
         setModal(true);
         const response = await api.getpndOrderInfo({ order_no });
         console.log("response from order info", response);
-        if (response.status = 'success') setOrderInfo(response.pickndrop)
+        if (response.status == 'success') setOrderInfo(response.pickndrop)
         // console.log("response from order info", response.pickndrop);
         setModal(false);
     }
@@ -56,7 +56,7 @@ const PndOrderTrack = ({ navigation, route }) => {
     const getDeliveryInfo = async () => {
         // getPndSearchMessages();
         const response = await api.getpndDeliveryInfo({ order_no });
-        if (response.status = 'success') {
+        if (response.status == 'success') {
             console.log("response.deliveryboyyyy", response.deliveryboy_details);
             setDeliveryBoyDetails(response.deliveryboy_details)
             const newDeliveryBoyLocation = {

@@ -61,11 +61,11 @@ const LogIn = ({ navigation, route }) => {
     setModal(true);
     var payload = {};
     if (fcm_token === null) {
-      payload = { mobile: MobileNo, user_language_id: route.params };
+      payload = { mobile: MobileNo, user_language_id: route?.params };
     } else {
       payload = {
         mobile: MobileNo,
-        user_language_id: route.params,
+        user_language_id: route?.params,
         fcm_id: fcm_token,
       };
     }

@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react'
 import {Calendar} from 'react-native-calendars';
 import { api, storage } from '../services/index';
 import { arrow, leftArrow, deleteIcon } from '../assets/img/Images';
-import { usePreOrderHook } from '../helper/usePreOrderHook';
 import moment from 'moment';
 import { CustomAlert } from '../helper/customAlert';
 import LinearGradient from 'react-native-linear-gradient';
@@ -134,11 +133,11 @@ const PreOrder = ({ navigation, route }) => {
             else navigation.goBack();
             return true
         };
-        const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
-        return () => backHandler.remove();
+        const backHandler = BackHandler?.addEventListener?.("hardwareBackPress", backAction);
+        return () => backHandler?.remove?.();
     }, []);
     useEffect(() => {
-        const focusHandler = navigation.addListener('focus', () => {
+        const focusHandler = navigation?.addListener?.('focus', () => {
             getCartDateTime();
             setShowCookList(false);
             setShowFoodList(false);
@@ -146,7 +145,7 @@ const PreOrder = ({ navigation, route }) => {
             setShowTimeList(false);
             setAddAnotherDate(true);
         });
-        return focusHandler;
+        return () => focusHandler?.();
     }, [navigation]);
 
     // const refreshPage = () => {

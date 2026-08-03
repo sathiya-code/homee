@@ -53,12 +53,12 @@ const AddressChoose = ({ navigation, route }) => {
       let response = await api.userDetail();
       storage.setUserData(response.user);
       dispatch(set_Profile(response.user));
-      if (route.params.type == 'Home') {
-        route.params.profile();
+      if (route?.params?.type == 'Home') {
+        route?.params?.profile?.();
       } else {
-        route.params.getCartItem();
-        route.params.profile();
-        route.params.useWallet(true);
+        route?.params?.getCartItem?.();
+        route?.params?.profile?.();
+        route?.params?.useWallet?.(true);
       }
       navigation.goBack();
     }

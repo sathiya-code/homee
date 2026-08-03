@@ -14,6 +14,7 @@ import {
   BackHandler,
   Linking,
   PermissionsAndroid,
+  Platform,
   StatusBar,
 } from 'react-native';
 import { storage } from './src/services';
@@ -27,13 +28,9 @@ import {
 // import RNBootSplash from "react-native-bootsplash";
 import * as Sentry from '@sentry/react-native';
 import 'react-native-gesture-handler';
+import './src/translations/i18n';
 import { GetPndProvider } from './src/context/pnd.context';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-
-
-if (__DEV__) {
-  console.error = () => { }
-}
 // RNBootSplash.getVisibilityStatus().then((status) => console.log("splashhhhhhhhhhhhhhhhhhhhhhhstatus", status));
 // import deviceInfoModule from 'react-native-device-info';
 // import checkVersion from 'react-native-store-version';
@@ -60,12 +57,13 @@ const createChannels = () => {
   });
 };
 
-const checkApplicationPermission = async () => {
-  if (Platform.OS === 'android') {
+const isAndroid = Platform?.OS === 'android';
+const checkApplicationPermission = () => {
+  if (isAndroid) {
     try {
-      await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-      );
+      PermissionsAndroid?.request?.(
+        PermissionsAndroid?.PERMISSIONS?.POST_NOTIFICATIONS,
+      )?.catch?.(() => {});
     } catch (error) { }
   }
 };
@@ -169,10 +167,10 @@ const App = () => {
   useEffect(() => {
     checkApplicationPermission();
     createChannels();
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
+    const unsubscribe = messaging()?.onMessage?.(async remoteMessage => {
       await ShowNotification(remoteMessage);
     });
-    return unsubscribe;
+    return () => unsubscribe?.();
   }, []);
 
   return (

@@ -67,10 +67,10 @@ const Search = ({navigation, route}) => {
   
 
   useEffect(() => {
-    const focusHandler = navigation.addListener('focus', () => {
+    const focusHandler = navigation?.addListener?.('focus', () => {
       checkForUpdate();
     });
-    return focusHandler;
+    return () => focusHandler?.();
   }, [navigation]);
 
   useEffect(() => {
@@ -79,12 +79,12 @@ const Search = ({navigation, route}) => {
       return true;
     };
 
-    const backHandler = BackHandler.addEventListener(
+    const backHandler = BackHandler?.addEventListener?.(
       'hardwareBackPress',
       handleBackButton,
     );
 
-    return () => backHandler.remove();
+    return () => backHandler?.remove?.();
   }, [navigation]);
 
   let sort_list = [

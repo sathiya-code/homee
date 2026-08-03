@@ -4,7 +4,7 @@ import LottieView from 'lottie-react-native';
 import sucessJson from '../assets/img/64480-delivery-boy.json';
 
 const Success = ({ navigation, route }) => {
-    const data = route.params;
+    const data = route?.params;
     console.log('data from succccess', data);
     return (
         <>
@@ -12,7 +12,7 @@ const Success = ({ navigation, route }) => {
                 <LottieView source={sucessJson} style={{ marginTop: -0, marginBottom: -25 }} autoSize autoPlay />
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{ color: '#6B6B6B', fontSize: 16 }}>Order ID : </Text>
-                    <Text style={{ color: '#6B6B6B', fontSize: 16 }}>{data?.order_no ? data?.order_no : "OD" + data?.order_id.toString().padStart(8, "0")}</Text>
+                    <Text style={{ color: '#6B6B6B', fontSize: 16 }}>{data?.order_no ? data?.order_no : "OD" + (data?.order_id ? data.order_id.toString().padStart(8, "0") : "")}</Text>
                 </View>
                 <Text style={{ fontSize: 24, color: '#037238', fontWeight: 'bold', marginTop: 10 }}>Order successful</Text>
                 <TouchableOpacity style={{ borderWidth: 1, borderColor: '#037238', width: 200, height: 50, borderRadius: 15, marginTop: 30, justifyContent: 'center', alignItems: 'center' }} onPress={() => navigation.navigate('OrderedList')}>

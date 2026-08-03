@@ -32,8 +32,8 @@ const AutoDetectLocation = ({navigation, route}) => {
   console.log('fromAutoDetectLocation');
   Geocoder.init('AIzaSyAT-XE0L77pBWbwTL3PC04JUGSykZ3uB_Q');
 
-  console.log('propss fromAutoDetectLocation', route.params);
-  const mobile = route.params;
+  console.log('propss fromAutoDetectLocation', route?.params);
+  const mobile = route?.params;
 
   const mapRef = useRef(null);
 

@@ -18,43 +18,43 @@ export const getToken = async state => {
 }
 export const setUserData = async (data = user_data) => {
     try {
-        const res = await AsyncStorage.setItem(PROFILE, JSON.stringify(data));
-        return JSON.parse(res);
+        await AsyncStorage.setItem(PROFILE, JSON.stringify(data));
+        return data;
     } catch (err) {
     }
 }
 export const getUserData = async () => {
     try {
         const res = await AsyncStorage.getItem(PROFILE);
-        return JSON.parse(res);
+        return res ? JSON.parse(res) : null;
     } catch (err) {
     }
 }
 export const setCartStatus = async (data = user_data) => {
     try {
-        const res = await AsyncStorage.setItem(CART_STATUS, JSON.stringify(data));
-        return res;
+        await AsyncStorage.setItem(CART_STATUS, JSON.stringify(data));
+        return data;
     } catch (err) {
     }
 }
 export const getCartStatus = async () => {
     try {
         const res = await AsyncStorage.getItem(CART_STATUS);
-        return JSON.parse(res);
+        return res ? JSON.parse(res) : null;
     } catch (err) {
     }
 }
 export const setCouponCode = async (data = user_data) => {
     try {
-        const res = await AsyncStorage.setItem(COUPON_CODE, JSON.stringify(data));
-        return res;
+        await AsyncStorage.setItem(COUPON_CODE, JSON.stringify(data));
+        return data;
     } catch (err) {
     }
 }
 export const getCouponCode = async () => {
     try {
         const res = await AsyncStorage.getItem(COUPON_CODE);
-        return JSON.parse(res);
+        return res ? JSON.parse(res) : null;
     } catch (err) {
     }
 }
@@ -63,8 +63,9 @@ export const clearAsyncStorage = async () => {
 }
 export const setIsOldUser = async (data) => {
     try {
-        const res = await AsyncStorage.setItem(OLD_USER, data);
-        return res;
+        const strVal = typeof data === 'string' ? data : JSON.stringify(data);
+        await AsyncStorage.setItem(OLD_USER, strVal);
+        return data;
     } catch (err) {
     }
 }
@@ -78,8 +79,9 @@ export const getIsOldUser = async () => {
 };
 export const setDiffLocationAlert = async (data) => {
     try {
-        const res = await AsyncStorage.setItem(LOCATION_DIFF, data);
-        return res;
+        const strVal = typeof data === 'string' ? data : JSON.stringify(data);
+        await AsyncStorage.setItem(LOCATION_DIFF, strVal);
+        return data;
     } catch (err) {
     }
 }

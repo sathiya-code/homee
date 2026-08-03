@@ -298,8 +298,7 @@ const handleException = (err, url) => {
       } else {
         Alert.alert(
           'Status Failed',
-          `server returns ${status}`,
-          ` msg: ${data?.message}`,
+          `server returns ${status} msg: ${data?.message}`,
         );
         // Alert.alert('Status Failed', `server returns ${status}, URL: ${url}, msg: ${data?.message}`);
       }
@@ -339,7 +338,8 @@ const prepareResponse = res => {
       } else if (data.status == 'empty') {
         return data;
       } else if (data.status == 'error') {
-        return data, Alert.alert('Sorry for the inconvenience', data.message);
+        Alert.alert('Sorry for the inconvenience', data.message);
+        return data;
       }
     } else {
       Alert.alert(

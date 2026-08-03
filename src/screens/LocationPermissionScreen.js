@@ -159,12 +159,12 @@ export default function LocationPermissionScreen({ navigation, route }) {
             return true;
         };
 
-        const backHandler = BackHandler.addEventListener(
+        const backHandler = BackHandler?.addEventListener?.(
             "hardwareBackPress",
             backAction
         );
 
-        return () => backHandler.remove();
+        return () => backHandler?.remove?.();
     }, []);
 
     useEffect(() => {

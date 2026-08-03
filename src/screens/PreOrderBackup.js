@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 import { Calendar } from 'react-native-calendars';
 import { api, storage } from '../services/index';
 import { arrow, leftArrow, deleteIcon } from '../assets/img/Images';
-import { usePreOrderHook } from '../helper/usePreOrderHook';
 import moment from 'moment';
 import { CustomAlert } from '../helper/customAlert';
 import LinearGradient from 'react-native-linear-gradient';

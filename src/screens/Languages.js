@@ -59,12 +59,12 @@ const Languages = ({navigation, route}) => {
       return true;
     };
 
-    const backHandler = BackHandler.addEventListener(
+    const backHandler = BackHandler?.addEventListener?.(
       'hardwareBackPress',
       handleBackButton,
     );
 
-    return () => backHandler.remove();
+    return () => backHandler?.remove?.();
   }, [navigation]);
 
   const get_UserData = async () => {

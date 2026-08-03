@@ -42,7 +42,7 @@ const BottomTab = ({navigation, route}) => {
   const {t, i18n} = useTranslation();
   return (
     <Tab.Navigator
-      initialRouteName={route.params?.type == 'Profile' ? 'Account' : 'Home'}
+      initialRouteName={route?.params?.type == 'Profile' ? 'Account' : 'Home'}
       tabBarOptions={{
         showLabel: false,
         style: {

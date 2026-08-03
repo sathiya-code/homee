@@ -122,22 +122,22 @@ const PickAndDrop = prop => {
   });
 
   useEffect(() => {
-    const focusHandler = navigation.addListener('focus', () => {
+    const focusHandler = navigation?.addListener?.('focus', () => {
       getAddresses();
       sheetRef.current?.close();
     });
-    return focusHandler;
+    return () => focusHandler?.();
   }, [navigation]);
 
   useEffect(() => {
     const handleBackButton = () => {
       return true;
     };
-    const backHandler = BackHandler.addEventListener(
+    const backHandler = BackHandler?.addEventListener?.(
       'hardwareBackPress',
       handleBackButton,
     );
-    return () => backHandler.remove();
+    return () => backHandler?.remove?.();
   }, [navigation]);
 
   const getAddresses = async () => {
@@ -258,11 +258,11 @@ const PickAndDrop = prop => {
   }, [pickupLocation, setPickupLocation, dropLocation, setDropLocation]);
 
   useEffect(() => {
-    const focusHandler = navigation.addListener('focus', () => {
+    const focusHandler = navigation?.addListener?.('focus', () => {
       getAddresses();
       changeAddressByRoute();
     });
-    return focusHandler;
+    return () => focusHandler?.();
   }, []);
 
   const AddressComponent = () => {

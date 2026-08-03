@@ -40,7 +40,7 @@ const SignUp = ({ navigation, route }) => {
     latitudeDelta: 0.015,
     longitudeDelta: 0.0121,
   };
-  const { params: { user: { id = 0, mobile = 0 } = {} } = {} } = route;
+  const { params: { user: { id = 0, mobile = 0 } = {} } = {} } = route || {};
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
   const [email, setEmail] = useState(null);

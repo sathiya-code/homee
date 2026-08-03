@@ -142,8 +142,8 @@ const Address = ({navigation, route}) => {
 
   const sheetRef = useRef(null);
   const snapPoints = useMemo(() => ['30%', '40%', '50%', '60%'], []);
-  const addressAddType = route.params.type;
-  const pndAddressSelectType = route.params.addressSelectType;
+  const addressAddType = route?.params?.type;
+  const pndAddressSelectType = route?.params?.addressSelectType;
   console.log('addressSelectType', pndAddressSelectType);
 
   // useEffect(() => {
@@ -204,7 +204,7 @@ const Address = ({navigation, route}) => {
   }, []);
 
   useEffect(() => {
-    !!route.params.auto_detected && setModal(true);
+    !!route?.params?.auto_detected && setModal(true);
     onChangeRegion();
   }, []);
 
@@ -265,7 +265,7 @@ const Address = ({navigation, route}) => {
       ToastAndroid.show('Enter Name', ToastAndroid.SHORT);
     } else {
       // console.warn('route.params.auto_detected', route.params);
-      if (!!route.params.type && route.params.type == 'PND') {
+      if (!!route?.params?.type && route?.params?.type == 'PND') {
         var parload = {
           door_no: door,
           street: street,
@@ -302,7 +302,7 @@ const Address = ({navigation, route}) => {
         } else {
           Alert.alert('Unable to complete your request, try again later');
         }
-      } else if (!!route.params.type && route.params.type != 'PND') {
+      } else if (!!route?.params?.type && route?.params?.type != 'PND') {
         var parload = {
           door_no: door,
           street: street,
@@ -316,13 +316,13 @@ const Address = ({navigation, route}) => {
         console.log('payloadd', parload);
         let response = await api.address(parload);
 
-        if ((response.status = 'success')) {
+        if (response.status == 'success') {
           navigation.navigate('Home');
         } else {
           Alert.alert('Unable to complete your request, try again later');
         }
       } else if (
-        !!route.params.auto_detected &&
+        !!route?.params?.auto_detected &&
         addressLocation &&
         addressComponent
       ) {
@@ -360,16 +360,16 @@ const Address = ({navigation, route}) => {
           JSON.stringify(addressComponent),
         );
         let payload = {
-          name: route.params.name,
-          mobile: route.params.mobile,
-          email: route.params.email,
+          name: route?.params?.name,
+          mobile: route?.params?.mobile,
+          email: route?.params?.email,
           door_no: door,
           street: street,
           address_type: address_type,
           address: JSON.stringify(addressComponent),
           longitude: EditLocation.longitude,
           latitude: EditLocation.latitude,
-          terms_conditions: route.params.terms_conditions,
+          terms_conditions: route?.params?.terms_conditions,
         };
         setModal(true);
         let response = await api.register(payload);
@@ -395,7 +395,7 @@ const Address = ({navigation, route}) => {
       !!addressLocation &&
       !!addressComponent &&
       autoProceed == 1 &&
-      !route.params.type
+      !route?.params?.type
     ) {
       setModal(true);
       setTimeout(() => {
@@ -964,7 +964,7 @@ const Address = ({navigation, route}) => {
           </BottomSheetScrollView>
         </BottomSheet>
       </>
-      {!!route.params.auto_detected && modal && (
+      {!!route?.params?.auto_detected && modal && (
         <View
           style={{
             width,

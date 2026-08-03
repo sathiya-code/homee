@@ -17,7 +17,7 @@ import Categories from './Categories';
 import NearByVendors from './NearByVendors';
 
 const GroceryHome = ({navigation, route}) => {
-  const serviceName = route.params.type;
+  const serviceName = route?.params?.type || '';
   const [banners, setBanner] = useState([]);
 
   const {width, height} = Dimensions.get('window');

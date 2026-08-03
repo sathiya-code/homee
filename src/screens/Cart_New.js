@@ -154,12 +154,12 @@ const Cart = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    const focusHandler = navigation.addListener('focus', () => {
+    const focusHandler = navigation?.addListener?.('focus', () => {
       checkForUpdate();
       get_UserData();
       setOneToOneCooks();
     });
-    return focusHandler;
+    return () => focusHandler?.();
   }, [navigation]);
 
   const checkDeliverHandler = () => {
@@ -172,18 +172,18 @@ const Cart = ({ navigation, route }) => {
       return true;
     };
 
-    const backHandler = BackHandler.addEventListener(
+    const backHandler = BackHandler?.addEventListener?.(
       'hardwareBackPress',
       handleBackButton,
     );
 
-    return () => backHandler.remove();
+    return () => backHandler?.remove?.();
   }, [navigation]);
 
 
   useEffect(() => {
     setShowCheckout(true);
-  }, [modal, alert]);
+  }, [modal]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -605,12 +605,12 @@ const Cart = ({ navigation, route }) => {
     setPreOrderCartDetails(response);
   };
   useEffect(() => {
-    const focusHandler = navigation.addListener('focus', () => {
+    const focusHandler = navigation?.addListener?.('focus', () => {
       getPOCDetails();
       setUseWalletPO(false);
       setUseWallet(false);
     });
-    return focusHandler;
+    return () => focusHandler?.();
   }, [navigation]);
 
   useEffect(() => {

@@ -85,12 +85,12 @@ const FoodDetail = ({ navigation, route }) => {
       return true;
     };
 
-    const backHandler = BackHandler.addEventListener(
+    const backHandler = BackHandler?.addEventListener?.(
       'hardwareBackPress',
       handleBackButton,
     );
 
-    return () => backHandler.remove();
+    return () => backHandler?.remove?.();
   }, [navigation]);
 
   // console.log('cook_details', recommended[0]?.timingstatus);
@@ -670,11 +670,11 @@ const FoodDetail = ({ navigation, route }) => {
     )
   }
   useEffect(() => {
-    const focusHandler = navigation.addListener('focus', () => {
+    const focusHandler = navigation?.addListener?.('focus', () => {
       get_Cart();
       // get_Cook_Profile();
     });
-    return focusHandler;
+    return () => focusHandler?.();
   }, [navigation]);
 
   const [query, setQuery] = useState('');

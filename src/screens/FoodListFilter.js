@@ -27,7 +27,7 @@ import Loader from './Loader';
 import moment from 'moment';
 
 const FoodListFilter = ({ navigation, route }) => {
-  console.log("ro", route.params);
+  console.log("ro", route?.params);
   const { t, i18 } = useTranslation();
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);

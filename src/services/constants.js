@@ -85,6 +85,7 @@ export const URL = {
   PRE_ORDER_UPDATE_CHECKOUT: '/pre-order/cart/update-checkout',
   PRE_ORDER_HISTORY: '/pre-order/history',
   GET_SERVICABLE_AREA: '/home/is_servicable_area',
+  PRE_ORDER_CANCEL: '/pre-order/cancel/',
   PRE_ORDER_CANCEL_CONFIRM: '/pre-order/confirm-cancel',
   TIME_BASED_MENU: '/home/time-based-menus',
   DELIVERY_AVAILABLE_TIME: '/home/check-delivery-time',

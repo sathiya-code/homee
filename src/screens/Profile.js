@@ -59,10 +59,10 @@ const Profile = ({ navigation }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const focusHandler = navigation.addListener('focus', () => {
+    const focusHandler = navigation?.addListener?.('focus', () => {
       checkForUpdate();
     });
-    return focusHandler;
+    return () => focusHandler?.();
   }, [navigation]);
 
   useEffect(() => {
@@ -71,12 +71,12 @@ const Profile = ({ navigation }) => {
       return true;
     };
 
-    const backHandler = BackHandler.addEventListener(
+    const backHandler = BackHandler?.addEventListener?.(
       'hardwareBackPress',
       handleBackButton,
     );
 
-    return () => backHandler.remove();
+    return () => backHandler?.remove?.();
   }, [navigation]);
 
 

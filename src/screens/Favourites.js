@@ -188,10 +188,10 @@ const Favourites = ({ navigation }) => {
   }
 
   useEffect(() => {
-    const focusHandler = navigation.addListener('focus', () => {
+    const focusHandler = navigation?.addListener?.('focus', () => {
       getList();
     });
-    return focusHandler;
+    return () => focusHandler?.();
   }, [navigation]);
 
 

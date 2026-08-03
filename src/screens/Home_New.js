@@ -144,13 +144,13 @@ const HomeNew = ({ navigation, route }) => {
   const eatHappyRef = useRef();
   const setOneToOneCooks = async () => {
     const response = await api.setOneToOneCooks();
-    if ((response.status = 'success')) {
+    if (response.status == 'success') {
       setOneToOne(response);
     }
   };
 
   useEffect(() => {
-    const focusHandler = navigation.addListener('focus', () => {
+    const focusHandler = navigation?.addListener?.('focus', () => {
       checkForUpdate();
       // getDeliveryTime();
       getUserAddress();
@@ -159,7 +159,7 @@ const HomeNew = ({ navigation, route }) => {
       getCurrentOrders();
       getServiceTitles();
     });
-    return focusHandler;
+    return () => focusHandler?.();
   }, []);
 
   const get_Token = async () => {

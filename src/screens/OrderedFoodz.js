@@ -30,7 +30,7 @@ const OrderedFoodz = ({ navigation, route }) => {
   }, []);
   const getOrderDetails = async () => {
     setModal(true);
-    let response = await api.order_details(route.params.id);
+    let response = await api.order_details(route?.params?.id);
     if (response.status == 'success') {
       setOrderDetails(response.order);
     }
@@ -42,7 +42,7 @@ const OrderedFoodz = ({ navigation, route }) => {
   const submitRating = async () => {
     setModal(true);
     let response = await api.rating({
-      order_id: route.params.id,
+      order_id: route?.params?.id,
       rating: rating,
     });
     if (response.status == 'success') {
@@ -55,7 +55,7 @@ const OrderedFoodz = ({ navigation, route }) => {
   }
   const offlineRefund = async () => {
     setModal(true);
-    let response = await api.offlineRefund(route.params.id);
+    let response = await api.offlineRefund(route?.params?.id);
     setModal(false);
     if (response.status == 'success') {
       Alert.alert('Information', 'Your amount will be transfer to your account', [
@@ -72,7 +72,7 @@ const OrderedFoodz = ({ navigation, route }) => {
   }
   const walletRefund = async () => {
     setModal(true);
-    let response = await api.walletRefund(route.params.id);
+    let response = await api.walletRefund(route?.params?.id);
     setModal(false);
     if (response.status == 'success') {
       Alert.alert('Information', 'Your amount will be transfer to your wallet', [
