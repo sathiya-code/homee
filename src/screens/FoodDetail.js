@@ -679,10 +679,10 @@ const FoodDetail = ({ navigation, route }) => {
 
   const [query, setQuery] = useState('');
 
-  
-  useEffect(()=> {
+
+  useEffect(() => {
     const searchText = route?.params?.searchText;
-    if(!!searchText) handleSearch(searchText);
+    if (!!searchText) handleSearch(searchText);
   }, [])
 
   const handleSearch = (text) => {
@@ -690,7 +690,7 @@ const FoodDetail = ({ navigation, route }) => {
     setPaginate(1);
     let timeout;
     clearTimeout(timeout);
-    timeout = setTimeout(async()=> {
+    timeout = setTimeout(async () => {
       await get_menu_by_cuisines(0, text.toString());
     }, 1000);
   };
@@ -867,7 +867,7 @@ const FoodDetail = ({ navigation, route }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <>
       <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
       {modal == false && cook_details ?
         <>
@@ -893,7 +893,7 @@ const FoodDetail = ({ navigation, route }) => {
             style={{
               backgroundColor: '#09b44d',
               // marginBottom: 20,
-              height: 50,
+              height: 40,
               // borderBottomLeftRadius: 25,
               // borderBottomRightRadius: 25,
             }}>
@@ -905,6 +905,7 @@ const FoodDetail = ({ navigation, route }) => {
                 paddingHorizontal: 15,
                 // paddingVertical: 15,
                 alignItems: 'center',
+                top:-5
               }}>
               <Image style={{ width: 25, height: 25, tintColor: '#fff' }} source={leftArrow} />
               <Text style={{
@@ -1063,8 +1064,8 @@ const FoodDetail = ({ navigation, route }) => {
               <TextInput
                 style={{
                   width: '100%',
-                  top:5,
-                  fontSize:16,
+                  top: 5,
+                  fontSize: 16,
                   paddingHorizontal: 10,
                   fontFamily: 'Poppins-Medium',
                   justifyContent: 'center',
@@ -1444,7 +1445,7 @@ const FoodDetail = ({ navigation, route }) => {
           </View>
         </PaperModal>
       </Portal>}
-    </SafeAreaView >
+    </>
   );
 };
 const styles = StyleSheet.create({

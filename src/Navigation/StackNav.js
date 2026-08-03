@@ -5,7 +5,6 @@ import SignUp from '../screens/SignUp';
 import Address from '../screens/Address';
 import {createStackNavigator} from '@react-navigation/stack';
 import Wallet from '../screens/Wallet';
-import Home from '../screens/Home_New';
 import ProductList from '../screens/ProductList';
 import BottomTab from './BottomTab';
 import FoodDetail from '../screens/FoodDetail';

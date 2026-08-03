@@ -124,7 +124,7 @@ const Profile = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, }}>
+    <>
       <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
       <View
         style={{
@@ -793,7 +793,7 @@ const Profile = ({ navigation }) => {
           </Modal>
         )}
       </View>
-    </SafeAreaView>
+    </>
   );
 };
 const styles = StyleSheet.create({

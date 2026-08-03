@@ -118,13 +118,13 @@ const AddressChoose = ({ navigation, route }) => {
     );
   };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <>
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: '#09b44d',
-          height: 60,
+          height: 45,
           borderBottomLeftRadius: 25,
           borderBottomRightRadius: 25,
           marginBottom: 5,
@@ -134,6 +134,7 @@ const AddressChoose = ({ navigation, route }) => {
           style={{
             paddingLeft: 15,
             // paddingVertical: 15,
+            top: -5,
             flexDirection: 'row',
             alignItems: 'center',
           }}>
@@ -186,7 +187,7 @@ const AddressChoose = ({ navigation, route }) => {
           </Modal>
         )}
       </View>
-    </SafeAreaView>
+    </>
   );
 };
 const styles = StyleSheet.create({

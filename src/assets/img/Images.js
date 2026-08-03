@@ -188,3 +188,9 @@ export const Driver = require('./pickNdrop/driverTop.png');
 export const ContactBook = require('./pickNdrop/ContactBook.png');
 
 export const DeliverySuccess = require('./pickNdrop/deliverySuccess.json');
+
+
+export const advance = require('./coming_soon/advance.jpg');
+export const food = require('./coming_soon/food.jpg');
+export const garden = require('./coming_soon/garden.jpg');
+export const grocery = require('./coming_soon/grocery.jpg');

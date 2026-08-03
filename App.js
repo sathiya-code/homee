@@ -1,9 +1,9 @@
-import React, {useEffect, useRef} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import React, { useEffect, useRef } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import StackNav from './src/Navigation/StackNav';
 import axios from 'axios';
-import {BASE_URL} from './src/services/constants';
-import {Provider} from 'react-redux';
+import { BASE_URL } from './src/services/constants';
+import { Provider } from 'react-redux';
 import configureStore from './src/redux/store';
 axios.defaults.baseURL = BASE_URL;
 import messaging from '@react-native-firebase/messaging';
@@ -16,9 +16,9 @@ import {
   PermissionsAndroid,
   StatusBar,
 } from 'react-native';
-import {storage} from './src/services';
+import { storage } from './src/services';
 import VersionCheck from 'react-native-version-check';
-import {FontConfig, PrimaryGreen} from './src/helper/styles.helper';
+import { FontConfig, PrimaryGreen } from './src/helper/styles.helper';
 import {
   configureFonts,
   DefaultTheme,
@@ -28,7 +28,12 @@ import {
 import * as Sentry from '@sentry/react-native';
 import 'react-native-gesture-handler';
 import { GetPndProvider } from './src/context/pnd.context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
+
+if (__DEV__) {
+  console.error = () => { }
+}
 // RNBootSplash.getVisibilityStatus().then((status) => console.log("splashhhhhhhhhhhhhhhhhhhhhhhstatus", status));
 // import deviceInfoModule from 'react-native-device-info';
 // import checkVersion from 'react-native-store-version';
@@ -61,7 +66,7 @@ const checkApplicationPermission = async () => {
       await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
       );
-    } catch (error) {}
+    } catch (error) { }
   }
 };
 
@@ -70,7 +75,7 @@ const App = () => {
 
   useEffect(() => {
     if (!__DEV__) {
-      console.log = () => {};
+      console.log = () => { };
     }
   }, []);
 
@@ -173,12 +178,16 @@ const App = () => {
   return (
     <Provider store={store}>
       <PaperProvider>
-        <GetPndProvider>
-          <NavigationContainer ref={navigationRef}>
-            <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
-            <StackNav />
-          </NavigationContainer>
-        </GetPndProvider>
+        <SafeAreaProvider>
+          <SafeAreaView style={{ flex: 1, backgroundColor: PrimaryGreen }} edges={['bottom', 'left', 'right', 'top']}>
+            <GetPndProvider>
+              <NavigationContainer ref={navigationRef}>
+                <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
+                <StackNav />
+              </NavigationContainer>
+            </GetPndProvider>
+          </SafeAreaView>
+        </SafeAreaProvider>
       </PaperProvider>
     </Provider>
   );

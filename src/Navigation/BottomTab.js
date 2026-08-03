@@ -23,8 +23,6 @@ import {
   homeeIcon,
   homeeLogo,
 } from '../assets/img/Images';
-//import DashBoard from '../screens/DashBoard1';
-import Home from '../screens/Home';
 import Search from '../screens/Search';
 import Profile from '../screens/Profile';
 import {useTranslation} from 'react-i18next';

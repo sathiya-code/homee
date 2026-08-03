@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   ScrollView,
   View,
@@ -33,12 +33,12 @@ import {
   coming_soon,
   deliverySoon,
 } from '../assets/img/Images';
-import {api, storage} from '../services/index';
-import {useSelector} from 'react-redux';
+import { api, storage } from '../services/index';
+import { useSelector } from 'react-redux';
 import Loader from './Loader';
 // import { FlatList } from 'react-native-gesture-handler';
-import {useTranslation} from 'react-i18next';
-import {useFocusEffect} from '@react-navigation/core';
+import { useTranslation } from 'react-i18next';
+import { useFocusEffect } from '@react-navigation/core';
 import {
   AppBackground,
   HomeBgColor,
@@ -51,13 +51,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import offerHorn from '../assets/img/offer_icon.png';
 import location_bar_icon from '../assets/img/location_bar_icon.png';
 import offerIcon2 from '../assets/img/offer_icon2.png';
-import {LinearTextGradient} from 'react-native-text-gradient';
+import { LinearTextGradient } from 'react-native-text-gradient';
 // import Shimmer from 'react-native-shimmer';
 import Shimmer from 'react-native-shimmer-placeholder';
 // import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import FastImage from 'react-native-fast-image';
-import {checkForUpdate, toCamelCase} from '../helper/app.helper';
+import { checkForUpdate, toCamelCase } from '../helper/app.helper';
 import checkVersion from 'react-native-store-version';
 import deviceInfoModule from 'react-native-device-info';
 import NoServiceArea from './NoServiceArea';
@@ -68,10 +68,10 @@ import Geocoder from 'react-native-geocoding';
 
 const BannerCarouselImg = Dimensions.get('window').width;
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
-const HomeNew = ({navigation, route}) => {
-  const {t, i18n} = useTranslation();
+const HomeNew = ({ navigation, route }) => {
+  const { t, i18n } = useTranslation();
   const [user, setUser] = useState(null);
   const [modal, setModal] = useState(false);
   const [banner, setBanner] = useState([]);
@@ -83,6 +83,7 @@ const HomeNew = ({navigation, route}) => {
   const [food_types, setFood_types] = useState([]);
   const [ourServices, setOurServices] = useState([]);
   const [nearby_cooks, setNearby_cooks] = useState([]);
+  const [gardenVendors, setGardenVendors] = useState([]);
   const [restaurantCooks, setRestaurantCooks] = useState([]);
   const [cookTypeHome, setCookTypeHome] = useState(true);
   const [foodType, setFoodType] = useState(true);
@@ -104,6 +105,8 @@ const HomeNew = ({navigation, route}) => {
     nearBy: 'All Cooks Nearby',
   });
   const [isDefaultAddAutoChnaged, setIsDefaultAddAutoChnaged] = useState(false);
+  const [footerImage, setFooterImage] = useState('');
+  const [comingSoonBanners, setComingSoonBanners] = useState([]);
 
   const getServiceTitles = async () => {
     setModal(true);
@@ -196,12 +199,14 @@ const HomeNew = ({navigation, route}) => {
 
   const getBanners = async () => {
     let response = await api.homeBanners();
-    // console.log("rsponse from banners", response);
+    console.log("rsponse from banners", response);
     if (response.status == 'success') {
       setBanner(response?.banners);
+      setComingSoonBanners(response?.comingSoonBanners);
       setCoupons(response?.coupons);
       setFood_types(response?.food_types);
       setOurServices(response?.our_services);
+      setFooterImage(response?.footerImage)
       storage.setCartStatus(response?.cart_status);
     }
   };
@@ -217,6 +222,8 @@ const HomeNew = ({navigation, route}) => {
     if (response.status == 'success') {
       setNearby_cooks(response?.homemade_cooks);
       setRestaurantCooks(response?.restaurant_cooks);
+      // console.log("tttttttttttttttttttttttttttttttttttt", response);
+      setGardenVendors(response?.garden_vendors);
     }
   };
 
@@ -228,7 +235,7 @@ const HomeNew = ({navigation, route}) => {
 
   const getActivityAnalytics = async cook_id => {
     // console.log('cook_id', cook_id);
-    await api.getActivityStatus({history_type: 2, cook_id});
+    await api.getActivityStatus({ history_type: 2, cook_id });
   };
 
   const getBestFour = async () => {
@@ -254,7 +261,7 @@ const HomeNew = ({navigation, route}) => {
     setModal(false);
   };
 
-  const render_Banner_Item = ({item, index}) => {
+  const render_Banner_Item = ({ item, index }) => {
     // console.log('itemmm banner', item?.target, typeof item?.target);
     return (
       <TouchableOpacity
@@ -272,10 +279,10 @@ const HomeNew = ({navigation, route}) => {
             item?.target != 'preorder' &&
             item?.target != null
           )
-            navigation.navigate('FoodDetail', {id: item?.target});
+            navigation.navigate('FoodDetail', { id: item?.target });
         }}>
         <Image
-          source={{uri: item?.image}}
+          source={{ uri: item?.image }}
           style={{
             width: width * 0.96,
             height: 200,
@@ -288,7 +295,7 @@ const HomeNew = ({navigation, route}) => {
       </TouchableOpacity>
     );
   };
-  const _renderItem = ({item, index}) => {
+  const _renderItem = ({ item, index }) => {
     // index == 0 && console.log("itemmmmm ind 00", item);
     let backgroundImg = null;
     // if (index % 2) {
@@ -298,17 +305,17 @@ const HomeNew = ({navigation, route}) => {
     // }
     return (
       <>
-        <View style={{height: 170, width: 120, marginRight: 15}}>
+        <View style={{ height: 170, width: 120, marginRight: 15 }}>
           <FastImage
             style={styles.couponBack}
-            source={{uri: item?.bg_img, cache: 'cacheOnly'}}
+            source={{ uri: item?.bg_img, cache: 'cacheOnly' }}
           />
-          <View style={{marginHorizontal: 10}}>
-            <Text style={[styles.package, {color: item?.font_color}]}>
+          <View style={{ marginHorizontal: 10 }}>
+            <Text style={[styles.package, { color: item?.font_color }]}>
               upto
             </Text>
             <Text style={styles.percentage}>{item?.value}%</Text>
-            <Text style={[styles.offer, {color: item?.font_color}]}>
+            <Text style={[styles.offer, { color: item?.font_color }]}>
               offers on
             </Text>
             <Text style={styles.offerName}>{item?.coupon_name}</Text>
@@ -322,7 +329,7 @@ const HomeNew = ({navigation, route}) => {
               position: 'absolute',
             }}>
             <FastImage
-              source={{uri: item?.image}}
+              source={{ uri: item?.image }}
               style={{
                 width: 60,
                 aspectRatio: 1,
@@ -340,14 +347,14 @@ const HomeNew = ({navigation, route}) => {
     );
   };
 
-  const _renderItem1 = ({item, index}) => {
+  const _renderItem1 = ({ item, index }) => {
     // index == 0 && console.log("featured cook item", item)
     return (
       <TouchableOpacity
-        style={{marginRight: 20}}
-        onPress={() => navigation.navigate('FoodDetail', {id: item.cook_id})}>
+        style={{ marginRight: 20 }}
+        onPress={() => navigation.navigate('FoodDetail', { id: item.cook_id })}>
         <View
-          style={{width: 110, justifyContent: 'center', alignItems: 'center'}}>
+          style={{ width: 110, justifyContent: 'center', alignItems: 'center' }}>
           <View
             style={{
               flexDirection: 'row',
@@ -363,13 +370,13 @@ const HomeNew = ({navigation, route}) => {
             }}>
             <Image
               source={offerHorn}
-              style={{height: 14, width: 14, marginRight: 5}}
+              style={{ height: 14, width: 14, marginRight: 5 }}
             />
-            <Text style={{textAlign: 'center', color: '#fff'}}>Special</Text>
+            <Text style={{ textAlign: 'center', color: '#fff' }}>Special</Text>
           </View>
         </View>
         <FastImage
-          source={{uri: item.image, cache: 'cacheOnly', priority: 'high'}}
+          source={{ uri: item.image, cache: 'cacheOnly', priority: 'high' }}
           style={{
             width: 110,
             aspectRatio: 1,
@@ -387,11 +394,11 @@ const HomeNew = ({navigation, route}) => {
             marginLeft: 5,
             justifyContent: 'space-between',
           }}>
-          <Image source={starSelect} style={{width: 17, height: 17}} />
-          <Image source={starSelect} style={{width: 17, height: 17}} />
-          <Image source={starSelect} style={{width: 17, height: 17}} />
-          <Image source={starSelect} style={{width: 17, height: 17}} />
-          <Image source={starUnSelect} style={{width: 17, height: 17}} />
+          <Image source={starSelect} style={{ width: 17, height: 17 }} />
+          <Image source={starSelect} style={{ width: 17, height: 17 }} />
+          <Image source={starSelect} style={{ width: 17, height: 17 }} />
+          <Image source={starSelect} style={{ width: 17, height: 17 }} />
+          <Image source={starUnSelect} style={{ width: 17, height: 17 }} />
         </View>
         <View
           style={{
@@ -414,7 +421,7 @@ const HomeNew = ({navigation, route}) => {
             {item.menuName}
             {/* {item?.cook_name.length > 15 ? `${item.cook_name.slice(0, 12)}...` : item.cook_name} */}
           </Text>
-          <View style={{width: '45%'}}>
+          <View style={{ width: '45%' }}>
             {/* <Text style={{
                             fontFamily: 'Poppins-Regular',
                             fontSize: 9,
@@ -439,10 +446,10 @@ const HomeNew = ({navigation, route}) => {
     );
   };
 
-  const poprenderItem = ({item, index}) => {
+  const poprenderItem = ({ item, index }) => {
     // console.log("indx", index, happyIndex);
     return (
-      <View style={{marginLeft: 10}}>
+      <View style={{ marginLeft: 10 }}>
         <TouchableOpacity
           onPress={() => navigation.navigate('FoodListFilter', item)}
           style={{
@@ -468,8 +475,8 @@ const HomeNew = ({navigation, route}) => {
               alignItems: 'center',
             }}>
             <FastImage
-              source={{uri: item.icon}}
-              style={{width: 50, height: 45, borderRadius: 50}}
+              source={{ uri: item.icon }}
+              style={{ width: 50, height: 45, borderRadius: 50 }}
             />
           </View>
           <View
@@ -495,21 +502,21 @@ const HomeNew = ({navigation, route}) => {
     );
   };
 
-  const newrenderItem = ({item, index}) => {
+  const newrenderItem = ({ item, index }) => {
     // console.log("featured cook item fom new cooksssssss", item)
     return (
       <>
         <TouchableOpacity
           onPress={() => {
             getActivityAnalytics(item?.id);
-            navigation.navigate('FoodDetail', {id: item.id});
+            navigation.navigate('FoodDetail', { id: item.id });
           }}
           style={{
             // flexDirection: 'row',
             paddingHorizontal: 10,
             marginBottom: 10,
           }}>
-          <View style={{width: 80}}>
+          <View style={{ width: 80 }}>
             <View
               style={{
                 width: '100%',
@@ -521,7 +528,7 @@ const HomeNew = ({navigation, route}) => {
                             style={{ width: 75, height: 90, borderRadius: 15 }}
                         /> */}
               <Image
-                source={{uri: item?.food_image}}
+                source={{ uri: item?.food_image }}
                 style={{
                   width: 75,
                   height: 90,
@@ -557,13 +564,13 @@ const HomeNew = ({navigation, route}) => {
     );
   };
 
-  const cooksNearbyrenderItem = ({item, index}) => {
+  const cooksNearbyrenderItem = ({ item, index }) => {
     // index == 0 && console.log("itemmmm nearby", item)
     return (
       <TouchableOpacity
         onPress={() => {
           getActivityAnalytics(item?.id);
-          navigation.navigate('FoodDetail', {id: item.id});
+          navigation.navigate('FoodDetail', { id: item.id });
         }}
         key={index.toString()}
         style={{
@@ -583,7 +590,7 @@ const HomeNew = ({navigation, route}) => {
           {/* <View style={{ width: '100%', borderRadius: 5 }}> */}
           {item?.image ? (
             <FastImage
-              source={{uri: item?.image}}
+              source={{ uri: item?.image }}
               style={{
                 width: '45%',
                 height: 120,
@@ -626,7 +633,7 @@ const HomeNew = ({navigation, route}) => {
             />
           )}
           {/* </View> */}
-          <View style={{justifyContent: 'space-between', width: '50%'}}>
+          <View style={{ justifyContent: 'space-between', width: '50%' }}>
             <Text
               style={{
                 fontSize: 15,
@@ -688,7 +695,7 @@ const HomeNew = ({navigation, route}) => {
 
             {item.cook_offer == 1 ? (
               <View style={styles.delLoc}>
-                <Image style={{width: 18, height: 18}} source={offerIcon} />
+                <Image style={{ width: 18, height: 18 }} source={offerIcon} />
                 <Text
                   style={{
                     fontSize: 14.5,
@@ -707,14 +714,14 @@ const HomeNew = ({navigation, route}) => {
     );
   };
 
-  const topHomeePicksRender2 = ({item, index}) => {
+  const topHomeePicksRender2 = ({ item, index }) => {
     return (
       <>
         <TouchableOpacity
           onPress={() => {
             getActivityAnalytics(item?.id);
             !!item?.cookdistancecal
-              ? navigation.navigate('FoodDetail', {id: item.id})
+              ? navigation.navigate('FoodDetail', { id: item.id })
               : setComingSoonModal(true);
             // console.log("camelllcase", toCamelCase(item?.first_name))
           }}
@@ -735,7 +742,7 @@ const HomeNew = ({navigation, route}) => {
               borderColor: '#dedede',
             }}>
             <Image
-              source={{uri: item?.cook_image}}
+              source={{ uri: item?.cook_image }}
               style={{
                 width: '100%',
                 height: 120,
@@ -746,7 +753,7 @@ const HomeNew = ({navigation, route}) => {
                 marginTop: -10,
               }}
             />
-            <View style={{padding: '4%'}}>
+            <View style={{ padding: '4%' }}>
               <Text
                 style={{
                   fontSize: 15,
@@ -762,10 +769,10 @@ const HomeNew = ({navigation, route}) => {
                   justifyContent: 'space-between',
                   paddingBottom: 5,
                 }}>
-                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                   <Image
                     source={starSelect}
-                    style={{width: 14, height: 14, marginRight: 3}}
+                    style={{ width: 14, height: 14, marginRight: 3 }}
                   />
                   <Text
                     style={{
@@ -805,7 +812,7 @@ const HomeNew = ({navigation, route}) => {
     );
   };
 
-  const ourServicesRender = ({item, index}) => {
+  const ourServicesRender = ({ item, index }) => {
     return (
       <>
         <TouchableOpacity
@@ -816,18 +823,18 @@ const HomeNew = ({navigation, route}) => {
               item.navigation_path == 'Home'
                 ? scrollToSection('home')
                 : item.navigation_path == 'Restaurant'
-                ? scrollToSection('restaurant')
-                : item.navigation_path == 'PreOrder'
-                ? navigation.navigate(item.navigation_path)
-                : item.navigation_path == 'Plant'
-                ? navigation.navigate('PlantVendor', {type: 'garden'})
-                : item.navigation_path == 'PickAndDrop'
-                ? navigation.navigate('PickAndDrop')
-                : item.navigation_path == 'Groceries'
-                ? navigation.navigate('GroceryHome', {type: item.service_name})
-                : // item.navigation_path == "PickAndDrop" ? navigation.navigate("PndOrderTrack") :
-                  // item.navigation_path == "PickAndDrop" ? navigation.navigate("ComingSoon", { type: 'Pick & Drop' }) :
-                  navigation.navigate('ComingSoon', {type: item.service_name});
+                  ? scrollToSection('restaurant')
+                  : item.navigation_path == 'PreOrder'
+                    ? navigation.navigate(item.navigation_path)
+                    : item.navigation_path == 'Plant'
+                      ? navigation.navigate('PlantVendor', { type: 'garden' })
+                      : item.navigation_path == 'PickAndDrop'
+                        ? navigation.navigate('PickAndDrop')
+                        : item.navigation_path == 'Groceries'
+                          ? navigation.navigate('GroceryHome', { type: item.service_name })
+                          : // item.navigation_path == "PickAndDrop" ? navigation.navigate("PndOrderTrack") :
+                          // item.navigation_path == "PickAndDrop" ? navigation.navigate("ComingSoon", { type: 'Pick & Drop' }) :
+                          navigation.navigate('ComingSoon', { type: item.service_name, banners:comingSoonBanners });
             } catch (err) {
               console.log('error from ourServices', err);
               ToastAndroid.show(
@@ -859,7 +866,7 @@ const HomeNew = ({navigation, route}) => {
               overflow: 'hidden',
             }}>
             <Image
-              source={{uri: item?.image}}
+              source={{ uri: item?.image }}
               style={{
                 width: 80,
                 // height: 80,
@@ -875,7 +882,7 @@ const HomeNew = ({navigation, route}) => {
               borderRadius={200}
             />
           </View>
-          <View style={{padding: '4%', zIndex: 999}}>
+          <View style={{ padding: '4%', zIndex: 999 }}>
             <Text
               style={{
                 fontSize: 13,
@@ -892,7 +899,7 @@ const HomeNew = ({navigation, route}) => {
     );
   };
 
-  const FilterSlider = ({index}) => {
+  const FilterSlider = ({ index }) => {
     return (
       <View
         style={{
@@ -1041,13 +1048,13 @@ const HomeNew = ({navigation, route}) => {
     if (sectionId == 'home') {
       setCookTypeHome(true);
       targetViewRef.current.measureLayout(scrollViewRef.current, (x, y) => {
-        scrollViewRef.current.scrollTo({y, animated: true});
+        scrollViewRef.current.scrollTo({ y, animated: true });
       });
     }
     if (sectionId == 'restaurant') {
       setCookTypeHome(false);
       targetViewRef.current.measureLayout(scrollViewRef.current, (x, y) => {
-        scrollViewRef.current.scrollTo({y, animated: true});
+        scrollViewRef.current.scrollTo({ y, animated: true });
       });
     }
   };
@@ -1074,7 +1081,7 @@ const HomeNew = ({navigation, route}) => {
                 tilt={30}
                 duration={1500}
                 pauseDuration={5000}
-                style={{justifyContent: 'center', width: '70%'}}>
+                style={{ justifyContent: 'center', width: '70%' }}>
                 <Text
                   style={{
                     color: '#fff',
@@ -1092,7 +1099,7 @@ const HomeNew = ({navigation, route}) => {
               </View>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate('TrackMap', {id: listItems.id})
+                  navigation.navigate('TrackMap', { id: listItems.id })
                 }
                 style={{
                   borderWidth: 0.5,
@@ -1155,7 +1162,7 @@ const HomeNew = ({navigation, route}) => {
                 tilt={30}
                 duration={1500}
                 pauseDuration={5000}
-                style={{justifyContent: 'center', width: '70%'}}>
+                style={{ justifyContent: 'center', width: '70%' }}>
                 <Text
                   style={{
                     color: '#fff',
@@ -1224,13 +1231,13 @@ const HomeNew = ({navigation, route}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <>
       <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
       <ShowTrackInHomePage />
       {modal == false && (
         <>
           <ScrollView
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             ref={scrollViewRef}
             showsVerticalScrollIndicator={false}>
             <View
@@ -1250,7 +1257,7 @@ const HomeNew = ({navigation, route}) => {
                     profile: home_page,
                   })
                 }
-                style={{backgroundColor: '#fff'}}>
+                style={{ backgroundColor: '#fff' }}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -1261,9 +1268,9 @@ const HomeNew = ({navigation, route}) => {
                   }}>
                   <Image
                     source={location_bar_icon}
-                    style={{width: 22, aspectRatio: 1, resizeMode: 'stretch'}}
+                    style={{ width: 22, aspectRatio: 1, resizeMode: 'stretch' }}
                   />
-                  <View style={{height: 40}}>
+                  <View style={{ height: 40 }}>
                     {!!defaultAddress ? (
                       <>
                         <Text
@@ -1316,12 +1323,12 @@ const HomeNew = ({navigation, route}) => {
             </View>
             <LinearGradient
               colors={['#7bffb0', '#fede1d', '#09b44d']}
-              style={{width: '100%', height: 3}}
-              start={{x: 0, y: 0}}
-              end={{x: 1, y: 0}}
+              style={{ width: '100%', height: 3 }}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
             />
             {serviceable ? (
-              <View style={{backgroundColor: HomeBgColor}}>
+              <View style={{ backgroundColor: HomeBgColor }}>
                 <View>
                   {banner && banner.length > 0 ? (
                     // <>
@@ -1332,7 +1339,7 @@ const HomeNew = ({navigation, route}) => {
                       }}>
                       <Carousel
                         enableSnap
-                        style={{borderRadius: 25, overflow: 'hidden'}}
+                        style={{ borderRadius: 25, overflow: 'hidden' }}
                         loop
                         data={banner}
                         renderItem={render_Banner_Item}
@@ -1440,7 +1447,7 @@ const HomeNew = ({navigation, route}) => {
                         }}>
                         {serviceTitle.byCategory}
                       </Text>
-                      <View style={{height: 60}}>
+                      <View style={{ height: 60 }}>
                         <Carousel
                           enableSnap
                           data={food_types}
@@ -1487,7 +1494,7 @@ const HomeNew = ({navigation, route}) => {
                   )}
                   {((top_rated_cooks && top_rated_cooks.length > 0) ||
                     (nearby_cooks && nearby_cooks.length > 0)) &&
-                  oneToOne?.cookIds?.length == 0 ? (
+                    oneToOne?.cookIds?.length == 0 ? (
                     <View>
                       {top_rated_cooks && top_rated_cooks.length > 0 && (
                         <View
@@ -1615,7 +1622,7 @@ const HomeNew = ({navigation, route}) => {
                             />
                           </View>
                           <View>
-                            <View style={{marginLeft: 0}}>
+                            <View style={{ marginLeft: 0 }}>
                               <Carousel
                                 enableSnap
                                 loop
@@ -1639,7 +1646,7 @@ const HomeNew = ({navigation, route}) => {
                       )}
 
                       {nearby_cooks && nearby_cooks.length > 0 && (
-                        <View style={{width: width * 1}} ref={targetViewRef}>
+                        <View style={{ width: width * 1 }} ref={targetViewRef}>
                           <Text
                             style={{
                               color: '#262626',
@@ -1786,7 +1793,7 @@ const HomeNew = ({navigation, route}) => {
                               key={'nearby_cooks_scroll'}>
                               <FlatList
                                 key={'nearby_cooks'}
-                                style={{marginVertical: 10, marginLeft: 0}}
+                                style={{ marginVertical: 10, marginLeft: 0 }}
                                 data={nearby_cooks}
                                 listKey={(item, index) =>
                                   `_key${index.toString()}`
@@ -1796,7 +1803,7 @@ const HomeNew = ({navigation, route}) => {
                                 }
                                 renderItem={cooksNearbyrenderItem}
                                 onEndReachedThreshold={0}
-                                // numColumns={2}
+                              // numColumns={2}
                               />
                             </ScrollView>
                           )}
@@ -1845,7 +1852,7 @@ const HomeNew = ({navigation, route}) => {
                               key={'restaurantCooks_scroll'}>
                               <FlatList
                                 key={'restaurantCooks'}
-                                style={{marginVertical: 10, marginLeft: 0}}
+                                style={{ marginVertical: 10, marginLeft: 0 }}
                                 data={restaurantCooks}
                                 listKey={(item, index) =>
                                   `_key${index.toString()}`
@@ -1855,12 +1862,13 @@ const HomeNew = ({navigation, route}) => {
                                 }
                                 renderItem={cooksNearbyrenderItem}
                                 onEndReachedThreshold={0}
-                                // numColumns={2}
+                              // numColumns={2}
                               />
                             </ScrollView>
                           )}
                         </View>
                       )}
+
                     </View>
                   ) : (
                     <>
@@ -1884,11 +1892,10 @@ const HomeNew = ({navigation, route}) => {
                                 marginLeft: 15,
                                 marginBottom: -10,
                               }}>
-                              {`Home${
-                                oneToOne?.cookIds?.length > 1
-                                  ? ' Cooks '
-                                  : ' Cook '
-                              }for you`}
+                              {`Home${oneToOne?.cookIds?.length > 1
+                                ? ' Cooks '
+                                : ' Cook '
+                                }for you`}
                             </Text>
                             <Text
                               style={{
@@ -1897,11 +1904,10 @@ const HomeNew = ({navigation, route}) => {
                                 fontSize: 13,
                                 marginLeft: 20,
                               }}>
-                              {`Discover Your Favourite Recipes From ${
-                                oneToOne?.cookIds?.length > 1
-                                  ? 'These Cooks'
-                                  : 'This Cook'
-                              }`}
+                              {`Discover Your Favourite Recipes From ${oneToOne?.cookIds?.length > 1
+                                ? 'These Cooks'
+                                : 'This Cook'
+                                }`}
                             </Text>
                             <ScrollView
                               nestedScrollEnabled
@@ -1988,7 +1994,7 @@ const HomeNew = ({navigation, route}) => {
                                 }
                                 renderItem={cooksNearbyrenderItem}
                                 onEndReachedThreshold={0}
-                                // numColumns={2}
+                              // numColumns={2}
                               />
                             </ScrollView>
                           </>
@@ -2057,12 +2063,11 @@ const HomeNew = ({navigation, route}) => {
                               marginLeft: 15,
                               marginBottom: -10,
                             }}>
-                            {`${
-                              oneToOne?.cookIds?.length > 1 ||
+                            {`${oneToOne?.cookIds?.length > 1 ||
                               restaurantCooks.length > 1
-                                ? ' Restaurants '
-                                : ' Restaurant '
-                            }for you`}
+                              ? ' Restaurants '
+                              : ' Restaurant '
+                              }for you`}
                           </Text>
                           <Text
                             style={{
@@ -2071,21 +2076,20 @@ const HomeNew = ({navigation, route}) => {
                               fontSize: 13,
                               marginLeft: 20,
                             }}>
-                            {`Discover Your Favourite Recipes From ${
-                              oneToOne?.cookIds?.length > 1 ||
+                            {`Discover Your Favourite Recipes From ${oneToOne?.cookIds?.length > 1 ||
                               restaurantCooks.length > 1
-                                ? 'These Restaurants'
-                                : 'This Restaurant'
-                            }`}
+                              ? 'These Restaurants'
+                              : 'This Restaurant'
+                              }`}
                           </Text>
                           <ScrollView
                             nestedScrollEnabled
-                            style={{paddingHorizontal: 10}}
+                            style={{ paddingHorizontal: 10 }}
                             overScrollMode="never"
                             key={'allnearByHomeCooks_scroll'}>
                             <FlatList
                               key={'allnearByHomeCooks'}
-                              style={{marginVertical: 10, marginLeft: 0}}
+                              style={{ marginVertical: 10, marginLeft: 0 }}
                               data={restaurantCooks}
                               listKey={(item, index) =>
                                 `_key${index.toString()}`
@@ -2095,7 +2099,7 @@ const HomeNew = ({navigation, route}) => {
                               }
                               renderItem={cooksNearbyrenderItem}
                               onEndReachedThreshold={0}
-                              // numColumns={2}
+                            // numColumns={2}
                             />
                           </ScrollView>
                         </>
@@ -2103,6 +2107,58 @@ const HomeNew = ({navigation, route}) => {
                     </>
                   )}
 
+                  {
+                    gardenVendors && gardenVendors.length > 0 && (
+                      <>
+                        <View
+                          style={{
+                            backgroundColor: '#deece5',
+                            height: 15,
+                          }}
+                        />
+                        <Text
+                          style={{
+                            color: '#29C270',
+                            fontFamily: 'Poppins-Bold',
+                            fontSize: 24,
+                            marginTop: 10,
+                            marginLeft: 15,
+                            marginBottom: -10,
+                          }}>{gardenVendors?.title || 'Garden Vendors for You'}
+                        </Text>
+                        <Text
+                          style={{
+                            color: '#262626',
+                            fontFamily: 'Poppins-Regular',
+                            fontSize: 13,
+                            marginLeft: 15,
+                          }}>
+                          {
+                            gardenVendors?.description || 'Explore best quality cocopeat from trusted vendors.'}
+                        </Text>
+                        <ScrollView
+                          nestedScrollEnabled
+                          style={{}}
+                          overScrollMode="never"
+                          key={'gardenVendors_scroll'}>
+                          <FlatList
+                            key={'gardenVendors'}
+                            style={{ marginVertical: 10, marginLeft: 0 }}
+                            data={gardenVendors}
+                            listKey={(item, index) =>
+                              `_key${index.toString()}`
+                            }
+                            keyExtractor={(item, index) =>
+                              `_key${index.toString()}`
+                            }
+                            renderItem={cooksNearbyrenderItem}
+                            onEndReachedThreshold={0}
+                          // numColumns={2}
+                          />
+                        </ScrollView>
+                      </>
+                    )
+                  }
                   <View
                     style={{
                       width,
@@ -2111,8 +2167,8 @@ const HomeNew = ({navigation, route}) => {
                       alignContent: 'center',
                     }}>
                     <Image
-                      source={footerImage1}
-                      style={{width, maxHeight: 230}}
+                      source={!!footerImage ? { uri: footerImage } : footerImage1}
+                      style={{ width, height: 230 }}
                     />
                   </View>
                 </View>
@@ -2168,7 +2224,7 @@ const HomeNew = ({navigation, route}) => {
           // </Modal>
         )}
       </TouchableOpacity> */}
-    </SafeAreaView>
+    </>
   );
 };
 

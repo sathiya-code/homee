@@ -179,7 +179,7 @@ const PlantVendor = ({ navigation, route }) => {
     };
     return (
 
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#dff0e3', }}>
+        <View style={{ flex: 1, backgroundColor: '#dff0e3', }}>
             <View
                 style={{
                     flexDirection: 'column',
@@ -234,7 +234,7 @@ const PlantVendor = ({ navigation, route }) => {
                     </Modal>
                 }
             </View>
-        </SafeAreaView>
+        </View>
     );
 }
 

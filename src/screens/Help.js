@@ -29,7 +29,7 @@ const Help = ({ navigation }) => {
   const [vegCheckBox, setVegCheckBox] = useState(false);
   const [nonVegCheckBox, setNonVegCheckBox] = useState(false);
   return (
-    <SafeAreaView>
+    <>
       <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
       <View
         style={{
@@ -179,7 +179,7 @@ const Help = ({ navigation }) => {
           </View>
         </TouchableOpacity> */}
       </View>
-    </SafeAreaView>
+    </>
   );
 };
 const styles = StyleSheet.create({
