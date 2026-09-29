@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   ScrollView,
   View,
@@ -13,7 +13,7 @@ import {
   Modal,
   Alert,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   arrow,
   timingIcon,
@@ -21,14 +21,14 @@ import {
   photo1,
   emptyCartIcon,
 } from '../assets/img/Images';
-import { COUPON_CODE } from '../redux/actions/actionTypes';
-import { api } from '../services';
+import {COUPON_CODE} from '../redux/actions/actionTypes';
+import {api} from '../services';
 import Loader from './Loader';
 import moment from 'moment';
 
-const FoodListFilter = ({ navigation, route }) => {
-  console.log("ro", route?.params);
-  const { t, i18 } = useTranslation();
+const FoodListFilter = ({navigation, route}) => {
+  console.log('ro', route?.params);
+  const {t, i18} = useTranslation();
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const [listItems, setListItems] = useState([]);
@@ -38,6 +38,7 @@ const FoodListFilter = ({ navigation, route }) => {
   const [loader, setLoader] = useState(false);
   useEffect(() => {
     getList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paginate]);
   const getList = async () => {
     console.log('id from filter', route?.params?.id);
@@ -62,7 +63,7 @@ const FoodListFilter = ({ navigation, route }) => {
     }
   };
   const add_to_cart = async (id, cookId) => {
-    let response = await api.add_cart({ menu_item_id: id, cook_id: cookId });
+    let response = await api.add_cart({menu_item_id: id, cook_id: cookId});
     console.log('response for add cart in food filter', response);
     if (response.status == 'failure') {
       Alert.alert(
@@ -72,11 +73,12 @@ const FoodListFilter = ({ navigation, route }) => {
           {
             text: 'Yes',
             onPress: () => {
+              // eslint-disable-next-line no-undef
               AsyncStorage.removeItem(COUPON_CODE);
               emptyCart(id, index, type, key);
             },
           },
-          { text: 'No' },
+          {text: 'No'},
         ],
       );
     }
@@ -89,16 +91,16 @@ const FoodListFilter = ({ navigation, route }) => {
 
   const getActivityAnalytics = async cook_id => {
     console.log('cook_id', cook_id);
-    await api.getActivityStatus({ history_type: 2, cook_id });
+    await api.getActivityStatus({history_type: 2, cook_id});
   };
 
-  const newrenderItem = ({ item, index }) => {
+  const newrenderItem = ({item, index}) => {
     console.log('itemmmmmmmmssssss', item);
     return (
       <TouchableOpacity
         onPress={() => {
           getActivityAnalytics(item?.cook_id);
-          navigation.navigate('FoodDetail', { id: item?.cook_id });
+          navigation.navigate('FoodDetail', {id: item?.cook_id});
         }}>
         <View
           style={{
@@ -106,17 +108,17 @@ const FoodListFilter = ({ navigation, route }) => {
             paddingHorizontal: 10,
             marginBottom: 10,
           }}>
-          <View style={{ flex: 2 }}>
-            <View style={{ width: '100%', borderRadius: 5, height: 100 }}>
+          <View style={{flex: 2}}>
+            <View style={{width: '100%', borderRadius: 5, height: 100}}>
               <Image
-                source={{ uri: item?.image }}
-                style={{ width: '100%', borderRadius: 5, height: '100%' }}
+                source={{uri: item?.image}}
+                style={{width: '100%', borderRadius: 5, height: '100%'}}
               />
             </View>
           </View>
           <View
-            style={{ flex: 5, paddingLeft: 8, justifyContent: 'space-between' }}>
-            <Text style={{ fontSize: 15, fontFamily: 'Poppins-Bold' }}>
+            style={{flex: 5, paddingLeft: 8, justifyContent: 'space-between'}}>
+            <Text style={{fontSize: 15, fontFamily: 'Poppins-Bold'}}>
               {' '}
               {item?.userlanguage?.name}
             </Text>
@@ -147,7 +149,7 @@ const FoodListFilter = ({ navigation, route }) => {
                 {item?.preparation_time && (
                   <View style={styles.delLoc}>
                     <Image
-                      style={{ width: 18, height: 18 }}
+                      style={{width: 18, height: 18}}
                       source={timingIcon}
                     />
                     <Text
@@ -186,7 +188,7 @@ const FoodListFilter = ({ navigation, route }) => {
     );
   };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <View
         style={{
           backgroundColor: '#09b44d',
@@ -202,7 +204,7 @@ const FoodListFilter = ({ navigation, route }) => {
             paddingHorizontal: 15,
             alignItems: 'center',
           }}>
-          <Image style={{ width: 9, height: 16 }} source={arrow} />
+          <Image style={{width: 9, height: 16}} source={arrow} />
           <Text
             style={{
               color: '#fff',
@@ -212,14 +214,15 @@ const FoodListFilter = ({ navigation, route }) => {
               textAlignVertical: 'center',
               marginTop: 3,
             }}>
-            {route?.params?.englanguage?.name ?? route?.params?.userlanguage?.name}
+            {route?.params?.englanguage?.name ??
+              route?.params?.userlanguage?.name}
           </Text>
         </TouchableOpacity>
       </View>
 
       {modal != true && listItems.length > 0 ? (
         <FlatList
-          style={{ margin: 10 }}
+          style={{margin: 10}}
           data={listItems}
           keyExtractor={(item, index) => index.toString()}
           renderItem={newrenderItem}
@@ -229,9 +232,9 @@ const FoodListFilter = ({ navigation, route }) => {
         />
       ) : (
         modal != true && (
-          <View style={{ flex: 1, paddingVertical: 300, alignItems: 'center' }}>
+          <View style={{flex: 1, paddingVertical: 300, alignItems: 'center'}}>
             <Image
-              style={{ height: 100, width: 100, alignItems: 'center' }}
+              style={{height: 100, width: 100, alignItems: 'center'}}
               source={emptyCartIcon}
             />
             <Text
@@ -240,15 +243,18 @@ const FoodListFilter = ({ navigation, route }) => {
                 fontFamily: 'Poppins-Bold',
                 fontSize: 14,
                 opacity: 0.8,
-                paddingHorizontal: 10
+                paddingHorizontal: 10,
               }}>
-              {moment().format('HH:mm') > '23:00' || moment().format('HH:mm') < '08:00' ? 'Our Delivery Starts Everyday @ 8.A.M 😄' : `😥Oops! Hungry for this category?\nExciting items are coming soon!`}
+              {moment().format('HH:mm') > '23:00' ||
+              moment().format('HH:mm') < '08:00'
+                ? 'Our Delivery Starts Everyday @ 8.A.M 😄'
+                : '😥Oops! Hungry for this category?\nExciting items are coming soon!'}
             </Text>
           </View>
         )
       )}
       {loader && (
-        <View style={{ padding: 10 }}>
+        <View style={{padding: 10}}>
           <Loader />
         </View>
       )}

@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { TextInput, View, Image, Text, TouchableOpacity } from 'react-native';
-import { searchIcon, emptyIcon } from '../assets/img/Images';
+import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {TextInput, View, Image, Text, TouchableOpacity} from 'react-native';
+import {searchIcon, emptyIcon} from '../assets/img/Images';
 import TopTab from '../Navigation/MenuTopTab';
 
 const Search = () => {
-  const { t, i18n } = useTranslation();
+  const {t, i18n} = useTranslation();
   const [emptySearch, setEmptySearch] = useState(false);
   const [searchText, setSearchText] = useState(null);
   return (
-    <View style={{ backgroundColor: '#fff', flex: 1 }}>
+    <View style={{backgroundColor: '#fff', flex: 1}}>
       <View
         style={{
           marginTop: 20,
@@ -17,7 +17,7 @@ const Search = () => {
           position: 'relative',
           height: 50,
         }}>
-        {searchText &&
+        {searchText && (
           <TouchableOpacity
             style={{
               position: 'absolute',
@@ -43,10 +43,10 @@ const Search = () => {
               x
             </Text>
           </TouchableOpacity>
-        }
+        )}
         <TextInput
           inlineImageLeft="search_icon"
-          placeholder={t("searchPage.pleaseSearchYourFoodzPreference")}
+          placeholder={t('searchPage.pleaseSearchYourFoodzPreference')}
           value={searchText}
           style={{
             fontFamily: 'Poppins-Regular',

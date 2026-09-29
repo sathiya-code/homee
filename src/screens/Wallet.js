@@ -1,6 +1,6 @@
-import { useFocusEffect } from '@react-navigation/core';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import {useFocusEffect} from '@react-navigation/core';
+import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   View,
   Text,
@@ -12,12 +12,12 @@ import {
   StatusBar,
   Pressable,
 } from 'react-native';
-import { arrow } from '../assets/img/Images';
-import { api } from '../services';
+import {arrow} from '../assets/img/Images';
+import {api} from '../services';
 import Loader from './Loader';
 
-const Wallet = ({ navigation }) => {
-  const { t, i18n } = useTranslation();
+const Wallet = ({navigation}) => {
+  const {t, i18n} = useTranslation();
   const [modal, setModal] = useState(true);
   const [walletDetails, setWalletDetails] = useState(null);
   const [showBtn, setShowBtn] = useState(false);
@@ -25,28 +25,28 @@ const Wallet = ({ navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       getWallet();
-    }, [])
+    }, []),
   );
   const getWallet = async () => {
     setModal(true);
     let response = await api.wallet();
-    console.log("response", response);
+    console.log('response', response);
     if (response.status == 'success') {
       setWalletDetails(response.wallet_balence);
       setShowBtn(response.wallet_button);
     }
     setModal(false);
-  }
+  };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
+    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+      <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
       <View
         style={{
           backgroundColor: '#09b44d',
           borderBottomLeftRadius: 25,
           borderBottomRightRadius: 25,
           justifyContent: 'center',
-          height: 60
+          height: 60,
         }}>
         <Pressable
           onPress={() => navigation.goBack()}
@@ -54,18 +54,21 @@ const Wallet = ({ navigation }) => {
             flexDirection: 'row',
             paddingHorizontal: 15,
           }}>
-          <Image style={{ width: 9, height: 16 }} source={arrow} />
-          <Text style={{
-            color: '#fff',
-            fontSize: 18,
-            fontFamily: 'Poppins-Bold',
-            paddingLeft: 10,
-            marginTop: -5,
-          }}>{t('walletPage.wallet')}</Text>
+          <Image style={{width: 9, height: 16}} source={arrow} />
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 18,
+              fontFamily: 'Poppins-Bold',
+              paddingLeft: 10,
+              marginTop: -5,
+            }}>
+            {t('walletPage.wallet')}
+          </Text>
         </Pressable>
       </View>
-      <View style={{ padding: 15 }}>
-        {modal != null && walletDetails &&
+      <View style={{padding: 15}}>
+        {modal != null && walletDetails && (
           <View
             style={{
               padding: 15,
@@ -82,14 +85,14 @@ const Wallet = ({ navigation }) => {
               }}>
               {t('walletPage.homlyFoodsMoney')}
             </Text>
-            <View style={{ paddingVertical: 25 }}>
+            <View style={{paddingVertical: 25}}>
               <Text
                 style={{
                   fontSize: 17,
                   color: '#000',
                   opacity: 0.3,
                   fontFamily: 'Poppins-Bold',
-                  marginTop: -10
+                  marginTop: -10,
                 }}>
                 {t('walletPage.totalBalance')}
               </Text>
@@ -100,7 +103,9 @@ const Wallet = ({ navigation }) => {
                   fontFamily: 'Poppins-Bold',
                   marginTop: 6,
                 }}>
-                {walletDetails?.balence ? '₹ ' + walletDetails.balence : '₹ ' + 0}
+                {walletDetails?.balence
+                  ? '₹ ' + walletDetails.balence
+                  : '₹ ' + 0}
               </Text>
             </View>
             <Text
@@ -111,7 +116,7 @@ const Wallet = ({ navigation }) => {
                 fontWeight: '400',
                 lineHeight: 21,
                 zIndex: 1,
-                marginTop: -10
+                marginTop: -10,
               }}>
               {t('walletPage.homlyFoodsText')}
             </Text>
@@ -126,7 +131,8 @@ const Wallet = ({ navigation }) => {
                 backgroundColor: '#09b44d',
                 zIndex: 0,
                 opacity: 0.3,
-              }}></View>
+              }}
+            />
             <View
               style={{
                 width: 200,
@@ -138,39 +144,44 @@ const Wallet = ({ navigation }) => {
                 backgroundColor: '#09b44d',
                 zIndex: 0,
                 opacity: 0.3,
-              }}></View>
+              }}
+            />
           </View>
-        }
+        )}
       </View>
-      {showBtn && <View
-        style={{
-          position: 'absolute',
-          bottom: 20,
-          left: 0,
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100%',
-        }}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('AddMoney', { balence: walletDetails?.balence })}
+      {showBtn && (
+        <View
           style={{
-            backgroundColor: '#09b44d',
-            height: 42,
-            width: 180,
-            borderRadius: 50,
-            justifyContent: 'center',
+            position: 'absolute',
+            bottom: 20,
+            left: 0,
             alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
           }}>
-          <Text
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('AddMoney', {balence: walletDetails?.balence})
+            }
             style={{
-              color: '#fff',
-              fontFamily: 'Poppins-Bold',
-              fontSize: 18,
+              backgroundColor: '#09b44d',
+              height: 42,
+              width: 180,
+              borderRadius: 50,
+              justifyContent: 'center',
+              alignItems: 'center',
             }}>
-            {t('walletPage.addMoney')}
-          </Text>
-        </TouchableOpacity>
-      </View>}
+            <Text
+              style={{
+                color: '#fff',
+                fontFamily: 'Poppins-Bold',
+                fontSize: 18,
+              }}>
+              {t('walletPage.addMoney')}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
       <View>
         {modal && (
           <Modal transparent={true} visible={modal}>

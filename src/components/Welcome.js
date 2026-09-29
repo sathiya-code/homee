@@ -10,11 +10,11 @@ import {
   Button,
 } from 'react-native';
 
-import { wcBg, nav, switchTgl, notif } from '../assets/img/Images';
+import {wcBg, nav, switchTgl, notif} from '../assets/img/Images';
 
 const Welcome = () => {
   return (
-    <View style={{ flexDirection: 'column' }}>
+    <View style={{flexDirection: 'column'}}>
       <ImageBackground
         source={wcBg}
         style={{
@@ -24,7 +24,7 @@ const Welcome = () => {
           borderBottomStartRadius: 30,
           overflow: 'hidden',
         }}>
-        <View style={{ flex: 1 }}>
+        <View style={{flex: 1}}>
           <View
             style={{
               padding: 1,
@@ -43,11 +43,11 @@ const Welcome = () => {
                   paddingHorizontal: 15,
                   paddingVertical: 15,
                 }}>
-                <Image style={{ width: 28, height: 20 }} source={nav} />
+                <Image style={{width: 28, height: 20}} source={nav} />
               </TouchableOpacity>
 
               <TouchableOpacity>
-                <Text style={[styles.pageTitle, { alignItems: 'center' }]}>
+                <Text style={[styles.pageTitle, {alignItems: 'center'}]}>
                   Homely Food
                 </Text>
               </TouchableOpacity>
@@ -59,18 +59,18 @@ const Welcome = () => {
                 justifyContent: 'flex-end',
                 alignItems: 'center',
               }}>
-              <TouchableOpacity style={{ paddingHorizontal: 10 }}>
-                <Image source={switchTgl} style={{ width: 38, height: 22 }} />
+              <TouchableOpacity style={{paddingHorizontal: 10}}>
+                <Image source={switchTgl} style={{width: 38, height: 22}} />
               </TouchableOpacity>
-              <TouchableOpacity style={{ paddingRight: 20, paddingLeft: 10 }}>
-                <Image source={notif} style={{ width: 22, height: 26 }} />
+              <TouchableOpacity style={{paddingRight: 20, paddingLeft: 10}}>
+                <Image source={notif} style={{width: 22, height: 26}} />
                 <Text style={styles.notifCnt}>25</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
-        <View style={{ flex: 2 }}>
-          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{flex: 2}}>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
             <Text style={styles.wcTxt}>Welcome Back</Text>
             <Text style={styles.nameTxt}>Rubesh John Raj</Text>
             <TouchableOpacity>
@@ -79,7 +79,6 @@ const Welcome = () => {
           </View>
         </View>
       </ImageBackground>
-
     </View>
   );
 };
@@ -88,20 +87,17 @@ const styles = StyleSheet.create({
   wcTxt: {
     color: '#fff',
     fontSize: 18,
-    color: '#000',
     fontFamily: 'Poppins-Bold',
   },
   nameTxt: {
     color: '#fff',
     fontSize: 25,
-    color: '#fff',
     marginVertical: 2,
     fontFamily: 'Poppins-Bold',
   },
   profTxt: {
     color: '#fff',
     fontSize: 18,
-    color: '#fff',
     fontFamily: 'Poppins-Bold',
     paddingVertical: 3,
   },

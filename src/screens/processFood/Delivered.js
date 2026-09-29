@@ -1,32 +1,76 @@
 import React from 'react';
-import { ScrollView, View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { locationIcon, timingIcon, qtyIcon, photo1 } from '../../assets/img/Images'
-
+import {
+  ScrollView,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import {
+  locationIcon,
+  timingIcon,
+  qtyIcon,
+  photo1,
+} from '../../assets/img/Images';
 
 const Delivered = () => {
   return (
     <ScrollView>
-      <View style={{ flexDirection: 'row', paddingHorizontal: 10, }}>
-        <View style={{ flex: 3, }}>
-          <View style={{ width: '100%', borderRadius: 5, height: 150, }}>
-            <Image source={photo1} style={{ width: '100%', height: 150, borderRadius: 5, height: '100%' }} />
+      <View style={{flexDirection: 'row', paddingHorizontal: 10}}>
+        <View style={{flex: 3}}>
+          <View style={{width: '100%', borderRadius: 5, height: 150}}>
+            <Image
+              source={photo1}
+              style={{
+                width: '100%',
+                height: 150,
+                borderRadius: 5,
+              }}
+            />
           </View>
         </View>
-        <View style={{ flex: 5, paddingLeft: 8 }}>
-          <Text style={{ fontSize: 15, fontFamily: 'Poppins-Bold' }} > Pomegran Curd Rice</Text>
+        <View style={{flex: 5, paddingLeft: 8}}>
+          <Text style={{fontSize: 15, fontFamily: 'Poppins-Bold'}}>
+            {' '}
+            Pomegran Curd Rice
+          </Text>
           <View style={styles.delLoc}>
-            <Image style={{ width: 18, height: 17.5, }} source={qtyIcon} />
-            <Text style={{ fontSize: 12.5, fontFamily: 'Poppins-Regular', alignItems: 'center', justifyContent: 'center', marginLeft: 6 }} >
+            <Image style={{width: 18, height: 17.5}} source={qtyIcon} />
+            <Text
+              style={{
+                fontSize: 12.5,
+                fontFamily: 'Poppins-Regular',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: 6,
+              }}>
               South Indian
             </Text>
           </View>
           <View style={styles.delLoc}>
-            <Image style={{ width: 18, height: 18, }} source={timingIcon} />
-            <Text style={{ fontSize: 12.5, fontFamily: 'Poppins-Regular', alignItems: 'center', justifyContent: 'center', marginLeft: 6 }} >Delivery - 9:40 AM</Text>
+            <Image style={{width: 18, height: 18}} source={timingIcon} />
+            <Text
+              style={{
+                fontSize: 12.5,
+                fontFamily: 'Poppins-Regular',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: 6,
+              }}>
+              Delivery - 9:40 AM
+            </Text>
           </View>
           <View style={styles.delLoc}>
-            <Image style={{ width: 14, height: 20.3, }} source={locationIcon} />
-            <Text style={{ fontSize: 12.5, fontFamily: 'Poppins-Regular', alignItems: 'center', justifyContent: 'center', marginLeft: 6 }} >
+            <Image style={{width: 14, height: 20.3}} source={locationIcon} />
+            <Text
+              style={{
+                fontSize: 12.5,
+                fontFamily: 'Poppins-Regular',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: 6,
+              }}>
               Vadapalani
             </Text>
           </View>
@@ -42,12 +86,12 @@ const Delivered = () => {
       </View>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   delLoc: {
     flexDirection: 'row',
-    marginTop: 8
-  }
-})
+    marginTop: 8,
+  },
+});
 export default Delivered;

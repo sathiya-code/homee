@@ -1,4 +1,5 @@
 import React from 'react';
+import {Marker} from 'react-native-maps';
 
 const MyMarker = props => {
   const initMarker = ref => {};

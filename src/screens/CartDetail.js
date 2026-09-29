@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -19,9 +19,9 @@ import {
   offerIcon,
   cartIcon,
 } from '../assets/img/Images';
-import { api } from '../services/index';
+import {api} from '../services/index';
 import Loader from './Loader';
-const CartDetail = ({ navigation }) => {
+const CartDetail = ({navigation}) => {
   const [checkDeliver, setCheckDeliver] = useState(false);
   const [cardDetails, setCardDetails] = useState(null);
   const [modal, setModal] = useState(true);
@@ -29,20 +29,21 @@ const CartDetail = ({ navigation }) => {
     setCheckDeliver(!checkDeliver);
   };
   const getCartItems = async () => {
-    setModal(true); console.log('response');
+    setModal(true);
+    console.log('response');
     let response = await api.show_cart();
     console.log('response11111', response);
     if (response.status == 'success') {
       setCardDetails(response);
     }
     setModal(false);
-  }
+  };
   useEffect(() => {
     getCartItems();
-  }, [])
-  const renderItem = ({ item, index }) => {
+  }, []);
+  const renderItem = ({item, index}) => {
     return (
-      <View key={index} style={{ borderColor: '#d5e7dd', borderBottomWidth: 4 }}>
+      <View key={index} style={{borderColor: '#d5e7dd', borderBottomWidth: 4}}>
         <View>
           <TouchableOpacity
             onPress={() => navigation.navigate('FoodDetail')}
@@ -51,7 +52,7 @@ const CartDetail = ({ navigation }) => {
               paddingHorizontal: 10,
               marginBottom: 25,
             }}>
-            <View style={{ flex: 2, paddingLeft: 14 }}>
+            <View style={{flex: 2, paddingLeft: 14}}>
               <View
                 style={{
                   width: 26,
@@ -68,17 +69,22 @@ const CartDetail = ({ navigation }) => {
                     height: 13,
                     borderRadius: 59,
                     backgroundColor: '#09b44d',
-                  }}></View>
+                  }}
+                />
               </View>
-              <Text style={{ fontSize: 15, fontFamily: 'Poppins-Bold' }}>
+              <Text style={{fontSize: 15, fontFamily: 'Poppins-Bold'}}>
                 Panner Cukka
               </Text>
               <Text
-                style={{ fontSize: 15, fontFamily: 'Poppins-Bold', marginTop: 5 }}>
+                style={{
+                  fontSize: 15,
+                  fontFamily: 'Poppins-Bold',
+                  marginTop: 5,
+                }}>
                 {' '}
                 ₹300
               </Text>
-              <TouchableOpacity style={{ marginTop: 15 }}>
+              <TouchableOpacity style={{marginTop: 15}}>
                 <Text
                   style={{
                     color: '#fff',
@@ -94,21 +100,21 @@ const CartDetail = ({ navigation }) => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <View style={{ flex: 2 }}>
-              <View style={{ width: '100%', borderRadius: 5 }}>
+            <View style={{flex: 2}}>
+              <View style={{width: '100%', borderRadius: 5}}>
                 <Image
                   source={photo1}
-                  style={{ width: '100%', height: 150, borderRadius: 5 }}
+                  style={{width: '100%', height: 150, borderRadius: 5}}
                 />
               </View>
             </View>
           </TouchableOpacity>
         </View>
       </View>
-    )
-  }
+    );
+  };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{flex: 1}}>
       <View
         style={{
           flexDirection: 'row',
@@ -118,7 +124,6 @@ const CartDetail = ({ navigation }) => {
           height: 60,
           borderBottomLeftRadius: 25,
           borderBottomRightRadius: 25,
-          alignItems: 'center',
         }}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -126,20 +131,23 @@ const CartDetail = ({ navigation }) => {
             paddingHorizontal: 15,
             paddingVertical: 15,
           }}>
-          <Image style={{ width: 9, height: 16 }} source={arrow} />
+          <Image style={{width: 9, height: 16}} source={arrow} />
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text style={[styles.pageTitle, { alignItems: 'center' }]}>Cart</Text>
+          <Text style={[styles.pageTitle, {alignItems: 'center'}]}>Cart</Text>
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={{ marginBottom: 70 }}>
-        {cardDetails && cardDetails?.cart.length > 0 &&
+      <ScrollView style={{marginBottom: 70}}>
+        {cardDetails &&
+          cardDetails?.cart.length > 0 &&
           cardDetails.cart.map((list, index) => {
             return (
               <>
-                <View key={index} style={{ borderColor: '#d5e7dd', borderBottomWidth: 4 }}>
-                  <View style={{ padding: 10 }}>
+                <View
+                  key={index}
+                  style={{borderColor: '#d5e7dd', borderBottomWidth: 4}}>
+                  <View style={{padding: 10}}>
                     <TouchableOpacity
                       // onPress={() => navigation.navigate('FoodDetail')}
                       style={{
@@ -147,7 +155,7 @@ const CartDetail = ({ navigation }) => {
                         paddingHorizontal: 10,
                         marginBottom: 25,
                       }}>
-                      <View style={{ flex: 2, paddingLeft: 14 }}>
+                      <View style={{flex: 2, paddingLeft: 14}}>
                         <View
                           style={{
                             width: 26,
@@ -164,51 +172,25 @@ const CartDetail = ({ navigation }) => {
                               height: 13,
                               borderRadius: 59,
                               backgroundColor: '#09b44d',
-                            }}></View>
+                            }}
+                          />
                         </View>
-                        <Text style={{ fontSize: 15, fontFamily: 'Poppins-Bold' }}>
+                        <Text
+                          style={{fontSize: 15, fontFamily: 'Poppins-Bold'}}>
                           {list?.menuitem?.userlanguage?.name}
                         </Text>
                         <Text
-                          style={{ fontSize: 15, fontFamily: 'Poppins-Bold', marginTop: 5 }}>
+                          style={{
+                            fontSize: 15,
+                            fontFamily: 'Poppins-Bold',
+                            marginTop: 5,
+                          }}>
                           {' '}
                           ₹ {list?.menuitem?.final_price}
                         </Text>
-                        <View style={{ marginTop: 15, flexDirection: "row" }}>
-                          <TouchableOpacity style={{
-                            color: '#fff',
-                            backgroundColor: '#09b44d',
-                            width: 50,
-                            borderRadius: 10,
-                            padding: 10,
-                            fontFamily: 'Poppins-Bold',
-                            textAlign: 'center',
-                            fontSize: 15,
-                          }}>
-                            <Text style={{
-                              color: '#fff',
-                              fontFamily: 'Poppins-Bold',
-                              textAlign: 'center',
-                              fontSize: 15,
-                            }}>
-                              -
-                            </Text>
-                          </TouchableOpacity>
-                          <Text style={{
-                            color: '#000',
-                            width: 50,
-                            borderRadius: 10,
-                            padding: 10,
-                            fontFamily: 'Poppins-Bold',
-                            textAlign: 'center',
-                            fontSize: 15,
-                          }}>{list.quantity}</Text>
-                          <TouchableOpacity style={{
-                            fontFamily: 'Poppins-Bold',
-                            textAlign: 'center',
-                            fontSize: 15,
-                          }}>
-                            <Text style={{
+                        <View style={{marginTop: 15, flexDirection: 'row'}}>
+                          <TouchableOpacity
+                            style={{
                               color: '#fff',
                               backgroundColor: '#09b44d',
                               width: 50,
@@ -218,16 +200,59 @@ const CartDetail = ({ navigation }) => {
                               textAlign: 'center',
                               fontSize: 15,
                             }}>
+                            <Text
+                              style={{
+                                color: '#fff',
+                                fontFamily: 'Poppins-Bold',
+                                textAlign: 'center',
+                                fontSize: 15,
+                              }}>
+                              -
+                            </Text>
+                          </TouchableOpacity>
+                          <Text
+                            style={{
+                              color: '#000',
+                              width: 50,
+                              borderRadius: 10,
+                              padding: 10,
+                              fontFamily: 'Poppins-Bold',
+                              textAlign: 'center',
+                              fontSize: 15,
+                            }}>
+                            {list.quantity}
+                          </Text>
+                          <TouchableOpacity
+                            style={{
+                              fontFamily: 'Poppins-Bold',
+                              textAlign: 'center',
+                              fontSize: 15,
+                            }}>
+                            <Text
+                              style={{
+                                color: '#fff',
+                                backgroundColor: '#09b44d',
+                                width: 50,
+                                borderRadius: 10,
+                                padding: 10,
+                                fontFamily: 'Poppins-Bold',
+                                textAlign: 'center',
+                                fontSize: 15,
+                              }}>
                               +
                             </Text>
                           </TouchableOpacity>
                         </View>
                       </View>
-                      <View style={{ flex: 2 }}>
-                        <View style={{ width: '100%', borderRadius: 5 }}>
+                      <View style={{flex: 2}}>
+                        <View style={{width: '100%', borderRadius: 5}}>
                           <Image
-                            source={{ uri: list?.menuitem?.image }}
-                            style={{ width: '100%', height: 150, borderRadius: 5 }}
+                            source={{uri: list?.menuitem?.image}}
+                            style={{
+                              width: '100%',
+                              height: 150,
+                              borderRadius: 5,
+                            }}
                           />
                         </View>
                       </View>
@@ -235,10 +260,8 @@ const CartDetail = ({ navigation }) => {
                   </View>
                 </View>
               </>
-            )
-          })
-
-        }
+            );
+          })}
 
         <>
           <View
@@ -250,8 +273,8 @@ const CartDetail = ({ navigation }) => {
               borderColor: '#d5e7dd',
               borderBottomWidth: 4,
             }}>
-            <View style={{ flexDirection: 'row' }}>
-              <Image source={offerIcon} style={{ width: 28, height: 28 }} />
+            <View style={{flexDirection: 'row'}}>
+              <Image source={offerIcon} style={{width: 28, height: 28}} />
               <Text
                 style={{
                   fontFamily: 'Poppins-Bold',
@@ -262,20 +285,20 @@ const CartDetail = ({ navigation }) => {
                 APPLY COUPON
               </Text>
             </View>
-            <TouchableOpacity style={{ padding: 8 }}>
+            <TouchableOpacity style={{padding: 8}}>
               <Image
                 source={arrow}
                 style={{
                   width: 8,
                   height: 13,
                   tintColor: '#000',
-                  transform: [{ rotate: '180deg' }],
+                  transform: [{rotate: '180deg'}],
                 }}
               />
             </TouchableOpacity>
           </View>
 
-          <View style={{ borderColor: '#d5e7dd', borderBottomWidth: 1 }}>
+          <View style={{borderColor: '#d5e7dd', borderBottomWidth: 1}}>
             <View
               style={{
                 paddingHorizontal: 20,
@@ -413,7 +436,7 @@ const CartDetail = ({ navigation }) => {
               flexDirection: 'row',
               padding: 15,
             }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <View
                 style={{
                   borderWidth: 1,
@@ -424,18 +447,21 @@ const CartDetail = ({ navigation }) => {
                   width: 45,
                   height: 45,
                 }}>
-                <Image source={locatIcon} style={{ width: 20, height: 30 }} />
+                <Image source={locatIcon} style={{width: 20, height: 30}} />
                 <View
                   style={{
                     position: 'absolute',
                     top: -10,
                     right: -10,
                   }}>
-                  <Image source={roundticIcon} style={{ width: 20, height: 20 }} />
+                  <Image
+                    source={roundticIcon}
+                    style={{width: 20, height: 20}}
+                  />
                 </View>
               </View>
-              <View style={{ marginLeft: 20 }}>
-                <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 14 }}>
+              <View style={{marginLeft: 20}}>
+                <Text style={{fontFamily: 'Poppins-Bold', fontSize: 14}}>
                   Deliver to Other
                 </Text>
                 <Text
@@ -446,13 +472,17 @@ const CartDetail = ({ navigation }) => {
                   }}>
                   Monisan Colony
                 </Text>
-                <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 14 }}>
+                <Text style={{fontFamily: 'Poppins-Bold', fontSize: 14}}>
                   30 Mins
                 </Text>
               </View>
             </View>
             <Text
-              style={{ fontFamily: 'Poppins-Bold', fontSize: 14, color: '#09b44d' }}>
+              style={{
+                fontFamily: 'Poppins-Bold',
+                fontSize: 14,
+                color: '#09b44d',
+              }}>
               ADD ADDRESS
             </Text>
           </View>
@@ -470,10 +500,11 @@ const CartDetail = ({ navigation }) => {
               justifyContent: 'space-between',
               paddingHorizontal: 25,
             }}>
-            <Text style={{ color: '#fff', fontFamily: 'Poppins-Bold', fontSize: 16 }}>
+            <Text
+              style={{color: '#fff', fontFamily: 'Poppins-Bold', fontSize: 16}}>
               ₹ 500
             </Text>
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{flexDirection: 'row'}}>
               <Text
                 style={{
                   color: '#fff',
@@ -483,17 +514,17 @@ const CartDetail = ({ navigation }) => {
                 }}>
                 Check Out
               </Text>
-              <Image source={cartIcon} style={{ width: 23, height: 20 }} />
+              <Image source={cartIcon} style={{width: 23, height: 20}} />
             </View>
           </TouchableOpacity>
         </>
       </ScrollView>
       <View>
-        {modal &&
+        {modal && (
           <Modal transparent={true} visible={modal}>
             <Loader />
           </Modal>
-        }
+        )}
       </View>
     </SafeAreaView>
   );

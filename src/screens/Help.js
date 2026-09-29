@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -23,21 +23,21 @@ import {
   supportIcon,
   privacyIcon,
 } from '../assets/img/Images';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-const Help = ({ navigation }) => {
+const Help = ({navigation}) => {
   const [vegCheckBox, setVegCheckBox] = useState(false);
   const [nonVegCheckBox, setNonVegCheckBox] = useState(false);
   return (
     <>
-      <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
+      <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
       <View
         style={{
           backgroundColor: '#09b44d',
           borderBottomLeftRadius: 25,
           borderBottomRightRadius: 25,
           justifyContent: 'center',
-          height: 60
+          height: 60,
         }}>
         <Pressable
           onPress={() => navigation.goBack()}
@@ -45,14 +45,17 @@ const Help = ({ navigation }) => {
             flexDirection: 'row',
             paddingHorizontal: 15,
           }}>
-          <Image style={{ width: 9, height: 16 }} source={arrow} />
-          <Text style={{
-            color: '#fff',
-            fontSize: 18,
-            fontFamily: 'Poppins-Bold',
-            paddingLeft: 10,
-            marginTop: -5,
-          }}>Help</Text>
+          <Image style={{width: 9, height: 16}} source={arrow} />
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 18,
+              fontFamily: 'Poppins-Bold',
+              paddingLeft: 10,
+              marginTop: -5,
+            }}>
+            Help
+          </Text>
         </Pressable>
       </View>
       {/* <TouchableOpacity
@@ -92,7 +95,9 @@ const Help = ({ navigation }) => {
 
       <View>
         <TouchableOpacity
-          onPress={() => { navigation.navigate('TermsAndConditions', navigation) }}
+          onPress={() => {
+            navigation.navigate('TermsAndConditions', navigation);
+          }}
           style={{
             paddingHorizontal: 20,
             paddingVertical: 17,
@@ -106,7 +111,12 @@ const Help = ({ navigation }) => {
               alignItems: 'center',
               width: '100%',
             }}>
-            <Text style={{ fontFamily: 'Poppins-Regular', fontWeight: '400', fontSize: 15 }}>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Regular',
+                fontWeight: '400',
+                fontSize: 15,
+              }}>
               Terms and Conditions
             </Text>
             <Image
@@ -116,13 +126,15 @@ const Help = ({ navigation }) => {
                 height: 12,
                 resizeMode: 'stretch',
                 tintColor: '#000',
-                transform: [{ rotate: '180deg' }],
+                transform: [{rotate: '180deg'}],
               }}
             />
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => { navigation.navigate('PrivacyPolicy', navigation) }}
+          onPress={() => {
+            navigation.navigate('PrivacyPolicy', navigation);
+          }}
           style={{
             paddingHorizontal: 20,
             paddingVertical: 17,
@@ -136,7 +148,12 @@ const Help = ({ navigation }) => {
               alignItems: 'center',
               width: '100%',
             }}>
-            <Text style={{ fontFamily: 'Poppins-Regular', fontWeight: '400', fontSize: 15 }}>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Regular',
+                fontWeight: '400',
+                fontSize: 15,
+              }}>
               Privacy Policy
             </Text>
             <Image
@@ -146,7 +163,7 @@ const Help = ({ navigation }) => {
                 height: 12,
                 resizeMode: 'stretch',
                 tintColor: '#000',
-                transform: [{ rotate: '180deg' }],
+                transform: [{rotate: '180deg'}],
               }}
             />
           </View>

@@ -12,11 +12,12 @@ export const GetPndProvider = props => {
   useEffect(() => {
     (async () => {
       console.log('context pickupid', pickupAddressId);
-      if (!!pickupAddressId) {
+      if (pickupAddressId) {
         const response = await api.getPndAddressById(pickupAddressId);
         console.log('context pickupid resposne', response);
-        if (response.status == 'success')
+        if (response.status == 'success') {
           setPickupLocation(response.user_address);
+        }
       }
     })();
   }, [pickupAddressId, setPickupAddressId]);
@@ -24,11 +25,12 @@ export const GetPndProvider = props => {
   useEffect(() => {
     (async () => {
       console.log('context dropid', dropAddressId);
-      if (!!dropAddressId) {
+      if (dropAddressId) {
         const response = await api.getPndAddressById(dropAddressId);
         console.log('context dropid resposne', response);
-        if (response.status == 'success')
+        if (response.status == 'success') {
           setDropLocation(response.user_address);
+        }
       }
     })();
   }, [dropAddressId, setDropAddressId]);

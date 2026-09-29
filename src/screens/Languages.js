@@ -129,7 +129,7 @@ const Languages = ({navigation, route}) => {
       // setCurrentLocation(location.coords);
       const currentLat = location.coords.latitude;
       const currentLng = location.coords.longitude;
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + id;
+      axios.defaults.headers.common.Authorization = 'Bearer ' + id;
 
       const response = await api.changeDefaultAddressAuto({
         currentLat,
@@ -170,6 +170,7 @@ const Languages = ({navigation, route}) => {
     get_Token();
     // RNBootSplash.hide({ fade: true })
     changeLanguage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // useEffect(() => {
   //   get_Token();

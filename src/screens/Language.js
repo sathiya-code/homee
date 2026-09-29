@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -12,15 +12,15 @@ import {
   Modal,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
-import { arrow, photo1, timingIcon, offerIcon } from '../assets/img/Images';
-import { useTranslation } from 'react-i18next';
-import { api } from '../services/index';
+import {arrow, photo1, timingIcon, offerIcon} from '../assets/img/Images';
+import {useTranslation} from 'react-i18next';
+import {api} from '../services/index';
 import Loader from './Loader';
-import { RadioGroup } from 'react-native-radio-buttons-group';
-import { PrimaryGreen } from '../helper/styles.helper';
+import {RadioGroup} from 'react-native-radio-buttons-group';
+import {PrimaryGreen} from '../helper/styles.helper';
 
-const Language = ({ navigation }) => {
-  const { t, i18n } = useTranslation();
+const Language = ({navigation}) => {
+  const {t, i18n} = useTranslation();
   const [modal, setModal] = useState(true);
   const [radioButtons, setRadioButtons] = useState([]);
   const [languageValue, setLanguageValue] = useState(1);
@@ -34,30 +34,39 @@ const Language = ({ navigation }) => {
     var arr = [];
     for (var i = 0; i < response.languages.length; i++) {
       if (response.languages[i].id == response.user_language) {
-        arr.push({ id: response.languages[i].id, label: response.languages[i].name, value: response.languages[i].id, selected: true })
+        arr.push({
+          id: response.languages[i].id,
+          label: response.languages[i].name,
+          value: response.languages[i].id,
+          selected: true,
+        });
       } else {
-        arr.push({ id: response.languages[i].id, label: response.languages[i].name, value: response.languages[i].id, selected: false })
+        arr.push({
+          id: response.languages[i].id,
+          label: response.languages[i].name,
+          value: response.languages[i].id,
+          selected: false,
+        });
       }
     }
     setRadioButtons(arr);
-  }
+  };
   useEffect(() => {
     get_Languages();
-  }, [])
+  }, []);
 
   const changeLanguage = async () => {
     console.log(languageValue);
-  }
+  };
 
-
-  const onPressRadioButton = (radioButtonsArray) => {
+  const onPressRadioButton = radioButtonsArray => {
     console.log(radioButtonsArray);
     setRadioButtons(radioButtonsArray);
-  }
+  };
   console.log(radioButtons);
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      {modal != true && languages &&
+    <SafeAreaView style={{flex: 1}}>
+      {modal != true && languages && (
         <View>
           <View
             style={{
@@ -74,12 +83,17 @@ const Language = ({ navigation }) => {
                 paddingHorizontal: 15,
                 paddingVertical: 15,
               }}>
-              <Image style={{ width: 10, height: 18 }} source={arrow} />
+              <Image style={{width: 10, height: 18}} source={arrow} />
             </TouchableOpacity>
-            <Text style={styles.pageTitle}>{t("languagePage.language")}</Text>
+            <Text style={styles.pageTitle}>{t('languagePage.language')}</Text>
           </View>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{ marginHorizontal: 20, marginTop: 6, alignItems: 'stretch' }}>
+          <View style={{flexDirection: 'row'}}>
+            <View
+              style={{
+                marginHorizontal: 20,
+                marginTop: 6,
+                alignItems: 'stretch',
+              }}>
               <RadioGroup
                 radioButtons={radioButtons}
                 onPress={onPressRadioButton}
@@ -87,15 +101,26 @@ const Language = ({ navigation }) => {
             </View>
           </View>
           <TouchableOpacity
-            style={{ backgroundColor: PrimaryGreen, borderRadius: 10, padding: 10, margin: 10, width: '90%' }}
-            onPress={changeLanguage}
-          >
-            <Text style={{ textAlign: 'center', fontFamily: 'Poppins-Bold', fontSize: 14, color: '#fff' }}>
-              {t("languagePage.proceed")}
+            style={{
+              backgroundColor: PrimaryGreen,
+              borderRadius: 10,
+              padding: 10,
+              margin: 10,
+              width: '90%',
+            }}
+            onPress={changeLanguage}>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontFamily: 'Poppins-Bold',
+                fontSize: 14,
+                color: '#fff',
+              }}>
+              {t('languagePage.proceed')}
             </Text>
           </TouchableOpacity>
         </View>
-      }
+      )}
       <View>
         {modal && (
           <Modal transparent={false} visible={modal}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -25,22 +25,26 @@ import {
 } from '../assets/img/Images';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
-import { EMAIL } from '../constants';
-import { useTranslation } from 'react-i18next';
+import {EMAIL} from '../constants';
+import {useTranslation} from 'react-i18next';
 import CheckBox from '@react-native-community/checkbox';
-import { AppBackground, HomeBgColor, PrimaryGreen } from '../helper/styles.helper';
+import {
+  AppBackground,
+  HomeBgColor,
+  PrimaryGreen,
+} from '../helper/styles.helper';
 
-var { width, height } = Dimensions.get('window');
+var {width, height} = Dimensions.get('window');
 
-const SignUp = ({ navigation, route }) => {
-  const { t, i18n } = useTranslation();
+const SignUp = ({navigation, route}) => {
+  const {t, i18n} = useTranslation();
   const initialState = {
     latitude: null,
     longitude: null,
     latitudeDelta: 0.015,
     longitudeDelta: 0.0121,
   };
-  const { params: { user: { id = 0, mobile = 0 } = {} } = {} } = route || {};
+  const {params: {user: {id = 0, mobile = 0} = {}} = {}} = route || {};
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
   const [email, setEmail] = useState(null);
@@ -51,7 +55,6 @@ const SignUp = ({ navigation, route }) => {
   const [street, setStreet] = useState(null);
   const [pinCode, setPinCode] = useState(null);
   const [termsCondi, setTermsCondi] = useState(false);
-
 
   const [firstName_err, setFirstName_err] = useState(null);
   const [lastName_err, setLastName_err] = useState(null);
@@ -79,7 +82,7 @@ const SignUp = ({ navigation, route }) => {
     } else {
       setTerms_err(true);
     }
-  }
+  };
   const onProceed = async () => {
     if (firstName == null || firstName == '') {
       setFirstName_err(true);
@@ -111,7 +114,7 @@ const SignUp = ({ navigation, route }) => {
         name: firstName,
         email: email,
         terms_conditions: termsCondi,
-        autoDetect: true
+        autoDetect: true,
       };
       navigation.navigate('Address', data);
     } else {
@@ -157,7 +160,7 @@ const SignUp = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
+      <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
       <View
         style={{
           color: '#fff',
@@ -167,52 +170,111 @@ const SignUp = ({ navigation, route }) => {
         <View style={styles.headerStyle}>
           <TouchableOpacity
             onPress={() => navigation.navigate('LocationPermission')}
-            style={{ paddingHorizontal: 5, flexDirection: 'row' }}>
-            <Image style={{ width: 11, height: 18, tintColor: 'black' }} source={arrow} />
-            <Text style={styles.headerText}>
-              {t('signUpPage.back')}
-            </Text>
+            style={{paddingHorizontal: 5, flexDirection: 'row'}}>
+            <Image
+              style={{width: 11, height: 18, tintColor: 'black'}}
+              source={arrow}
+            />
+            <Text style={styles.headerText}>{t('signUpPage.back')}</Text>
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{ flex: 1, alignItems: 'center', backgroundColor: HomeBgColor, paddingTop: 20 }}>
-        <Text style={{ width: '100%', textAlign: 'left', marginLeft: '20%', fontFamily: 'Poppins-Bold', fontSize: 24 }}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          backgroundColor: HomeBgColor,
+          paddingTop: 20,
+        }}>
+        <Text
+          style={{
+            width: '100%',
+            textAlign: 'left',
+            marginLeft: '20%',
+            fontFamily: 'Poppins-Bold',
+            fontSize: 24,
+          }}>
           {t('signUpPage.registration')}
         </Text>
-        <Text style={{ width: '100%', textAlign: 'left', marginLeft: '20%', fontFamily: 'Poppins-Bold', marginTop: 15 }}>First Name</Text>
+        <Text
+          style={{
+            width: '100%',
+            textAlign: 'left',
+            marginLeft: '20%',
+            fontFamily: 'Poppins-Bold',
+            marginTop: 15,
+          }}>
+          First Name
+        </Text>
         <TextInput
-          placeholder='Enter Your First Name'
+          placeholder="Enter Your First Name"
           value={firstName}
           onChangeText={firstNameChange}
           style={styles.input}
         />
         {firstName_err && (
-          <Text style={{ width: '85%', textAlign: 'left', color: 'tomato', marginLeft: 10 }}>
+          <Text
+            style={{
+              width: '85%',
+              textAlign: 'left',
+              color: 'tomato',
+              marginLeft: 10,
+            }}>
             {t('signUpPage.firstNameErr')}
           </Text>
         )}
-        <Text style={{ width: '100%', textAlign: 'left', marginLeft: '20%', fontFamily: 'Poppins-Bold', marginTop: 10 }}>Last Name</Text>
+        <Text
+          style={{
+            width: '100%',
+            textAlign: 'left',
+            marginLeft: '20%',
+            fontFamily: 'Poppins-Bold',
+            marginTop: 10,
+          }}>
+          Last Name
+        </Text>
         <TextInput
-          placeholder='Enter Your Last Name'
+          placeholder="Enter Your Last Name"
           value={lastName}
           style={styles.input}
           onChangeText={lasttNameChange}
         />
         {lastName_err && (
-          <Text style={{ width: '85%', textAlign: 'left', color: 'tomato', marginLeft: 10 }}>
+          <Text
+            style={{
+              width: '85%',
+              textAlign: 'left',
+              color: 'tomato',
+              marginLeft: 10,
+            }}>
             {t('signUpPage.lastNameErr')}
           </Text>
         )}
-        <Text style={{ width: '100%', textAlign: 'left', marginLeft: '20%', fontFamily: 'Poppins-Bold', marginTop: 10 }}>Email ID</Text>
+        <Text
+          style={{
+            width: '100%',
+            textAlign: 'left',
+            marginLeft: '20%',
+            fontFamily: 'Poppins-Bold',
+            marginTop: 10,
+          }}>
+          Email ID
+        </Text>
         <TextInput
-          placeholder='Enter Your Email ID'
+          placeholder="Enter Your Email ID"
           value={email}
           keyboardType="email-address"
           style={styles.input}
           onChangeText={emailChange}
         />
         {email_err && (
-          <Text style={{ width: '85%', textAlign: 'left', color: 'tomato', marginLeft: 10 }}>
+          <Text
+            style={{
+              width: '85%',
+              textAlign: 'left',
+              color: 'tomato',
+              marginLeft: 10,
+            }}>
             {email != null
               ? t('signUpPage.emailIvalidErr')
               : t('signUpPage.emailErr')}
@@ -223,14 +285,14 @@ const SignUp = ({ navigation, route }) => {
             flexDirection: 'row',
             marginTop: 30,
             marginLeft: 25,
-            marginRight: 15
+            marginRight: 15,
           }}>
           <CheckBox
             value={termsCondi}
             onValueChange={clickTermsCondi}
-            boxStyle={{ color: PrimaryGreen }}
-            tintColors={{ true: PrimaryGreen, false: PrimaryGreen }}
-            style={{ width: 20, height: 20, marginRight: 10, }}
+            boxStyle={{color: PrimaryGreen}}
+            tintColors={{true: PrimaryGreen, false: PrimaryGreen}}
+            style={{width: 20, height: 20, marginRight: 10}}
           />
           {/* <View> */}
           <Text
@@ -246,12 +308,13 @@ const SignUp = ({ navigation, route }) => {
                 color: '#989898',
                 marginLeft: 10,
               }}
-              onPress={() => navigation.navigate('TermsAndConditions')
+              onPress={
+                () => navigation.navigate('TermsAndConditions')
                 // Linking.openURL(
                 //   'http://homeefoodz.com/terms-and-condition.html',
                 // )
               }>
-              {`Terms & Conditions `}
+              {'Terms & Conditions '}
             </Text>
             and
             <Text
@@ -259,12 +322,12 @@ const SignUp = ({ navigation, route }) => {
                 paddingLeft: 10,
                 color: '#989898',
               }}
-              onPress={() => navigation.navigate('PrivacyPolicy')
+              onPress={
+                () => navigation.navigate('PrivacyPolicy')
                 // Linking.openURL('http://homeefoodz.com/privacy-policy.html')
               }>
-              {` Privacy policy`}
+              {' Privacy policy'}
             </Text>
-
           </Text>
           {/* <Text
                 style={{
@@ -278,7 +341,13 @@ const SignUp = ({ navigation, route }) => {
         </View>
         {/* </View> */}
         {terms_err && (
-          <Text style={{ width: '85%', textAlign: 'left', color: 'tomato', marginLeft: 10 }}>
+          <Text
+            style={{
+              width: '85%',
+              textAlign: 'left',
+              color: 'tomato',
+              marginLeft: 10,
+            }}>
             Please Accept Trems and Condition *
           </Text>
         )}
@@ -288,16 +357,15 @@ const SignUp = ({ navigation, route }) => {
             alignItems: 'center',
             marginTop: 40,
             backgroundColor: PrimaryGreen,
-            width: "90%",
+            width: '90%',
             height: 50,
             borderRadius: 15,
-            alignItems: 'center',
             justifyContent: 'center',
           }}>
           <Text style={styles.buttonStyle}>{t('signUpPage.singUp')}</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView >
+    </SafeAreaView>
   );
 };
 
@@ -322,7 +390,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     // marginTop: -19,
     marginLeft: 15,
-    marginTop: -5
+    marginTop: -5,
   },
   font1: {
     color: '#000',
@@ -375,7 +443,7 @@ const styles = StyleSheet.create({
     backgroundColor: AppBackground,
     paddingHorizontal: 20,
     color: '#000',
-    fontFamily: 'Poppins-Bold'
+    fontFamily: 'Poppins-Bold',
     // fontSize: 18,
     // fontFamily: 'Poppins-Bold',
     // color: '#000',

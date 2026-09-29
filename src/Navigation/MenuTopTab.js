@@ -1,12 +1,11 @@
 import React from 'react';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Dish from '../screens/todayMenu/Dish';
 import Chef from '../screens/todayMenu/Chef';
 
-const TTab =
-  createMaterialTopTabNavigator();
+const TTab = createMaterialTopTabNavigator();
 
-const TopTab = ({ navigation }) => {
+const TopTab = ({navigation}) => {
   return (
     <TTab.Navigator
       tabBarOptions={{
@@ -17,7 +16,7 @@ const TopTab = ({ navigation }) => {
         tabStyle: {
           marginVertical: 5,
           width: 'auto',
-          paddingHorizontal: 15
+          paddingHorizontal: 15,
         },
         indicatorStyle: {
           backgroundColor: '#09b44d',
@@ -34,19 +33,13 @@ const TopTab = ({ navigation }) => {
           backgroundColor: 'transparent',
           boxShadow: 'none',
           numberOfLines: 1,
-          marginLeft: 15
+          marginLeft: 15,
         },
       }}>
-      <TTab.Screen
-        style={{ color: '#fff' }}
-        name="Dish"
-        component={Dish}
-      />
+      <TTab.Screen style={{color: '#fff'}} name="Dish" component={Dish} />
       <TTab.Screen name="Chef" component={Chef} />
     </TTab.Navigator>
   );
 };
-
-
 
 export default TopTab;

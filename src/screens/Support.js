@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import {
-  Text,
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {Text,
   TextInput,
   View,
   TouchableOpacity,
@@ -14,8 +13,7 @@ import {
   Alert,
   Linking,
   Pressable,
-  StatusBar,
-} from 'react-native';
+  StatusBar, Platform} from 'react-native';
 import {
   arrow,
   inputBorder,
@@ -23,28 +21,26 @@ import {
   emailIcon,
   mobileIcon,
   inputBorderBlack,
-  callUsIcon
+  callUsIcon,
 } from '../assets/img/Images';
-import { api, storage } from '../services';
+import {api, storage} from '../services';
 import Loader from './Loader';
 const dialCall = () => {
-
   let phoneNumber = '';
 
   if (Platform.OS === 'android') {
     phoneNumber = 'tel:+91 9150839997';
-  }
-  else {
+  } else {
     phoneNumber = 'telprompt:+91 9150839997';
   }
 
   Linking.openURL(phoneNumber);
 };
-const Support = ({ navigation }) => {
+const Support = ({navigation}) => {
   const [modal, setModal] = useState(true);
   const [userData, setUserData] = useState(null);
-  const { width, height } = Dimensions.get('window');
-  const { t, i18n } = useTranslation();
+  const {width, height} = Dimensions.get('window');
+  const {t, i18n} = useTranslation();
   const [userName, setUserName] = useState('uththaman');
   const [mailSupport, setMailSupport] = useState(null);
   const [mobileSupport, setMobileSupport] = useState(null);
@@ -62,8 +58,8 @@ const Support = ({ navigation }) => {
 
   const getSupportDetails = async () => {
     const supportDetails = await api.getSupportDetails();
-    const email = supportDetails?.details?.filter(c => c.type == "mail")[0];
-    const mobile = supportDetails?.details?.filter(c => c.type == "mobile")[0];
+    const email = supportDetails?.details?.filter(c => c.type == 'mail')[0];
+    const mobile = supportDetails?.details?.filter(c => c.type == 'mobile')[0];
     setMailSupport(email.value);
     setMobileSupport(mobile.value);
   };
@@ -71,7 +67,6 @@ const Support = ({ navigation }) => {
   useEffect(() => {
     getSupportDetails();
   }, []);
-
 
   const messageChange = e => {
     setMessageSupport(e);
@@ -82,9 +77,11 @@ const Support = ({ navigation }) => {
         email: userData.email,
         mobile: userData.mobile,
         message: messageSupport,
-      })
+      });
       if (response.status == 'success') {
-        Alert.alert('Success', response?.message,
+        Alert.alert(
+          'Success',
+          response?.message,
           [
             {
               text: 'OK',
@@ -93,23 +90,23 @@ const Support = ({ navigation }) => {
               },
             },
           ],
-          { cancelable: false },
+          {cancelable: false},
         );
       }
     } else {
-      alert("Please enter your complaint");
+      alert('Please enter your complaint');
     }
-  }
+  };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
+    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+      <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
       <View
         style={{
           backgroundColor: '#09b44d',
           borderBottomLeftRadius: 25,
           borderBottomRightRadius: 25,
           justifyContent: 'center',
-          height: 60
+          height: 60,
         }}>
         <Pressable
           onPress={() => navigation.goBack()}
@@ -117,14 +114,17 @@ const Support = ({ navigation }) => {
             flexDirection: 'row',
             paddingHorizontal: 15,
           }}>
-          <Image style={{ width: 9, height: 16 }} source={arrow} />
-          <Text style={{
-            color: '#fff',
-            fontSize: 18,
-            fontFamily: 'Poppins-Bold',
-            paddingLeft: 10,
-            marginTop: -5,
-          }}>Support</Text>
+          <Image style={{width: 9, height: 16}} source={arrow} />
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 18,
+              fontFamily: 'Poppins-Bold',
+              paddingLeft: 10,
+              marginTop: -5,
+            }}>
+            Support
+          </Text>
         </Pressable>
       </View>
       <>
@@ -300,19 +300,23 @@ const Support = ({ navigation }) => {
             </View>
           </View> */}
       </>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <View style={{
-          marginTop: '-10%',
-          marginBottom: 10
-        }}>
-          <Text style={{
-            color: '#000',
-            fontFamily: 'Poppins-Regular',
-            fontWeight: '400',
-            fontSize: 18,
-            lineHeight: 20,
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View
+          style={{
+            marginTop: '-10%',
             marginBottom: 10,
-          }}>Feel free to get in touch with us</Text>
+          }}>
+          <Text
+            style={{
+              color: '#000',
+              fontFamily: 'Poppins-Regular',
+              fontWeight: '400',
+              fontSize: 18,
+              lineHeight: 20,
+              marginBottom: 10,
+            }}>
+            Feel free to get in touch with us
+          </Text>
         </View>
         <TouchableOpacity
           style={{
@@ -324,9 +328,9 @@ const Support = ({ navigation }) => {
             marginBottom: 10,
             paddingHorizontal: 10,
           }}
-          onPress={dialCall} >
+          onPress={dialCall}>
           <Image
-            tintColor='#fff'
+            tintColor="#fff"
             source={callUsIcon}
             style={[
               styles.mobileIcon,
@@ -336,11 +340,14 @@ const Support = ({ navigation }) => {
               },
             ]}
           />
-          <Text style={{
-            color: '#fff',
-            fontFamily: 'Poppins-Bold',
-            fontSize: 18,
-          }}>Call Us</Text>
+          <Text
+            style={{
+              color: '#fff',
+              fontFamily: 'Poppins-Bold',
+              fontSize: 18,
+            }}>
+            Call Us
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -352,10 +359,9 @@ const Support = ({ navigation }) => {
             marginBottom: 10,
             paddingHorizontal: 10,
           }}
-
-          onPress={() => Linking.openURL('mailto:' + mailSupport)} >
+          onPress={() => Linking.openURL('mailto:' + mailSupport)}>
           <Image
-            tintColor='#fff'
+            tintColor="#fff"
             source={emailIcon}
             style={[
               styles.mobileIcon,
@@ -365,11 +371,14 @@ const Support = ({ navigation }) => {
               },
             ]}
           />
-          <Text style={{
-            color: '#fff',
-            fontFamily: 'Poppins-Bold',
-            fontSize: 18,
-          }}>Mail Support</Text>
+          <Text
+            style={{
+              color: '#fff',
+              fontFamily: 'Poppins-Bold',
+              fontSize: 18,
+            }}>
+            Mail Support
+          </Text>
         </TouchableOpacity>
       </View>
       {/* <TouchableOpacity

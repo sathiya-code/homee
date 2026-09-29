@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -15,18 +15,18 @@ import {
   Dimensions,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
-import { arrow, manageAddress, editIcon, deleteIcon } from '../assets/img/Images';
-import { api, storage } from '../services';
+import {arrow, manageAddress, editIcon, deleteIcon} from '../assets/img/Images';
+import {api, storage} from '../services';
 import Loader from './Loader';
-import { useFocusEffect } from '@react-navigation/core';
-import { set_Profile } from '../redux/actions/authAction';
-import { useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
+import {useFocusEffect} from '@react-navigation/core';
+import {set_Profile} from '../redux/actions/authAction';
+import {useDispatch} from 'react-redux';
+import {useTranslation} from 'react-i18next';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
-const AddressChoose = ({ navigation, route }) => {
-  const { t, i18 } = useTranslation();
+const AddressChoose = ({navigation, route}) => {
+  const {t, i18} = useTranslation();
   const dispatch = useDispatch();
   const [modal, setModal] = useState(true);
   const [listItems, setListItems] = useState([]);
@@ -39,16 +39,16 @@ const AddressChoose = ({ navigation, route }) => {
     // console.log("areeeededsfs", response);
     setListItems(response.user_addresses);
     setModal(false);
-  }
+  };
   useFocusEffect(
     React.useCallback(() => {
       addressList();
     }, []),
   );
-  const changeAddress = async (id) => {
+  const changeAddress = async id => {
     setModal(true);
     let res = await api.changeDefaultAddress(id);
-    console.log("response", res);
+    console.log('response', res);
     if (res.status == 'success') {
       let response = await api.userDetail();
       storage.setUserData(response.user);
@@ -63,8 +63,8 @@ const AddressChoose = ({ navigation, route }) => {
       navigation.goBack();
     }
     setModal(false);
-  }
-  const deleteAddress = async (id) => {
+  };
+  const deleteAddress = async id => {
     setModal(true);
     let response = await api.deleteAddress(id);
     setModal(false);
@@ -76,21 +76,24 @@ const AddressChoose = ({ navigation, route }) => {
     } else if (response.status == 'error') {
       alert(response.message);
     } else {
-      alert("Unable to complete your request, try again later");
+      alert('Unable to complete your request, try again later');
     }
-  }
-
-  const deletePressed = async (id) => {
-    Alert.alert("Are you sure?", "Want to delete this address", [{ text: 'Yes', onPress: () => deleteAddress(id) }, { text: 'No', onPress: null }])
   };
-  const _renderItem = ({ item, index }) => {
+
+  const deletePressed = async id => {
+    Alert.alert('Are you sure?', 'Want to delete this address', [
+      {text: 'Yes', onPress: () => deleteAddress(id)},
+      {text: 'No', onPress: null},
+    ]);
+  };
+  const _renderItem = ({item, index}) => {
     return (
       <TouchableOpacity
         key={index}
         onPress={() => changeAddress(item?.id)}
         onLongPress={() => deletePressed(item?.id)}
-        style={{ margin: 10 }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        style={{margin: 10}}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text
             style={{
               fontFamily: 'Poppins-Bold',
@@ -112,7 +115,13 @@ const AddressChoose = ({ navigation, route }) => {
             borderBottomWidth: 1,
             paddingBottom: 5,
           }}>
-          {item?.door_no ? item.door_no + ", " : null} {item?.block ? item.block + ", " : null} {item?.street ? item.street + ", " : null} {item?.area ? item.area + ", " : null} {item?.city ? item.city + ", " : null} {item?.state ? item.state + ", " : null}{item?.pin_code ? item.pin_code + ". " : null}
+          {item?.door_no ? item.door_no + ', ' : null}{' '}
+          {item?.block ? item.block + ', ' : null}{' '}
+          {item?.street ? item.street + ', ' : null}{' '}
+          {item?.area ? item.area + ', ' : null}{' '}
+          {item?.city ? item.city + ', ' : null}{' '}
+          {item?.state ? item.state + ', ' : null}
+          {item?.pin_code ? item.pin_code + '. ' : null}
         </Text>
       </TouchableOpacity>
     );
@@ -138,21 +147,27 @@ const AddressChoose = ({ navigation, route }) => {
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          <Image style={{ width: 10, height: 17, marginRight: 10 }} source={arrow} />
-          <Text style={styles.pageTitle}>{t('addressChoosePage.chooseAddress')}</Text>
+          <Image
+            style={{width: 10, height: 17, marginRight: 10}}
+            source={arrow}
+          />
+          <Text style={styles.pageTitle}>
+            {t('addressChoosePage.chooseAddress')}
+          </Text>
         </TouchableOpacity>
       </View>
-      {modal != true && listItems.length > 0 &&
-        // <View style={{ width, height }}>
-        < FlatList
-          data={listItems}
-          renderItem={_renderItem}
-          contentContainerStyle={{ paddingBottom: 100 }}
-        />
+      {
+        modal != true && listItems.length > 0 && (
+          // <View style={{ width, height }}>
+          <FlatList
+            data={listItems}
+            renderItem={_renderItem}
+            contentContainerStyle={{paddingBottom: 100}}
+          />
+        )
         // </View>
-
       }
-      <View style={{ marginBottom: '10%' }}></View>
+      <View style={{marginBottom: '10%'}} />
       <View
         style={{
           position: 'absolute',
@@ -167,7 +182,7 @@ const AddressChoose = ({ navigation, route }) => {
             width: 160,
             borderRadius: 28,
           }}
-          onPress={() => navigation.navigate('Address', { type: "Add" })}>
+          onPress={() => navigation.navigate('Address', {type: 'Add'})}>
           <Text
             style={{
               color: '#fff',
@@ -195,19 +210,17 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontFamily: 'Poppins-Bold',
-    marginTop: 5
+    marginTop: 5,
   },
   nameTxt: {
     color: '#fff',
     fontSize: 25,
-    color: '#fff',
     marginVertical: 2,
     fontFamily: 'Poppins-Bold',
   },
   profTxt: {
     color: '#fff',
     fontSize: 18,
-    color: '#fff',
     fontFamily: 'Poppins-Bold',
     paddingVertical: 3,
   },

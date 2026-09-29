@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   View,
   Image,
@@ -18,8 +18,8 @@ import {
   offerIcon,
 } from '../assets/img/Images';
 
-const ProductList = ({ navigation }) => {
-  const { t, i18n } = useTranslation();
+const ProductList = ({navigation}) => {
+  const {t, i18n} = useTranslation();
   const [filterVis, setFilterVis] = useState(false);
 
   const handleBtn = val => {
@@ -28,11 +28,11 @@ const ProductList = ({ navigation }) => {
 
   return (
     <ScrollView>
-      <ImageBackground source={photo1} style={{ width: '100%', height: 280 }}>
-        <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)', height: 280 }}>
-          <View style={{ paddingVertical: 12, paddingHorizontal: 15 }}>
+      <ImageBackground source={photo1} style={{width: '100%', height: 280}}>
+        <View style={{backgroundColor: 'rgba(0, 0, 0, 0.6)', height: 280}}>
+          <View style={{paddingVertical: 12, paddingHorizontal: 15}}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image source={arrow} style={{ width: 11, height: 20 }} />
+              <Image source={arrow} style={{width: 11, height: 20}} />
             </TouchableOpacity>
             <Text
               style={{
@@ -44,7 +44,7 @@ const ProductList = ({ navigation }) => {
                 marginRight: 35,
                 lineHeight: 40,
               }}>
-              {t("productListPage.trySomthingNewAtHomelyFoodz")}
+              {t('productListPage.trySomthingNewAtHomelyFoodz')}
             </Text>
             <Text
               style={{
@@ -53,7 +53,7 @@ const ProductList = ({ navigation }) => {
                 fontSize: 16,
                 marginTop: 14,
               }}>
-              {t("productListPage.useCode")}TRY Homee Foodz
+              {t('productListPage.useCode')}TRY Homee Foodz
             </Text>
           </View>
         </View>
@@ -75,7 +75,7 @@ const ProductList = ({ navigation }) => {
             fontSize: 16,
             marginTop: 10,
           }}>
-          {t("productListPage.homelyFoodzNearby")}
+          {t('productListPage.homelyFoodzNearby')}
         </Text>
         <TouchableOpacity
           onPress={handleBtn}
@@ -86,7 +86,7 @@ const ProductList = ({ navigation }) => {
           }}>
           <Image
             source={filterIcon}
-            style={{ width: 19, height: 24, paddingTop: 5, paddingRight: 5 }}
+            style={{width: 19, height: 24, paddingTop: 5, paddingRight: 5}}
           />
           <Text
             style={{
@@ -95,24 +95,24 @@ const ProductList = ({ navigation }) => {
               fontSize: 14,
               marginTop: 12,
             }}>
-            {t("productListPage.sortOrFilter")}
+            {t('productListPage.sortOrFilter')}
           </Text>
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity
         onPress={() => navigation.navigate('FoodDetail')}
-        style={{ flexDirection: 'row', paddingHorizontal: 10, marginBottom: 25 }}>
-        <View style={{ flex: 4 }}>
-          <View style={{ width: '100%', borderRadius: 5 }}>
+        style={{flexDirection: 'row', paddingHorizontal: 10, marginBottom: 25}}>
+        <View style={{flex: 4}}>
+          <View style={{width: '100%', borderRadius: 5}}>
             <Image
               source={photo1}
-              style={{ width: '100%', height: 170, borderRadius: 5 }}
+              style={{width: '100%', height: 170, borderRadius: 5}}
             />
           </View>
         </View>
-        <View style={{ flex: 5, paddingLeft: 8 }}>
-          <Text style={{ fontSize: 16, fontFamily: 'Poppins-Bold' }}>
+        <View style={{flex: 5, paddingLeft: 8}}>
+          <Text style={{fontSize: 16, fontFamily: 'Poppins-Bold'}}>
             {' '}
             Iniya Kadamban
           </Text>
@@ -131,7 +131,7 @@ const ProductList = ({ navigation }) => {
             </Text>
           </View>
           <View style={styles.delLoc}>
-            <Image style={{ width: 18, height: 18 }} source={timingIcon} />
+            <Image style={{width: 18, height: 18}} source={timingIcon} />
             <Text
               style={{
                 fontSize: 13.5,
@@ -154,7 +154,7 @@ const ProductList = ({ navigation }) => {
                 borderTopWidth: 1,
               },
             ]}>
-            <Image style={{ width: 18, height: 18 }} source={offerIcon} />
+            <Image style={{width: 18, height: 18}} source={offerIcon} />
             <Text
               style={{
                 fontSize: 14.5,
@@ -163,7 +163,7 @@ const ProductList = ({ navigation }) => {
                 justifyContent: 'center',
                 marginLeft: 6,
               }}>
-              {t("productListPage.tryHomelyFoodz")}
+              {t('productListPage.tryHomelyFoodz')}
             </Text>
           </View>
         </View>
@@ -187,28 +187,49 @@ const ProductList = ({ navigation }) => {
               borderBottomWidth: 1,
               borderBottomColor: '#c6c6c6',
             }}>
-            <Text style={{ color: '#000', fontFamily: 'Poppins-Bold', fontSize: 18 }}>
-              {t("productListPage.sortOrFilter")}
+            <Text
+              style={{color: '#000', fontFamily: 'Poppins-Bold', fontSize: 18}}>
+              {t('productListPage.sortOrFilter')}
             </Text>
             <Text
-              style={{ color: '#09b44d', fontFamily: 'Poppins-Regular', fontSize: 18 }}>
-              {t("productListPage.clearAll")}
+              style={{
+                color: '#09b44d',
+                fontFamily: 'Poppins-Regular',
+                fontSize: 18,
+              }}>
+              {t('productListPage.clearAll')}
             </Text>
           </View>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{ flex: 2, backgroundColor: '#ddf3e5', height: '100%' }}>
-              <Text style={styles.sortHead}> {t("productListPage.sort")}</Text>
-              <Text style={styles.sortHead}> {t("productListPage.foodzType")}</Text>
-              <Text style={styles.sortHead}> {t("productListPage.cuisines")}</Text>
-            </View>
-            <View style={{ flex: 3, backgroundColor: '#fff', padding: 15 }}>
-              <Text
-                style={{ fontFamily: 'Poppins-Bold', color: '#000', fontSize: 15 }}>
-                {t("productListPage.sortByPrice")}
+          <View style={{flexDirection: 'row'}}>
+            <View style={{flex: 2, backgroundColor: '#ddf3e5', height: '100%'}}>
+              <Text style={styles.sortHead}> {t('productListPage.sort')}</Text>
+              <Text style={styles.sortHead}>
+                {' '}
+                {t('productListPage.foodzType')}
               </Text>
-              <Text style={styles.sortDet}> {t("productListPage.sort")}</Text>
-              <Text style={styles.sortDet}> {t("productListPage.foodzType")}</Text>
-              <Text style={styles.sortDet}> {t("productListPage.cuisines")}</Text>
+              <Text style={styles.sortHead}>
+                {' '}
+                {t('productListPage.cuisines')}
+              </Text>
+            </View>
+            <View style={{flex: 3, backgroundColor: '#fff', padding: 15}}>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-Bold',
+                  color: '#000',
+                  fontSize: 15,
+                }}>
+                {t('productListPage.sortByPrice')}
+              </Text>
+              <Text style={styles.sortDet}> {t('productListPage.sort')}</Text>
+              <Text style={styles.sortDet}>
+                {' '}
+                {t('productListPage.foodzType')}
+              </Text>
+              <Text style={styles.sortDet}>
+                {' '}
+                {t('productListPage.cuisines')}
+              </Text>
               <TouchableOpacity
                 style={{
                   marginTop: 25,
@@ -226,14 +247,14 @@ const ProductList = ({ navigation }) => {
                     fontSize: 21,
                     width: 150,
                   }}>
-                  {t("productListPage.apply")}
+                  {t('productListPage.apply')}
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
       ) : null}
-      <View></View>
+      <View />
     </ScrollView>
   );
 };

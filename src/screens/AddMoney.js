@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,40 +14,45 @@ import {
   Alert,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
-import { arrow, photo1 } from '../assets/img/Images';
-import { useTranslation } from 'react-i18next';
-import { api, storage } from '../services';
+import {arrow, photo1} from '../assets/img/Images';
+import {useTranslation} from 'react-i18next';
+import {api, storage} from '../services';
 import RazorpayCheckout from 'react-native-razorpay';
 
-const OrderedList = ({ navigation, route }) => {
-  const { t, i18n } = useTranslation();
-  const { width, height } = Dimensions.get('window');
+const OrderedList = ({navigation, route}) => {
+  const {t, i18n} = useTranslation();
+  const {width, height} = Dimensions.get('window');
   const [amount, setAmount] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
   useEffect(() => {
     userData();
-  }, [])
+  }, []);
   const userData = async () => {
     var user = await storage.getUserData();
     setUserDetails(user);
-  }
-  const walletStatus = async (data) => {
+  };
+  const walletStatus = async data => {
     let response = await api.walletStatus(data);
     if (data.status == 1 && response.status == 'success') {
-      alert("Money added successfully ");
+      alert('Money added successfully ');
       navigation.goBack();
     } else if (data.status == 0 && response.status == 'success') {
       // alert('Your transaction is failed.');
-      Alert.alert("Your transaction is failed", data?.error, [{ text: 'Ok', onPress: () => null }])
+      Alert.alert('Your transaction is failed', data?.error, [
+        {text: 'Ok', onPress: () => null},
+      ]);
     }
-  }
+  };
   const proceed = async () => {
-    console.log("proceed btn", new Date());
+    console.log('proceed btn', new Date());
     if (amount != null) {
       // wallet_added = 0 ===> before adding money to wallet
       // wallet_added = 1 ===> after getting success response from razorpay
-      let response = await api.add_wallet_money({ wallet_amount: amount, wallet_added: 0 });
-      console.log("resfcnevsivdmsvdsvmdsvdvdvdv,ds vidmv djvds v", response);
+      let response = await api.add_wallet_money({
+        wallet_amount: amount,
+        wallet_added: 0,
+      });
+      console.log('resfcnevsivdmsvdsvmdsvdvdvdv,ds vidmv djvds v', response);
       if (response.status == 'success') {
         var options = {
           description: 'Add wallet money',
@@ -57,47 +62,49 @@ const OrderedList = ({ navigation, route }) => {
           key: 'rzp_live_OIO5EHULxS65B4',
           amount: amount,
           name: 'Homee Foodz',
-          order_id: response.transaction_no,//Replace this with an order_id created using Orders API.
+          order_id: response.transaction_no, //Replace this with an order_id created using Orders API.
           prefill: {
             email: userDetails.email,
             contact: userDetails.mobile,
-            name: userDetails.first_name
+            name: userDetails.first_name,
           },
-          theme: { color: '#09b44d' }
-        }
-        RazorpayCheckout.open(options).then((data) => {
-          console.log("razorpat data", data);
-          var payload = {
-            status: 1,
-            razor_pay_order_id: data.razorpay_order_id,
-            razor_pay_payment_id: data.razorpay_payment_id,
-            razor_pay_signature: data.razorpay_signature,
-          };
-          walletStatus(payload);
-        }).catch((error) => {
-          console.log("razor pay data errrrrrrrrr", error);
-          var payload = {
-            status: 0,
-            razor_pay_order_id: response.transaction_no,
-            reason: error?.error?.reason,
-          };
-          walletStatus(payload);
-        });
+          theme: {color: '#09b44d'},
+        };
+        RazorpayCheckout.open(options)
+          .then(data => {
+            console.log('razorpat data', data);
+            var payload = {
+              status: 1,
+              razor_pay_order_id: data.razorpay_order_id,
+              razor_pay_payment_id: data.razorpay_payment_id,
+              razor_pay_signature: data.razorpay_signature,
+            };
+            walletStatus(payload);
+          })
+          .catch(error => {
+            console.log('razor pay data errrrrrrrrr', error);
+            var payload = {
+              status: 0,
+              razor_pay_order_id: response.transaction_no,
+              reason: error?.error?.reason,
+            };
+            walletStatus(payload);
+          });
       }
     } else {
-      alert("Please enter amount");
+      alert('Please enter amount');
     }
-  }
+  };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
+    <SafeAreaView style={{flex: 1}}>
+      <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
       <View
         style={{
           backgroundColor: '#09b44d',
           borderBottomLeftRadius: 25,
           borderBottomRightRadius: 25,
           justifyContent: 'center',
-          height: 60
+          height: 60,
         }}>
         <Pressable
           onPress={() => navigation.goBack()}
@@ -105,14 +112,16 @@ const OrderedList = ({ navigation, route }) => {
             flexDirection: 'row',
             paddingHorizontal: 15,
           }}>
-          <Image style={{ width: 9, height: 16 }} source={arrow} />
-          <Text style={{
-            color: '#fff',
-            fontSize: 18,
-            fontFamily: 'Poppins-Bold',
-            paddingLeft: 10
-
-          }}>{t('addMoneyPage.addMoney')}</Text>
+          <Image style={{width: 9, height: 16}} source={arrow} />
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 18,
+              fontFamily: 'Poppins-Bold',
+              paddingLeft: 10,
+            }}>
+            {t('addMoneyPage.addMoney')}
+          </Text>
         </Pressable>
       </View>
       <View
@@ -149,8 +158,13 @@ const OrderedList = ({ navigation, route }) => {
               Vadpalani, Chennai
             </Text> */}
             <Text
-              style={{ fontSize: 13, fontFamily: 'Poppins-Bold', marginBottom: 4 }}>
-              {t('addMoneyPage.yourWalletBalance')} {route?.params?.balence ? "₹ " + route.params.balence : null}
+              style={{
+                fontSize: 13,
+                fontFamily: 'Poppins-Bold',
+                marginBottom: 4,
+              }}>
+              {t('addMoneyPage.yourWalletBalance')}{' '}
+              {route?.params?.balence ? '₹ ' + route.params.balence : null}
             </Text>
             <Text
               style={{
@@ -163,7 +177,7 @@ const OrderedList = ({ navigation, route }) => {
           </View>
         </View>
       </View>
-      <View style={{ padding: 15 }}>
+      <View style={{padding: 15}}>
         <Text
           style={{
             color: '#000',
@@ -183,14 +197,14 @@ const OrderedList = ({ navigation, route }) => {
             fontSize: 15,
             fontFamily: 'Poppins-Bold',
           }}
-          keyboardType='numeric'
+          keyboardType="numeric"
           keyboardAppearance="default"
-          onChangeText={(e) => setAmount(e)}
+          onChangeText={e => setAmount(e)}
           value={amount}
           placeholder="Please enter amount *"
         />
       </View>
-      <View style={{ position: 'absolute', bottom: 25, marginHorizontal: 25 }}>
+      <View style={{position: 'absolute', bottom: 25, marginHorizontal: 25}}>
         <TouchableOpacity
           onPress={proceed}
           style={{

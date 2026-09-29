@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -15,15 +15,15 @@ import {
   StatusBar,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
-import { arrow, photo1, emptyCartIcon } from '../assets/img/Images';
-import { useTranslation } from 'react-i18next';
-import { useFocusEffect } from '@react-navigation/core';
-import { api } from '../services';
+import {arrow, photo1, emptyCartIcon} from '../assets/img/Images';
+import {useTranslation} from 'react-i18next';
+import {useFocusEffect} from '@react-navigation/core';
+import {api} from '../services';
 import Loader from './Loader';
 
-const OrderedList = ({ navigation }) => {
-  const { width, height } = Dimensions.get('window');
-  const { t, i18n } = useTranslation();
+const OrderedList = ({navigation}) => {
+  const {width, height} = Dimensions.get('window');
+  const {t, i18n} = useTranslation();
   const [modal, setModal] = useState(true);
   const [listItems, setListItems] = useState([]);
   const [pndListItems, setPndListItems] = useState([]);
@@ -35,14 +35,14 @@ const OrderedList = ({ navigation }) => {
       setPndListItems(response.pndOrders);
     }
     setModal(false);
-  }
+  };
   useFocusEffect(
     React.useCallback(() => {
       getCurrentOrders();
     }, []),
   );
-  const _renderPnDItem = ({ item, index }) => {
-    console.log("itemm from ordered list ", item);
+  const _renderPnDItem = ({item, index}) => {
+    console.log('itemm from ordered list ', item);
     const pickupLocation = item?.pickup_location?.[0];
     const dropLocation = item?.drop_location?.[0];
     return (
@@ -54,7 +54,9 @@ const OrderedList = ({ navigation }) => {
           borderWidth: 1,
         }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('PndOrderTrack', { id: item.order_no })}
+          onPress={() =>
+            navigation.navigate('PndOrderTrack', {id: item.order_no})
+          }
           style={{
             flexDirection: 'row',
             padding: 10,
@@ -74,45 +76,148 @@ const OrderedList = ({ navigation }) => {
               justifyContent: 'center',
             }}>
             <Text
-              style={{ fontSize: 14, fontFamily: 'Poppins-Bold', marginBottom: 4 }}>
-              {item?.order_no ? t('orderedListPage.orderId') + "  " + item.order_no : null}
+              style={{
+                fontSize: 14,
+                fontFamily: 'Poppins-Bold',
+                marginBottom: 4,
+              }}>
+              {item?.order_no
+                ? t('orderedListPage.orderId') + '  ' + item.order_no
+                : null}
             </Text>
-            <Text style={{ fontSize: 13, fontFamily: 'Poppins-Medium', color: '#8B8B8B', }}>
-              <Text style={{ fontSize: 13, fontFamily: 'Poppins-Bold', color: 'tomato', }}>
-                {`Pickup Location :  `}
+            <Text
+              style={{
+                fontSize: 13,
+                fontFamily: 'Poppins-Medium',
+                color: '#8B8B8B',
+              }}>
+              <Text
+                style={{
+                  fontSize: 13,
+                  fontFamily: 'Poppins-Bold',
+                  color: 'tomato',
+                }}>
+                {'Pickup Location :  '}
               </Text>
-              {!!pickupLocation?.door_no && pickupLocation?.door_no != null && pickupLocation?.door_no != 'null' && pickupLocation?.door_no != '' ? pickupLocation?.door_no + ", " : ''}{
-                !!pickupLocation?.apartment_name && pickupLocation?.apartment_name != null && pickupLocation?.apartment_name != 'null' && pickupLocation?.apartment_name != '' ? pickupLocation?.apartment_name + ", " : ''}{
-                !!pickupLocation?.street && pickupLocation?.street != null && pickupLocation?.street != 'null' && pickupLocation?.street != '' ? pickupLocation?.street + ", " : ''}{
-                !!pickupLocation?.sublocality && pickupLocation?.sublocality != null && pickupLocation?.sublocality != 'null' && pickupLocation?.sublocality != '' ? pickupLocation?.sublocality + ", " : ''}{
-                !!pickupLocation?.city && pickupLocation?.city != null && pickupLocation?.city != 'null' && pickupLocation?.city != '' ? pickupLocation?.city + ", " : ''}{
-                !!pickupLocation?.state && pickupLocation?.state != null && pickupLocation?.state != 'null' && pickupLocation?.state != '' ? pickupLocation?.state + ", " : ''}{
-                !!pickupLocation?.pin_code && pickupLocation?.pin_code != null && pickupLocation?.pin_code != 'null' && pickupLocation?.pin_code != '' ? pickupLocation?.pin_code + ", " : ''
-              }</Text>
-            <Text style={{ fontSize: 13, fontFamily: 'Poppins-Medium', color: '#8B8B8B', width: width - 100 }}>
-              <Text style={{ fontSize: 13, fontFamily: 'Poppins-Bold', color: '#09b44d', }}>
-                {`Drop Location:  `}
+              {!!pickupLocation?.door_no &&
+              pickupLocation?.door_no != null &&
+              pickupLocation?.door_no != 'null' &&
+              pickupLocation?.door_no != ''
+                ? pickupLocation?.door_no + ', '
+                : ''}
+              {!!pickupLocation?.apartment_name &&
+              pickupLocation?.apartment_name != null &&
+              pickupLocation?.apartment_name != 'null' &&
+              pickupLocation?.apartment_name != ''
+                ? pickupLocation?.apartment_name + ', '
+                : ''}
+              {!!pickupLocation?.street &&
+              pickupLocation?.street != null &&
+              pickupLocation?.street != 'null' &&
+              pickupLocation?.street != ''
+                ? pickupLocation?.street + ', '
+                : ''}
+              {!!pickupLocation?.sublocality &&
+              pickupLocation?.sublocality != null &&
+              pickupLocation?.sublocality != 'null' &&
+              pickupLocation?.sublocality != ''
+                ? pickupLocation?.sublocality + ', '
+                : ''}
+              {!!pickupLocation?.city &&
+              pickupLocation?.city != null &&
+              pickupLocation?.city != 'null' &&
+              pickupLocation?.city != ''
+                ? pickupLocation?.city + ', '
+                : ''}
+              {!!pickupLocation?.state &&
+              pickupLocation?.state != null &&
+              pickupLocation?.state != 'null' &&
+              pickupLocation?.state != ''
+                ? pickupLocation?.state + ', '
+                : ''}
+              {!!pickupLocation?.pin_code &&
+              pickupLocation?.pin_code != null &&
+              pickupLocation?.pin_code != 'null' &&
+              pickupLocation?.pin_code != ''
+                ? pickupLocation?.pin_code + ', '
+                : ''}
+            </Text>
+            <Text
+              style={{
+                fontSize: 13,
+                fontFamily: 'Poppins-Medium',
+                color: '#8B8B8B',
+                width: width - 100,
+              }}>
+              <Text
+                style={{
+                  fontSize: 13,
+                  fontFamily: 'Poppins-Bold',
+                  color: '#09b44d',
+                }}>
+                {'Drop Location:  '}
               </Text>
-              {!!dropLocation?.door_no && dropLocation?.door_no != null && dropLocation?.door_no != 'null' && dropLocation?.door_no != '' ? dropLocation?.door_no + ", " : ''}{
-                !!dropLocation?.apartment_name && dropLocation?.apartment_name != null && dropLocation?.apartment_name != 'null' && dropLocation?.apartment_name != '' ? dropLocation?.apartment_name + ", " : ''}{
-                !!dropLocation?.street && dropLocation?.street != null && dropLocation?.street != 'null' && dropLocation?.street != '' ? dropLocation?.street + ", " : ''}{
-                !!dropLocation?.sublocality && dropLocation?.sublocality != null && dropLocation?.sublocality != 'null' && dropLocation?.sublocality != '' ? dropLocation?.sublocality + ", " : ''}{
-                !!dropLocation?.city && dropLocation?.city != null && dropLocation?.city != 'null' && dropLocation?.city != '' ? dropLocation?.city + ", " : ''}{
-                !!dropLocation?.state && dropLocation?.state != null && dropLocation?.state != 'null' && dropLocation?.state != '' ? dropLocation?.state + ", " : ''}{
-                !!dropLocation?.pin_code && dropLocation?.pin_code != null && dropLocation?.pin_code != 'null' && dropLocation?.pin_code != '' ? dropLocation?.pin_code + ", " : ''
-              }</Text>
+              {!!dropLocation?.door_no &&
+              dropLocation?.door_no != null &&
+              dropLocation?.door_no != 'null' &&
+              dropLocation?.door_no != ''
+                ? dropLocation?.door_no + ', '
+                : ''}
+              {!!dropLocation?.apartment_name &&
+              dropLocation?.apartment_name != null &&
+              dropLocation?.apartment_name != 'null' &&
+              dropLocation?.apartment_name != ''
+                ? dropLocation?.apartment_name + ', '
+                : ''}
+              {!!dropLocation?.street &&
+              dropLocation?.street != null &&
+              dropLocation?.street != 'null' &&
+              dropLocation?.street != ''
+                ? dropLocation?.street + ', '
+                : ''}
+              {!!dropLocation?.sublocality &&
+              dropLocation?.sublocality != null &&
+              dropLocation?.sublocality != 'null' &&
+              dropLocation?.sublocality != ''
+                ? dropLocation?.sublocality + ', '
+                : ''}
+              {!!dropLocation?.city &&
+              dropLocation?.city != null &&
+              dropLocation?.city != 'null' &&
+              dropLocation?.city != ''
+                ? dropLocation?.city + ', '
+                : ''}
+              {!!dropLocation?.state &&
+              dropLocation?.state != null &&
+              dropLocation?.state != 'null' &&
+              dropLocation?.state != ''
+                ? dropLocation?.state + ', '
+                : ''}
+              {!!dropLocation?.pin_code &&
+              dropLocation?.pin_code != null &&
+              dropLocation?.pin_code != 'null' &&
+              dropLocation?.pin_code != ''
+                ? dropLocation?.pin_code + ', '
+                : ''}
+            </Text>
           </View>
         </TouchableOpacity>
-        <View style={{ padding: 10 }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{padding: 10}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text
               style={{
                 fontFamily: 'Poppins-Regular',
                 fontSize: 14.5,
-                color: item?.delivery_status == 1 ? '#e36505' :
-                  item?.delivery_status == 3 ? '#d917eb' :
-                    item?.delivery_status == 4 ? '#07e3df' :
-                      item?.delivery_status == 5 ? '#7907e3' : '#09b44d',
+                color:
+                  item?.delivery_status == 1
+                    ? '#e36505'
+                    : item?.delivery_status == 3
+                    ? '#d917eb'
+                    : item?.delivery_status == 4
+                    ? '#07e3df'
+                    : item?.delivery_status == 5
+                    ? '#7907e3'
+                    : '#09b44d',
               }}>
               {/* 0=>Payment Failed, 1=>Waiting, 2=>Rejected, 3=>Delivery Person Accepeted, 4=>Get Items, 5=>Delivery */}
               {item?.delivery_status == 0 ? 'Payment Failed' : null}
@@ -128,7 +233,9 @@ const OrderedList = ({ navigation }) => {
                 fontSize: 14,
                 color: '#000',
               }}>
-              {item?.total_amount_withtax ? "₹ " + item?.total_amount_withtax : null}
+              {item?.total_amount_withtax
+                ? '₹ ' + item?.total_amount_withtax
+                : null}
             </Text>
             <Text
               style={{
@@ -141,11 +248,11 @@ const OrderedList = ({ navigation }) => {
           </View>
         </View>
       </View>
-    )
-  }
+    );
+  };
 
-  const _renderItem = ({ item, index }) => {
-    console.log("itemm from ordered list ", item);
+  const _renderItem = ({item, index}) => {
+    console.log('itemm from ordered list ', item);
     return (
       <View
         style={{
@@ -155,7 +262,7 @@ const OrderedList = ({ navigation }) => {
           borderWidth: 1,
         }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('TrackMap', { id: item.id })}
+          onPress={() => navigation.navigate('TrackMap', {id: item.id})}
           style={{
             flexDirection: 'row',
             padding: 10,
@@ -175,36 +282,68 @@ const OrderedList = ({ navigation }) => {
               justifyContent: 'center',
             }}>
             <Text
-              style={{ fontSize: 13, fontFamily: 'Poppins-Bold', marginBottom: 4 }}>
-              {item?.order_no ? t('orderedListPage.orderId') + item.order_no : null}
+              style={{
+                fontSize: 13,
+                fontFamily: 'Poppins-Bold',
+                marginBottom: 4,
+              }}>
+              {item?.order_no
+                ? t('orderedListPage.orderId') + item.order_no
+                : null}
             </Text>
             <Text
-              style={{ fontSize: 13, fontFamily: 'Poppins-Bold', marginBottom: 4 }}>
+              style={{
+                fontSize: 13,
+                fontFamily: 'Poppins-Bold',
+                marginBottom: 4,
+              }}>
               {item?.cook?.first_name ? item.cook.first_name : null}
             </Text>
             <Text
-              style={{ fontSize: 12, fontFamily: 'Poppins-Regular', marginBottom: 4 }}>
-              {item?.address_info?.area ? item?.address_info?.area + ', ' : null}
-              {item?.address_info?.city ? item?.address_info?.city + '. ' : null}
+              style={{
+                fontSize: 12,
+                fontFamily: 'Poppins-Regular',
+                marginBottom: 4,
+              }}>
+              {item?.address_info?.area
+                ? item?.address_info?.area + ', '
+                : null}
+              {item?.address_info?.city
+                ? item?.address_info?.city + '. '
+                : null}
             </Text>
           </View>
         </TouchableOpacity>
-        <View style={{ padding: 10 }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{padding: 10}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text
               style={{
                 fontFamily: 'Poppins-Regular',
                 fontSize: 14.5,
-                color: item?.delivery_status == 1 ? '#e36505' :
-                  item?.delivery_status == 3 ? '#d917eb' :
-                    item?.delivery_status == 4 ? '#07e3df' :
-                      item?.delivery_status == 5 ? '#7907e3' : '#09b44d',
+                color:
+                  item?.delivery_status == 1
+                    ? '#e36505'
+                    : item?.delivery_status == 3
+                    ? '#d917eb'
+                    : item?.delivery_status == 4
+                    ? '#07e3df'
+                    : item?.delivery_status == 5
+                    ? '#7907e3'
+                    : '#09b44d',
               }}>
               {item?.delivery_status == 1 ? t('orderedListPage.waiting') : null}
-              {item?.delivery_status == 3 ? t('orderedListPage.underPreparation') : null}
-              {item?.delivery_status == 4 ? t('orderedListPage.prepared') : null}
-              {item?.delivery_status == 5 ? t('orderedListPage.pickedUp') : null}
-              {item?.delivery_status == 6 ? t('orderedListPage.delivered') : null}
+              {item?.delivery_status == 3
+                ? t('orderedListPage.underPreparation')
+                : null}
+              {item?.delivery_status == 4
+                ? t('orderedListPage.prepared')
+                : null}
+              {item?.delivery_status == 5
+                ? t('orderedListPage.pickedUp')
+                : null}
+              {item?.delivery_status == 6
+                ? t('orderedListPage.delivered')
+                : null}
             </Text>
             <Text
               style={{
@@ -212,7 +351,7 @@ const OrderedList = ({ navigation }) => {
                 fontSize: 14,
                 color: '#000',
               }}>
-              {item?.net_amount ? "₹ " + item?.net_amount : null}
+              {item?.net_amount ? '₹ ' + item?.net_amount : null}
             </Text>
             <Text
               style={{
@@ -225,18 +364,18 @@ const OrderedList = ({ navigation }) => {
           </View>
         </View>
       </View>
-    )
-  }
+    );
+  };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
+    <SafeAreaView style={{flex: 1}}>
+      <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
       <View
         style={{
           backgroundColor: '#09b44d',
           borderBottomLeftRadius: 25,
           borderBottomRightRadius: 25,
           justifyContent: 'center',
-          height: 60
+          height: 60,
         }}>
         <Pressable
           onPress={() => navigation.goBack()}
@@ -244,41 +383,45 @@ const OrderedList = ({ navigation }) => {
             flexDirection: 'row',
             paddingHorizontal: 15,
             // justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }}>
-          <Image style={{ width: 9, height: 16 }} source={arrow} />
-          <Text style={{
-            color: '#fff',
-            fontSize: 18,
-            fontFamily: 'Poppins-Bold',
-            paddingLeft: 10,
-            paddingTop: 5
-
-          }}>{t('orderedListPage.trackYourOrder')}</Text>
+          <Image style={{width: 9, height: 16}} source={arrow} />
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 18,
+              fontFamily: 'Poppins-Bold',
+              paddingLeft: 10,
+              paddingTop: 5,
+            }}>
+            {t('orderedListPage.trackYourOrder')}
+          </Text>
         </Pressable>
       </View>
 
-      {modal != true && listItems.length > 0 &&
-        < FlatList
-          data={listItems}
-          renderItem={_renderItem}
-        />
-      }
-      {modal != true && pndListItems?.length > 0 &&
-        < FlatList
-          data={pndListItems}
-          renderItem={_renderPnDItem}
-        />
-      }
-      {modal != true && !listItems.length && !pndListItems &&
-        <View style={{ flex: 1, paddingVertical: 300, alignItems: 'center' }}>
-          <Image style={{ height: 100, width: 100, alignItems: 'center' }} source={emptyCartIcon} />
-          <Text style={{
-            textAlign: 'center', fontFamily: 'Poppins-Bold',
-            fontSize: 14, opacity: 0.25
-          }}>No data available...</Text>
+      {modal != true && listItems.length > 0 && (
+        <FlatList data={listItems} renderItem={_renderItem} />
+      )}
+      {modal != true && pndListItems?.length > 0 && (
+        <FlatList data={pndListItems} renderItem={_renderPnDItem} />
+      )}
+      {modal != true && !listItems.length && !pndListItems && (
+        <View style={{flex: 1, paddingVertical: 300, alignItems: 'center'}}>
+          <Image
+            style={{height: 100, width: 100, alignItems: 'center'}}
+            source={emptyCartIcon}
+          />
+          <Text
+            style={{
+              textAlign: 'center',
+              fontFamily: 'Poppins-Bold',
+              fontSize: 14,
+              opacity: 0.25,
+            }}>
+            No data available...
+          </Text>
         </View>
-      }
+      )}
 
       <View>
         {modal && (

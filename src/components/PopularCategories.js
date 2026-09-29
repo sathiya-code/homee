@@ -31,18 +31,23 @@ const categoriesImage = [
 ];
 
 const PopularCategories = () => {
-  const _renderItem = ({ item, index }) => {
+  const _renderItem = ({item, index}) => {
     return (
-      <View style={{ marginLeft: -25 }}>
+      <View style={{marginLeft: -25}}>
         <Image source={item.img} style={styles.carouselImg} />
         <Text style={styles.CategoriesName}>{item.title}</Text>
       </View>
     );
   };
   return (
-    <View style={{ paddingBottom: 15, borderBottomColor: '#deece5', borderBottomWidth: 8, }}>
+    <View
+      style={{
+        paddingBottom: 15,
+        borderBottomColor: '#deece5',
+        borderBottomWidth: 8,
+      }}>
       <Text style={styles.h2}>Popular Foods</Text>
-      <View style={{ marginLeft: 0 }}>
+      <View style={{marginLeft: 0}}>
         <Carousel
           loop={true}
           data={categoriesImage}

@@ -1,77 +1,90 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, FlatList, Alert, Button, ActivityIndicator } from 'react-native';
-import { nav, switchTgl, notif } from '../assets/img/Images';
-import { Picker } from '@react-native-picker/picker';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  FlatList,
+  Alert,
+  Button,
+  ActivityIndicator,
+} from 'react-native';
+import {nav, switchTgl, notif} from '../assets/img/Images';
+import {Picker} from '@react-native-picker/picker';
 import CheckBox from '@react-native-community/checkbox';
 
-const AddFood = ({ navigation }) => {
-
-  const [isLoadingData, setIsLoadingData] = useState(true)
+const AddFood = ({navigation}) => {
+  const [isLoadingData, setIsLoadingData] = useState(true);
   const [timingFood, setTimingFood] = useState([]);
 
   useEffect(() => {
+    // eslint-disable-next-line no-undef
     getListPhotos();
-    return () => {
+    return () => {};
+  }, []);
 
-    }
-  }, [])
-
-
+  // eslint-disable-next-line no-undef
   getListPhotos = () => {
     const apiURL = 'https://jsonplaceholder.typicode.com/photos';
     fetch(apiURL)
-      .then((res) => res.json())
-      .then((resJson) => {
+      .then(res => res.json())
+      .then(resJson => {
         setTimingFood(resJson);
-      }).catch((err) => {
-      }).finally(() => setIsLoadingData(false))
-  }
+      })
+      .catch(err => {})
+      .finally(() => setIsLoadingData(false));
+  };
 
+  // eslint-disable-next-line no-undef
   onCheckedHandling = (itemSelected, index) => {
     const newData = timingFood.map(item => {
       if (item.id == itemSelected.id) {
         return {
           ...item,
-          selected: !item.selected
-        }
+          selected: !item.selected,
+        };
       }
       return {
         ...item,
-        selected: item.selected
-      }
-    })
-    setTimingFood(newData)
+        selected: item.selected,
+      };
+    });
+    setTimingFood(newData);
   };
 
-
-  renderItem = ({ item, index }) => {
+  // eslint-disable-next-line no-undef
+  renderItem = ({item, index}) => {
     return (
       <View>
         <Text>{item.title}</Text>
         <CheckBox
-          disabled={false} onAnimationType='fill'
-          offAnimationType='fade'
-          boxType='square'
+          disabled={false}
+          onAnimationType="fill"
+          offAnimationType="fade"
+          boxType="square"
           onFillColor="#000"
-          onTintColor='red'
-          tintColor='red'
+          onTintColor="red"
+          tintColor="red"
+          // eslint-disable-next-line no-undef
           onValueChange={() => onCheckedHandling(item, index)}
         />
       </View>
-    )
-  }
+    );
+  };
 
+  // eslint-disable-next-line no-undef
   onShowItemSelected = () => {
     const listSelected = timingFood.filter(item => item.selected == true);
     let contentAlert = '';
     listSelected.forEach(item => {
-      contentAlert = contentAlert + `$(item.id) .` + item.title + '\n';
-    })
+      contentAlert = contentAlert + '$(item.id) .' + item.title + '\n';
+    });
     Alert.alert(contentAlert);
-  }
+  };
 
   return (
-    <View style={{ flexDirection: 'column' }}>
+    <View style={{flexDirection: 'column'}}>
       <View
         style={{
           height: 55,
@@ -94,11 +107,11 @@ const AddFood = ({ navigation }) => {
                 paddingHorizontal: 15,
                 paddingVertical: 15,
               }}>
-              <Image style={{ width: 28, height: 20 }} source={nav} />
+              <Image style={{width: 28, height: 20}} source={nav} />
             </TouchableOpacity>
 
             <TouchableOpacity>
-              <Text style={[styles.pageTitle, { alignItems: 'center' }]}>
+              <Text style={[styles.pageTitle, {alignItems: 'center'}]}>
                 Homee Foodz
               </Text>
             </TouchableOpacity>
@@ -110,34 +123,41 @@ const AddFood = ({ navigation }) => {
               justifyContent: 'flex-end',
               alignItems: 'center',
             }}>
-            <TouchableOpacity style={{ paddingHorizontal: 10 }}>
-              <Image source={switchTgl} style={{ width: 38, height: 22 }} />
+            <TouchableOpacity style={{paddingHorizontal: 10}}>
+              <Image source={switchTgl} style={{width: 38, height: 22}} />
             </TouchableOpacity>
-            <TouchableOpacity style={{ paddingRight: 20, paddingLeft: 10 }}>
-              <Image source={notif} style={{ width: 22, height: 26 }} />
+            <TouchableOpacity style={{paddingRight: 20, paddingLeft: 10}}>
+              <Image source={notif} style={{width: 22, height: 26}} />
               <Text style={styles.notifCnt}>25</Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
       <View style={styles.checkBox}>
-        {isLoadingData ? <ActivityIndicator /> : (<FlatList
-          data={timingFood}
-          renderItem={renderItem}
-          keyExtractor={item => `key- ${item.id} `} />
+        {isLoadingData ? (
+          <ActivityIndicator />
+        ) : (
+          <FlatList
+            data={timingFood}
+            // eslint-disable-next-line no-undef
+            renderItem={renderItem}
+            keyExtractor={item => `key- ${item.id} `}
+          />
         )}
-
 
         {/* <TouchableOpacity
           style={styles.checkBox}
           key={key}
+          // eslint-disable-next-line no-undef
           onPress={onCheckedHandling(items.val)}>
+          // eslint-disable-next-line no-undef
           <CheckBox value={items.checked} onValueChange={() => { onCheckedHandling(val) }} />
           <Text>{items.name}</Text>
         </TouchableOpacity> */}
       </View>
       <View>
-        <Button title='butn' onPress={onShowItemSelected} />
+        // eslint-disable-next-line no-undef
+        <Button title="butn" onPress={onShowItemSelected} />
       </View>
     </View>
   );
@@ -153,14 +173,12 @@ const styles = StyleSheet.create({
   nameTxt: {
     color: '#fff',
     fontSize: 25,
-    color: '#fff',
     marginVertical: 2,
     fontFamily: 'Poppins-Bold',
   },
   profTxt: {
     color: '#fff',
     fontSize: 18,
-    color: '#fff',
     fontFamily: 'Poppins-Bold',
     paddingVertical: 3,
   },

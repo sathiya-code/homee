@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import { nav, switchTgl, notif } from '../assets/img/Images';
-import { Picker } from '@react-native-picker/picker';
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {nav, switchTgl, notif} from '../assets/img/Images';
+import {Picker} from '@react-native-picker/picker';
 import CheckBox from '@react-native-community/checkbox';
 
-const AddFood = ({ navigation }) => {
+const AddFood = ({navigation}) => {
   const [timingFood, setTimingFood] = useState(false);
 
   foodTime = [
-    { name: 'BreakFast', value: 'BreakFast' },
-    { name: 'lunch', value: 'lunch' },
-    { name: 'Dinner', value: 'Dinner' },
+    {name: 'BreakFast', value: 'BreakFast'},
+    {name: 'lunch', value: 'lunch'},
+    {name: 'Dinner', value: 'Dinner'},
   ];
 
   onCheckedHandling = val => {
@@ -21,15 +21,22 @@ const AddFood = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flexDirection: 'column' }}>
+    <View style={{flexDirection: 'column'}}>
       <View style={styles.checkBox}>
+        // eslint-disable-next-line no-undef
         {foodTime.map((items, key) => {
           return (
             <TouchableOpacity
               style={styles.checkBox}
               key={key}
               onPress={onCheckedHandling(items.val)}>
-              <CheckBox value={items.checked} onValueChange={() => { onCheckedHandling(val) }} />
+              <CheckBox
+                value={items.checked}
+                onValueChange={() => {
+                  onCheckedHandling(val);
+                }}
+                // eslint-disable-next-line no-undef
+              />
               <Text>{items.name}</Text>
             </TouchableOpacity>
           );
@@ -45,6 +52,7 @@ const AddFood = ({ navigation }) => {
             padding: 1,
             flexDirection: 'row',
             justifyContent: 'space-between',
+            // eslint-disable-next-line no-undef
             alignItems: 'center',
           }}>
           <View
@@ -57,12 +65,13 @@ const AddFood = ({ navigation }) => {
                 paddingHorizontal: 15,
                 paddingVertical: 15,
               }}>
-              <Image style={{ width: 28, height: 20 }} source={nav} />
+              // eslint-disable-next-line no-undef
+              <Image style={{width: 28, height: 20}} source={nav} />
             </TouchableOpacity>
 
             <TouchableOpacity>
-              <Text style={[styles.pageTitle, { alignItems: 'center' }]}>
-                Homee Foodz
+              <Text style={[styles.pageTitle, {alignItems: 'center'}]}>
+                Homee Foodz // eslint-disable-next-line no-undef
               </Text>
             </TouchableOpacity>
           </View>
@@ -73,11 +82,11 @@ const AddFood = ({ navigation }) => {
               justifyContent: 'flex-end',
               alignItems: 'center',
             }}>
-            <TouchableOpacity style={{ paddingHorizontal: 10 }}>
-              <Image source={switchTgl} style={{ width: 38, height: 22 }} />
+            <TouchableOpacity style={{paddingHorizontal: 10}}>
+              <Image source={switchTgl} style={{width: 38, height: 22}} />
             </TouchableOpacity>
-            <TouchableOpacity style={{ paddingRight: 20, paddingLeft: 10 }}>
-              <Image source={notif} style={{ width: 22, height: 26 }} />
+            <TouchableOpacity style={{paddingRight: 20, paddingLeft: 10}}>
+              <Image source={notif} style={{width: 22, height: 26}} />
               <Text style={styles.notifCnt}>25</Text>
             </TouchableOpacity>
           </View>
@@ -97,14 +106,12 @@ const styles = StyleSheet.create({
   nameTxt: {
     color: '#fff',
     fontSize: 25,
-    color: '#fff',
     marginVertical: 2,
     fontFamily: 'Poppins-Bold',
   },
   profTxt: {
     color: '#fff',
     fontSize: 18,
-    color: '#fff',
     fontFamily: 'Poppins-Bold',
     paddingVertical: 3,
   },
@@ -130,6 +137,7 @@ const styles = StyleSheet.create({
     color: '#09b44d',
     marginBottom: 0,
     paddingBottom: 0,
+    // eslint-disable-next-line no-undef
   },
   picker: {
     fontSize: 23,
@@ -144,6 +152,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     color: '#000',
     borderBottomColor: '#a3d8b8',
+    // eslint-disable-next-line no-undef
     borderBottomWidth: 0.7,
     marginBottom: 10,
     marginTop: 15,

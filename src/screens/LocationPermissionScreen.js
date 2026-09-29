@@ -64,9 +64,12 @@ export default function LocationPermissionScreen({ navigation, route }) {
     const get_Token = async () => {
         // setModal(true);
         await storage.setDiffLocationAlert("TRUE");
-        var fcm_tkn = await messaging().getToken();
-        //  console.log('token*****',fcm_token);
-        setFcm_token(fcm_tkn);
+        try {
+            var fcm_tkn = await messaging().getToken();
+            setFcm_token(fcm_tkn);
+        } catch (err) {
+            console.log('FCM token error:', err);
+        }
         var id = await storage.getToken();
         if (id != null) {
             console.log("Bearer Token", id);

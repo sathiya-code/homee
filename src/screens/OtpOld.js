@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   Button,
   View,
@@ -23,10 +23,10 @@ import {
 } from '../assets/img/Images';
 import axios from 'axios';
 
-const Otp = ({ navigation, route }) => {
+const Otp = ({navigation, route}) => {
   let otpInput = useRef(null);
   const lengthOtp = 4;
-  const { params: { user: { id = 0, mobile = 0 } = {} } = {} } = route;
+  const {params: {user: {id = 0, mobile = 0} = {}} = {}} = route;
   const defaultCountdown = 24;
   const [otpValue, setOtpValue] = useState('');
   const [countDown, setCountDown] = useState(defaultCountdown);
@@ -59,6 +59,7 @@ const Otp = ({ navigation, route }) => {
   });
 
   useEffect(() => {
+    let clockCall;
     clockCall = setInterval(() => {
       decrementClock();
     }, 1000);
@@ -101,8 +102,8 @@ const Otp = ({ navigation, route }) => {
             <View style={styles.headerStyle}>
               <TouchableOpacity
                 onPress={() => navigation.goBack()}
-                style={{ paddingHorizontal: 5, paddingVertical: 2 }}>
-                <Image style={{ width: 11, height: 18 }} source={arrow} />
+                style={{paddingHorizontal: 5, paddingVertical: 2}}>
+                <Image style={{width: 11, height: 18}} source={arrow} />
                 <Text style={styles.headerText}>Back</Text>
               </TouchableOpacity>
             </View>
@@ -119,7 +120,7 @@ const Otp = ({ navigation, route }) => {
             <Text style={styles.font4}>Enter your OTP here</Text>
           </View>
 
-          <View style={{ flex: 3, paddingHorizontal: 2, alignContent: 'center' }}>
+          <View style={{flex: 3, paddingHorizontal: 2, alignContent: 'center'}}>
             <View>
               <TextInput
                 ref={input => (otpInput = input)}
@@ -142,7 +143,7 @@ const Otp = ({ navigation, route }) => {
                           borderBottomColor:
                             index === otpValue.length ? '#78bf94' : '#c5c5c5',
                         },
-                        { marginTop: index === otpValue.length ? 7 : 0 },
+                        {marginTop: index === otpValue.length ? 7 : 0},
                       ]}>
                       <Text
                         style={styles.cellText}
@@ -153,7 +154,7 @@ const Otp = ({ navigation, route }) => {
                   ))}
               </View>
             </View>
-            <Pressable onPress={otpHandler} style={{ alignItems: 'center' }}>
+            <Pressable onPress={otpHandler} style={{alignItems: 'center'}}>
               <Text style={styles.buttonStyle}>Proceed</Text>
             </Pressable>
 
@@ -161,7 +162,7 @@ const Otp = ({ navigation, route }) => {
               <Text
                 style={[
                   styles.resentOtp,
-                  { color: enableResend ? '#fff' : 'gray' },
+                  {color: enableResend ? '#fff' : 'gray'},
                 ]}>
                 Resend OTP({countDown})
               </Text>

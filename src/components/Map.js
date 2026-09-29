@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { View, Image, ToastAndroid } from 'react-native';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import React, {Component} from 'react';
+import {View, Image, ToastAndroid} from 'react-native';
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 
-import { mapPin } from '../assets/img/Images';
+import {mapPin} from '../assets/img/Images';
 
 export default class Map extends Component {
   constructor(props) {
@@ -15,14 +15,14 @@ export default class Map extends Component {
 
   componentDidMount() {
     this.handleUserLocation();
-    setTimeout(() => this.setState({ marginBottom: 0 }), 100);
+    setTimeout(() => this.setState({marginBottom: 0}), 100);
   }
 
   handleUserLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
         alert(JSON.stringify(position));
-        const { latitude, longitude } = position.coords;
+        const {latitude, longitude} = position.coords;
 
         this.setState({
           position: {
@@ -52,16 +52,17 @@ export default class Map extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <MapView
           provider={PROVIDER_GOOGLE}
-          style={{ flex: 1, marginBottom: this.state.marginBottom }}
+          style={{flex: 1, marginBottom: this.state.marginBottom}}
           initialRegion={this.state.region}
           showsUserLocation={true}
           showsMyLocationButton={true}
           onRegionChangeComplete={this.onChangeValue}
           zoomEnabled={true}
-          ref={ref => (this.map = ref)}></MapView>
+          ref={ref => (this.map = ref)}
+        />
 
         <View
           style={{

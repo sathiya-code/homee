@@ -17,15 +17,14 @@ import {Platform} from 'react-native';
 export async function checkLocationPermission({navigation, login}) {
   // console.log("check", login);
   try {
-    const check = await PermissionsAndroid.check(
-      'android.permission.ACCESS_FINE_LOCATION',
-    );
-    const check1 = await PermissionsAndroid.check(
-      'android.permission.ACCESS_COARSE_LOCATION',
-    );
-    if ((check || check1) === true) {
-      // await navigation.navigate('Address')
-      if (Platform.OS === 'android') {
+    if (Platform.OS === 'android') {
+      const check = await PermissionsAndroid.check(
+        'android.permission.ACCESS_FINE_LOCATION',
+      );
+      const check1 = await PermissionsAndroid.check(
+        'android.permission.ACCESS_COARSE_LOCATION',
+      );
+      if ((check || check1) === true) {
         !login &&
           ToastAndroid.show(
             'Location Permission Already Active',
@@ -33,13 +32,17 @@ export async function checkLocationPermission({navigation, login}) {
           );
         return true;
       } else {
-        AlertIOS.alert('Location Permission Already Active');
-        return true;
+        console.log('else part for check per');
+        await requestLocationPermission();
       }
     } else {
-      console.log('else part for check per');
-      await requestLocationPermission();
-      // navigation.navigate('LocationPermission');
+      // iOS: use Geolocation API for permission
+      Geolocation.setRNConfiguration({
+        skipPermissionRequests: false,
+        authorizationLevel: 'whenInUse',
+      });
+      Geolocation.requestAuthorization();
+      return true;
     }
   } catch (err) {
     console.log('error', err);
@@ -48,23 +51,35 @@ export async function checkLocationPermission({navigation, login}) {
 export async function requestLocationPermission() {
   console.log('reqLocPermission');
   try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        title: 'Homee',
-        message: 'Homee Needs access to your location ',
-      },
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+    if (Platform.OS === 'android') {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Homee',
+          message: 'Homee Needs access to your location ',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        setTimeout(() => {
+          getCurrentLocation();
+        }, 1000);
+        return true;
+      } else {
+        alert('Location permission denied');
+      }
+      return false;
+    } else {
+      // iOS: use Geolocation API
+      Geolocation.setRNConfiguration({
+        skipPermissionRequests: false,
+        authorizationLevel: 'whenInUse',
+      });
+      Geolocation.requestAuthorization();
       setTimeout(() => {
         getCurrentLocation();
       }, 1000);
-      // navigation.navigate('LogIn');
       return true;
-    } else {
-      alert('Location permission denied');
     }
-    return false;
   } catch (err) {
     console.warn(err);
   }

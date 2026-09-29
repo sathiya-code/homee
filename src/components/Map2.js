@@ -17,7 +17,8 @@ const Map2 = props => {
         showsUserLocation={true}
         showsUserLocationButton={true}
         zoomEnabled={true}
-        {...props}></MapView>
+        {...props}
+      />
       <View
         style={{
           position: 'absolute',

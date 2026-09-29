@@ -39,7 +39,9 @@ const NearByVendors = ({navigation, children}) => {
       console.log('counttttttt');
       setNextPage(nextPage + 1);
     }
-    if (!response?.nextPageUrl) setIsLoaderVisible(false);
+    if (!response?.nextPageUrl) {
+      setIsLoaderVisible(false);
+    }
   };
 
   const _renderItem = ({item, index}) => {
@@ -47,7 +49,7 @@ const NearByVendors = ({navigation, children}) => {
       <TouchableOpacity
         key={item?.id?.toString() + index.toString()}
         onPress={
-          () => navigation.navigate('FoodDetail', {id:item.id})
+          () => navigation.navigate('FoodDetail', {id: item.id})
           // navigation.navigate('GroceryVendorDetails', item.id)
         }>
         <View
@@ -169,6 +171,7 @@ const NearByVendors = ({navigation, children}) => {
   // }, [nextPage, setNextPage]);
   useEffect(() => {
     getVendors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

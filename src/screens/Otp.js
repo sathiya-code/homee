@@ -86,16 +86,12 @@ const Otp = ({ navigation, route }) => {
     //     return removeListener();
     // };
     const getOTP = async () => {
+        if (Platform.OS === 'ios') return;
         console.log("11");
         RNOtpVerify.getHash().then(val => setHashFromMethod(val[0])).catch(console.log);
         console.log("22");
-        // const deviceId = getUniqueId();
-        // setHashFromMethod(deviceId);
-        // console.log("deviceId: " + deviceId);
-        // requestHint().then(setHint).catch(console.log);
         await RNOtpVerify.startOtpListener(message => {
             console.log("33");
-            // extract the otp using regex e.g. the below regex extracts 4 digit otp from message
             try {
                 const otp = /(\d{4})/g.exec(message)[1];
                 console.log('otp', otp);
@@ -106,43 +102,12 @@ const Otp = ({ navigation, route }) => {
             }
             return RNOtpVerify.removeListener();
         });
-        // await RNOtpVerify.startOtpListener(otpHandlers);
-
-        // const otpHandlers = message => {
-        //     console.log("33");
-        //     try {
-        //         console.log("44");
-        //         const otp = /(\d{4})/g.exec(message)[1];
-        //         console.log('otp', otp);
-        //         console.log("55");
-        //         setOtpValue(otp);
-        //         console.log("66");
-        //     }
-        //     catch (e) {
-        //         console.log("77", e);
-        //         console.log('otp not receieved');
-        //     }
-        // };
     };
-    // const startReadingMessages = async () => {
-    //     const hasPermission = await requestReadSMSPermission();
-    //     if (hasPermission) {
-    //         startReadSMS((status, sms, error) => {
-    //             if (status == "success") {
-    //                 const otp = /(\d{4})/g?.exec(sms)[1];
-    //                 setOtpValue(otp);
-    //             }
-    //         });
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     startReadingMessages();
-    // }, [otpValue, setOtpValue])
-
 
     React.useEffect(() => {
-        getOTP();
+        if (Platform.OS !== 'ios') {
+            getOTP();
+        }
     }, [enableResend]);
 
     // useEffect(() => {

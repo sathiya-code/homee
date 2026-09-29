@@ -1,5 +1,4 @@
-import {
-  Dimensions,
+import {Dimensions,
   Image,
   SafeAreaView,
   ScrollView,
@@ -7,8 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
-} from 'react-native';
+  View, Linking} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import * as Images from '../../assets/img/Images';
 import Carousel from 'react-native-snap-carousel';
@@ -41,8 +39,9 @@ const GroceryHome = ({navigation, route}) => {
             item?.target?.toString()?.startsWith('https')
           ) {
             Linking.openURL(item?.target);
-          } else if (item?.target?.length > 0 && item?.target != null)
+          } else if (item?.target?.length > 0 && item?.target != null) {
             navigation.navigate('FoodDetail', {id: item?.target});
+          }
         }}>
         <Image
           source={{uri: item?.image}}
@@ -130,7 +129,7 @@ const GroceryHome = ({navigation, route}) => {
       <NearByVendors navigation={navigation}>
         <View style={{width}}>
           <Banner />
-          <Categories navigation={navigation}/>
+          <Categories navigation={navigation} />
         </View>
       </NearByVendors>
     </SafeAreaView>

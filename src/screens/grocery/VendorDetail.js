@@ -89,6 +89,7 @@ const VendorDetailPage = ({navigation, route}) => {
     );
 
     return () => backHandler?.remove?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation]);
 
   // console.log('cook_details', recommended[0]?.timingstatus);
@@ -270,6 +271,7 @@ const VendorDetailPage = ({navigation, route}) => {
     // get_Cart();
     get_Cook_Profile();
     get_menu_list();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const wishListHandle = async () => {
@@ -297,11 +299,11 @@ const VendorDetailPage = ({navigation, route}) => {
         setRecommended(newArr);
       } else if (type == 'cuisines') {
         let data = [...cuisines];
-        data[index]['menuitems'][key] = response.menu_item;
+        data[index].menuitems[key] = response.menu_item;
         setCuisines(data);
       } else if (type == 'special_menus') {
         let data = [...special_menus];
-        data[index]['specialmenus'][key]['menuitem'] = response.menu_item;
+        data[index].specialmenus[key].menuitem = response.menu_item;
         setSpecial_menus(data);
       }
     }
@@ -320,11 +322,11 @@ const VendorDetailPage = ({navigation, route}) => {
         setRecommended(newArr);
       } else if (type == 'cuisines') {
         let data = [...cuisines];
-        data[index]['menuitems'][key] = response.menu_item;
+        data[index].menuitems[key] = response.menu_item;
         setCuisines(data);
       } else if (type == 'special_menus') {
         let data = [...special_menus];
-        data[index]['specialmenus'][key]['menuitem'] = response.menu_item;
+        data[index].specialmenus[key].menuitem = response.menu_item;
         setSpecial_menus(data);
       }
       get_Cart();
@@ -889,6 +891,7 @@ const VendorDetailPage = ({navigation, route}) => {
       // get_Cook_Profile();
     });
     return () => focusHandler?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation]);
 
   const [query, setQuery] = useState('');
@@ -1729,7 +1732,8 @@ const VendorDetailPage = ({navigation, route}) => {
                   height: 22,
                   backgroundColor: '#d5e7dd',
                   marginHorizontal: 10,
-                }}></View>
+                }}
+              />
               <Text
                 style={{
                   color: '#fff',
@@ -1783,7 +1787,7 @@ const VendorDetailPage = ({navigation, route}) => {
                   marginBottom: 10,
                 }}>
                 <Text style={{fontFamily: 'Poppins-Bold'}}>Tiffen</Text>
-                <Text></Text>
+                <Text />
               </View>
               <View
                 style={{
@@ -1792,7 +1796,7 @@ const VendorDetailPage = ({navigation, route}) => {
                   marginBottom: 10,
                 }}>
                 <Text style={{fontFamily: 'Poppins-Bold'}}>Lunch</Text>
-                <Text></Text>
+                <Text />
               </View>
               <View
                 style={{
@@ -1801,7 +1805,7 @@ const VendorDetailPage = ({navigation, route}) => {
                   marginBottom: 10,
                 }}>
                 <Text style={{fontFamily: 'Poppins-Bold'}}>Dinner</Text>
-                <Text></Text>
+                <Text />
               </View>
               <View
                 style={{
@@ -1810,7 +1814,7 @@ const VendorDetailPage = ({navigation, route}) => {
                   marginBottom: 10,
                 }}>
                 <Text style={{fontFamily: 'Poppins-Bold'}}>Beverages</Text>
-                <Text></Text>
+                <Text />
               </View>
             </View>
           </PaperModal>

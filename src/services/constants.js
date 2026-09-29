@@ -1,6 +1,6 @@
 export const BASE_URL =
   // 'http://192.168.1.203/backend_homely_food/public/api'
-  'http://live.homeefoodz.com/public/api';
+  'https://live.homeefoodz.com/public/api';
 // 'http://source.homeefoodz.com/public/api';
 // "https://www.homeeplatform.com/homee_food/public/api";
 // 'http://192.168.0.107:8000/api';
@@ -42,7 +42,7 @@ export const URL = {
   RATING: '/rating',
   WALLET: '/wallet',
   ADD_WALLET_MONEY: '/wallet/add-money',
-  WALLET_TRANSACTION_CHECK: '/wallet/transaction-check',
+  // WALLET_TRANSACTION_CHECK: '/wallet/transaction-check', // duplicate removed
   SEARCH: '/search',
   WALLET_USER_TRANSACTIONS: '/wallet-user-transactions',
   USER_LOGOUT: '/user/logout',
@@ -65,7 +65,6 @@ export const URL = {
   HOME_DEFAULT_ADDRESS: '/home/get-default-address',
   WALLET_STATUS: '/wallet/status',
   TRANSACTION_STATUS: '/transaction/status',
-  TRANSACTION_CHECK: '/transaction/check',
   GET_FOOD_TYPES: '/foodtypes',
   OFFLINE_REFUND: '/order/paymentoffline/', //order id has to be passed in url
   WALLET_REFUND: '/order/walletrefund/', //order id has to be passed in url

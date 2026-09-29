@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   Text,
@@ -12,14 +12,14 @@ import {
   Linking,
   Alert,
 } from 'react-native';
-import { ticIcon1, arrow } from '../assets/img/Images';
-import { useFocusEffect } from '@react-navigation/core';
-import { api } from '../services';
+import {ticIcon1, arrow} from '../assets/img/Images';
+import {useFocusEffect} from '@react-navigation/core';
+import {api} from '../services';
 import Loader from './Loader';
-import { useTranslation } from 'react-i18next';
-var { width, height } = Dimensions.get('window');
-const OrderSteps = ({ navigation, route }) => {
-  const { t, i18 } = useTranslation();
+import {useTranslation} from 'react-i18next';
+var {width, height} = Dimensions.get('window');
+const OrderSteps = ({navigation, route}) => {
+  const {t, i18} = useTranslation();
   const [modal, setModal] = useState(true);
   const [orderDetails, setOrderDetails] = useState(null);
   const getOrderDetail = async () => {
@@ -28,17 +28,23 @@ const OrderSteps = ({ navigation, route }) => {
     setOrderDetails(response?.order);
     console.log(response);
     setModal(false);
-  }
+  };
 
   useFocusEffect(
     React.useCallback(() => {
       getOrderDetail();
-    }, [])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
   );
-  const onProceed = (url) => {
+  const onProceed = url => {
     Linking.canOpenURL(url)
-      .then((supported) => Linking.openURL(url))
-      .catch(() => Alert.alert("Error", "There was an error attempting to opening the location."));
+      .then(supported => Linking.openURL(url))
+      .catch(() =>
+        Alert.alert(
+          'Error',
+          'There was an error attempting to opening the location.',
+        ),
+      );
     // Linking.canOpenURL(url).then(supported => {
     //   console.log(supported);
     //   if (supported) {
@@ -50,8 +56,8 @@ const OrderSteps = ({ navigation, route }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      {modal != true &&
+    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+      {modal != true && (
         <>
           <View
             style={{
@@ -76,11 +82,11 @@ const OrderSteps = ({ navigation, route }) => {
                     paddingHorizontal: 15,
                     paddingVertical: 15,
                   }}>
-                  <Image style={{ width: 11, height: 18 }} source={arrow} />
+                  <Image style={{width: 11, height: 18}} source={arrow} />
                 </TouchableOpacity>
 
                 <TouchableOpacity>
-                  <Text style={[styles.pageTitle, { alignItems: 'center' }]}>
+                  <Text style={[styles.pageTitle, {alignItems: 'center'}]}>
                     {t('orderStepsPage.orderReport')}
                   </Text>
                 </TouchableOpacity>
@@ -95,24 +101,35 @@ const OrderSteps = ({ navigation, route }) => {
               alignItems: 'center',
               flexDirection: 'row',
             }}>
-            <View style={{ alignItems: 'center' }}>
-              <Text style={styles.estimatedTime}>{t('orderStepsPage.orderId')}</Text>
-              <Text style={styles.orderId}>{orderDetails?.order_no ? orderDetails.order_no : null}</Text>
+            <View style={{alignItems: 'center'}}>
+              <Text style={styles.estimatedTime}>
+                {t('orderStepsPage.orderId')}
+              </Text>
+              <Text style={styles.orderId}>
+                {orderDetails?.order_no ? orderDetails.order_no : null}
+              </Text>
             </View>
-            <View style={{ alignItems: 'center' }}>
-              <Text style={styles.estimatedTime}>{t('orderStepsPage.estimatedTime')}</Text>
-              <Text style={styles.orderId}>{orderDetails?.delivery?.total_time ? orderDetails.delivery.total_time + t('orderStepsPage.mins') : "N/A"}</Text>
+            <View style={{alignItems: 'center'}}>
+              <Text style={styles.estimatedTime}>
+                {t('orderStepsPage.estimatedTime')}
+              </Text>
+              <Text style={styles.orderId}>
+                {orderDetails?.delivery?.total_time
+                  ? orderDetails.delivery.total_time + t('orderStepsPage.mins')
+                  : 'N/A'}
+              </Text>
             </View>
           </View>
           <ScrollView>
-            <View style={{ padding: 10, marginTop: 25 }}>
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ width: 70, justifyContent: 'flex-start' }}>
-                  <Text style={{ fontFamily: 'Poppins-Regular', textAlign: 'right' }}>
+            <View style={{padding: 10, marginTop: 25}}>
+              <View style={{flexDirection: 'row'}}>
+                <View style={{width: 70, justifyContent: 'flex-start'}}>
+                  <Text
+                    style={{fontFamily: 'Poppins-Regular', textAlign: 'right'}}>
                     {/* 08:50 AM */}
                   </Text>
                 </View>
-                <View style={[styles.oredrTick, { backgroundColor: 'green' }]}>
+                <View style={[styles.oredrTick, {backgroundColor: 'green'}]}>
                   <Image source={ticIcon1} style={styles.oredrTickIcon} />
                   {/* <Text
                 style={
@@ -127,7 +144,8 @@ const OrderSteps = ({ navigation, route }) => {
                       position: 'absolute',
                       top: 2,
                       zIndex: 1,
-                    }}></View>
+                    }}
+                  />
                 </View>
                 <View>
                   <Text
@@ -150,14 +168,26 @@ const OrderSteps = ({ navigation, route }) => {
                 </View>
               </View>
 
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ width: 70, justifyContent: 'flex-start' }}>
-                  <Text style={{ fontFamily: 'Poppins-Regular', textAlign: 'right' }}>
+              <View style={{flexDirection: 'row'}}>
+                <View style={{width: 70, justifyContent: 'flex-start'}}>
+                  <Text
+                    style={{fontFamily: 'Poppins-Regular', textAlign: 'right'}}>
                     {/* 08:50 AM */}
                   </Text>
                 </View>
-                <View style={[styles.oredrTick, { backgroundColor: orderDetails?.delivery_status >= 3 ? 'green' : 'darkblue' }]}>
-                  {orderDetails?.delivery_status >= 3 ? <Image source={ticIcon1} style={styles.oredrTickIcon} /> : null}
+                <View
+                  style={[
+                    styles.oredrTick,
+                    {
+                      backgroundColor:
+                        orderDetails?.delivery_status >= 3
+                          ? 'green'
+                          : 'darkblue',
+                    },
+                  ]}>
+                  {orderDetails?.delivery_status >= 3 ? (
+                    <Image source={ticIcon1} style={styles.oredrTickIcon} />
+                  ) : null}
                   {/* <Text
                 style={
                   ([{fontFamily: 'Poppins-Regular', textAlign: 'right'}],
@@ -167,11 +197,15 @@ const OrderSteps = ({ navigation, route }) => {
                     style={{
                       width: 2,
                       height: 80,
-                      backgroundColor: orderDetails?.delivery_status >= 3 ? 'green' : 'darkblue',
+                      backgroundColor:
+                        orderDetails?.delivery_status >= 3
+                          ? 'green'
+                          : 'darkblue',
                       position: 'absolute',
                       top: 2,
                       zIndex: 1,
-                    }}></View>
+                    }}
+                  />
                 </View>
                 <View>
                   <Text
@@ -193,14 +227,26 @@ const OrderSteps = ({ navigation, route }) => {
                   </Text>
                 </View>
               </View>
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ width: 70, justifyContent: 'flex-start' }}>
-                  <Text style={{ fontFamily: 'Poppins-Regular', textAlign: 'right' }}>
+              <View style={{flexDirection: 'row'}}>
+                <View style={{width: 70, justifyContent: 'flex-start'}}>
+                  <Text
+                    style={{fontFamily: 'Poppins-Regular', textAlign: 'right'}}>
                     {/* 08:50 AM */}
                   </Text>
                 </View>
-                <View style={[styles.oredrTick, { backgroundColor: orderDetails?.delivery_status >= 5 ? 'green' : 'darkblue' }]}>
-                  {orderDetails?.delivery_status >= 5 ? <Image source={ticIcon1} style={styles.oredrTickIcon} /> : null}
+                <View
+                  style={[
+                    styles.oredrTick,
+                    {
+                      backgroundColor:
+                        orderDetails?.delivery_status >= 5
+                          ? 'green'
+                          : 'darkblue',
+                    },
+                  ]}>
+                  {orderDetails?.delivery_status >= 5 ? (
+                    <Image source={ticIcon1} style={styles.oredrTickIcon} />
+                  ) : null}
                   {/* <Text
                 style={
                   ([{fontFamily: 'Poppins-Regular', textAlign: 'right'}],
@@ -210,11 +256,15 @@ const OrderSteps = ({ navigation, route }) => {
                     style={{
                       width: 2,
                       height: 80,
-                      backgroundColor: orderDetails?.delivery_status >= 5 ? 'green' : 'darkblue',
+                      backgroundColor:
+                        orderDetails?.delivery_status >= 5
+                          ? 'green'
+                          : 'darkblue',
                       position: 'absolute',
                       top: 2,
                       zIndex: 1,
-                    }}></View>
+                    }}
+                  />
                 </View>
                 <View>
                   <Text
@@ -236,14 +286,26 @@ const OrderSteps = ({ navigation, route }) => {
                   </Text>
                 </View>
               </View>
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ width: 70, justifyContent: 'flex-start' }}>
-                  <Text style={{ fontFamily: 'Poppins-Regular', textAlign: 'right' }}>
+              <View style={{flexDirection: 'row'}}>
+                <View style={{width: 70, justifyContent: 'flex-start'}}>
+                  <Text
+                    style={{fontFamily: 'Poppins-Regular', textAlign: 'right'}}>
                     {/* 08:50 AM */}
                   </Text>
                 </View>
-                <View style={[styles.oredrTick, { backgroundColor: orderDetails?.delivery_status == 6 ? 'green' : 'darkblue' }]}>
-                  {orderDetails?.delivery_status == 6 ? <Image source={ticIcon1} style={styles.oredrTickIcon} /> : null}
+                <View
+                  style={[
+                    styles.oredrTick,
+                    {
+                      backgroundColor:
+                        orderDetails?.delivery_status == 6
+                          ? 'green'
+                          : 'darkblue',
+                    },
+                  ]}>
+                  {orderDetails?.delivery_status == 6 ? (
+                    <Image source={ticIcon1} style={styles.oredrTickIcon} />
+                  ) : null}
                   {/* <Text
                 style={
                   ([{fontFamily: 'Poppins-Regular', textAlign: 'right'}],
@@ -255,7 +317,8 @@ const OrderSteps = ({ navigation, route }) => {
                       position: 'absolute',
                       top: 2,
                       zIndex: 1,
-                    }}></View>
+                    }}
+                  />
                 </View>
                 <View>
                   <Text
@@ -279,14 +342,30 @@ const OrderSteps = ({ navigation, route }) => {
               </View>
             </View>
             {orderDetails?.delivery?.runner_details ? (
-              <View style={{ justifyContent: 'center', alignItems: 'center', margin: 10 }}>
-                <Text style={{ alignItems: 'center', maxWidth: '95%', fontFamily: 'Poppins-Bold', fontSize: 16, color: '#09b44d' }}>{orderDetails?.delivery?.runner_details ? "Your Order Is Scheduled For Delivery, " + orderDetails.delivery.runner_details.name + ", will contact you shortly. " : null}
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  margin: 10,
+                }}>
+                <Text
+                  style={{
+                    alignItems: 'center',
+                    maxWidth: '95%',
+                    fontFamily: 'Poppins-Bold',
+                    fontSize: 16,
+                    color: '#09b44d',
+                  }}>
+                  {orderDetails?.delivery?.runner_details
+                    ? 'Your Order Is Scheduled For Delivery, ' +
+                      orderDetails.delivery.runner_details.name +
+                      ', will contact you shortly. '
+                    : null}
                 </Text>
                 {/* <Text style={{ alignItems: 'center', maxWidth: '95%', fontFamily: 'Poppins-Bold', fontSize: 16, color: '#09b44d' }}>
                   {orderDetails.delivery.runner_details.phone_number ? " You will recevice call from this number  " + orderDetails.delivery.runner_details.phone_number + "." : null}</Text> */}
               </View>
-            ) : null
-            }
+            ) : null}
           </ScrollView>
 
           {/* <View
@@ -302,7 +381,7 @@ const OrderSteps = ({ navigation, route }) => {
           onPress={onProceed}
           style={[{alignItems: 'center'}, styles.buttonBack]}>
           <Text style={styles.buttonStyle}>Order Cancel</Text>
-        </TouchableOpacity> 
+        </TouchableOpacity>
 
             {orderDetails?.delivery_status == 5 && orderDetails?.delivery?.tracking_url != null &&
               <TouchableOpacity
@@ -313,7 +392,7 @@ const OrderSteps = ({ navigation, route }) => {
             }
           </View>*/}
         </>
-      }
+      )}
       {modal && (
         <Modal transparent={true} visible={modal}>
           <Loader />

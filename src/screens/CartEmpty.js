@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {
   View,
   Text,
@@ -8,12 +8,14 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import { arrow, emptyCartIcon } from '../assets/img/Images';
+import {arrow, emptyCartIcon} from '../assets/img/Images';
+import {useNavigation} from '@react-navigation/native';
 
 const CartEmpty = () => {
-  const { t, i18n } = useTranslation();
+  const navigation = useNavigation();
+  const {t, i18n} = useTranslation();
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <View
         style={{
           flexDirection: 'row',
@@ -30,18 +32,18 @@ const CartEmpty = () => {
             paddingRight: 8,
           }}>
           <Image
-            style={{ width: 10, height: 18, resizeMode: 'stretch' }}
+            style={{width: 10, height: 18, resizeMode: 'stretch'}}
             source={arrow}
           />
         </TouchableOpacity>
         <Text style={styles.pageTitle}>Cart</Text>
       </View>
-      <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+      <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
         <Image
-          style={{ width: 100, height: 110, resizeMode: 'stretch' }}
+          style={{width: 100, height: 110, resizeMode: 'stretch'}}
           source={emptyCartIcon}
         />
-        <Text style={{ marginTop: 15, fontFamily: 'Poppins-Bold', opacity: 0.3 }}>
+        <Text style={{marginTop: 15, fontFamily: 'Poppins-Bold', opacity: 0.3}}>
           Preferred Food not yet listed
         </Text>
       </View>

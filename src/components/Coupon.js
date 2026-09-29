@@ -33,7 +33,7 @@ const BannerCarouselImg = Dimensions.get('window').width;
 // ];
 
 const Categories = () => {
-  const _renderItem = ({ item, index }) => {
+  const _renderItem = ({item, index}) => {
     return (
       <View>
         <ImageBackground style={styles.couponBack} source={item.backgroundImg}>
@@ -47,7 +47,12 @@ const Categories = () => {
     );
   };
   return (
-    <View style={{ paddingBottom: 15, borderBottomColor: '#deece5', borderBottomWidth: 8, }}>
+    <View
+      style={{
+        paddingBottom: 15,
+        borderBottomColor: '#deece5',
+        borderBottomWidth: 8,
+      }}>
       <Text style={styles.h2}>Coupons For You</Text>
       {/* <Carousel
         loop={true}
@@ -96,7 +101,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     marginTop: 10,
     marginLeft: 15,
-    marginBottom: 10
+    marginBottom: 10,
   },
   package: {
     color: '#262626',

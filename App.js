@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, {useEffect, useRef} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 import StackNav from './src/Navigation/StackNav';
 import axios from 'axios';
-import { BASE_URL } from './src/services/constants';
-import { Provider } from 'react-redux';
+import {BASE_URL} from './src/services/constants';
+import {Provider} from 'react-redux';
 import configureStore from './src/redux/store';
 axios.defaults.baseURL = BASE_URL;
 import messaging from '@react-native-firebase/messaging';
@@ -17,9 +17,9 @@ import {
   Platform,
   StatusBar,
 } from 'react-native';
-import { storage } from './src/services';
+import {storage} from './src/services';
 import VersionCheck from 'react-native-version-check';
-import { FontConfig, PrimaryGreen } from './src/helper/styles.helper';
+import {FontConfig, PrimaryGreen} from './src/helper/styles.helper';
 import {
   configureFonts,
   DefaultTheme,
@@ -29,12 +29,12 @@ import {
 import * as Sentry from '@sentry/react-native';
 import 'react-native-gesture-handler';
 import './src/translations/i18n';
-import { GetPndProvider } from './src/context/pnd.context';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import {GetPndProvider} from './src/context/pnd.context';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 // RNBootSplash.getVisibilityStatus().then((status) => console.log("splashhhhhhhhhhhhhhhhhhhhhhhstatus", status));
 // import deviceInfoModule from 'react-native-device-info';
 // import checkVersion from 'react-native-store-version';
-
+//
 Sentry.init({
   dsn: 'https://8dce11f4bcf24d8bb3195f9f076f3363@o4504803234086912.ingest.sentry.io/4504803238674432',
   // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
@@ -51,10 +51,10 @@ Sentry.init({
 // Sentry.nativeCrash();
 const store = configureStore();
 const createChannels = () => {
-  PushNotification.createChannel({
-    channelId: 'Homee_Foods',
-    channelName: 'Homee_Foods',
-  });
+ PushNotification.createChannel({
+   channelId: 'Homee_Foods',
+   channelName: 'Homee_Foods',
+ });
 };
 
 const isAndroid = Platform?.OS === 'android';
@@ -64,7 +64,7 @@ const checkApplicationPermission = () => {
       PermissionsAndroid?.request?.(
         PermissionsAndroid?.PERMISSIONS?.POST_NOTIFICATIONS,
       )?.catch?.(() => {});
-    } catch (error) { }
+    } catch (error) {}
   }
 };
 
@@ -73,7 +73,7 @@ const App = () => {
 
   useEffect(() => {
     if (!__DEV__) {
-      console.log = () => { };
+      console.log = () => {};
     }
   }, []);
 
@@ -144,17 +144,17 @@ const App = () => {
   //   } catch (error) { }
   // };
 
-  PushNotification.configure({
-    onNotification: function (notification) {
-      if (notification.userInteraction) {
-        test(notification);
-      }
-    },
-  });
+//  PushNotification.configure({
+//    onNotification: function (notification) {
+//      if (notification.userInteraction) {
+//        test(notification);
+//      }
+//    },
+//  });
   const test = async notification => {
     var id = await storage.getToken();
     if (id != null) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${id}` || '';
+      axios.defaults.headers.common.Authorization = `Bearer ${id}` || '';
       if (notification?.path) {
         navigationRef.current.navigate(notification?.path);
       } else {
@@ -166,7 +166,7 @@ const App = () => {
   };
   useEffect(() => {
     checkApplicationPermission();
-    createChannels();
+   createChannels();
     const unsubscribe = messaging()?.onMessage?.(async remoteMessage => {
       await ShowNotification(remoteMessage);
     });
@@ -177,10 +177,15 @@ const App = () => {
     <Provider store={store}>
       <PaperProvider>
         <SafeAreaProvider>
-          <SafeAreaView style={{ flex: 1, backgroundColor: PrimaryGreen }} edges={['bottom', 'left', 'right', 'top']}>
+          <SafeAreaView
+            style={{flex: 1, backgroundColor: PrimaryGreen}}
+            edges={['bottom', 'left', 'right', 'top']}>
             <GetPndProvider>
               <NavigationContainer ref={navigationRef}>
-                <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
+                <StatusBar
+                  backgroundColor="#09B44D"
+                  barStyle={'light-content'}
+                />
                 <StackNav />
               </NavigationContainer>
             </GetPndProvider>

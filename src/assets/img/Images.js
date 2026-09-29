@@ -177,7 +177,6 @@ export const GalleryPick = require('./pickNdrop/GalleryPick.png');
 export const AddImage = require('./pickNdrop/add-image.png');
 export const DeleteIcon = require('./pickNdrop/delete.png');
 
-
 export const DeliveryBoyImage = require('./pickNdrop/DeliveryBoyImage.png');
 export const Moneybag = require('./pickNdrop/Moneybag.png');
 export const Phone = require('./pickNdrop/Phone.png');
@@ -188,7 +187,6 @@ export const Driver = require('./pickNdrop/driverTop.png');
 export const ContactBook = require('./pickNdrop/ContactBook.png');
 
 export const DeliverySuccess = require('./pickNdrop/deliverySuccess.json');
-
 
 export const advance = require('./coming_soon/advance.jpg');
 export const food = require('./coming_soon/food.jpg');

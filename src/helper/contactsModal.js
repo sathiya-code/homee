@@ -52,8 +52,8 @@ const ContactsModal = ({visible, onRequestClose, selectedContact}) => {
           isPreferred: true,
           onPress: () => {
             if (Platform.OS === 'android') {
-              const intentUri = `package:com.homeeuser`; // Intent URI to open app info
-              Linking.openSettings(); 
+              const intentUri = 'package:com.homeeuser'; // Intent URI to open app info
+              Linking.openSettings();
             } else {
               // iOS does not have a direct way to open App Info; use app settings instead
               Linking.openURL('app-settings:');
@@ -62,12 +62,16 @@ const ContactsModal = ({visible, onRequestClose, selectedContact}) => {
         },
       ],
     );
-  }
+  };
 
   const contactsPermissionHandler = async () => {
     try {
       const contactPermission = await Contacts.checkPermission();
-      console.log("contact perrrrrrrrrrrr, ", contactPermission, contactPermission.length);
+      console.log(
+        'contact perrrrrrrrrrrr, ',
+        contactPermission,
+        contactPermission.length,
+      );
       // Contacts.PERMISSION_AUTHORIZED || Contacts.PERMISSION_UNDEFINED || Contacts.PERMISSION_DENIED
       if (contactPermission == 'undefined') {
         const request = await Contacts.requestPermission();
@@ -102,7 +106,7 @@ const ContactsModal = ({visible, onRequestClose, selectedContact}) => {
         setContacts(contactsArray);
       }
     } catch (err) {
-      console.log("err", err);
+      console.log('err', err);
       // const request = await C
       showAlert();
       // console.log('request', request);

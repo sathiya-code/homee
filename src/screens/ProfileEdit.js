@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -25,35 +25,37 @@ import {
   supportIcon,
   privacyIcon,
 } from '../assets/img/Images';
-import { useTranslation } from 'react-i18next';
-import { EMAIL } from '../constants';
-import { api, storage } from '../services';
-import { useDispatch } from 'react-redux';
-import { set_Profile } from '../redux/actions/authAction';
+import {useTranslation} from 'react-i18next';
+import {EMAIL} from '../constants';
+import {api, storage} from '../services';
+import {useDispatch} from 'react-redux';
+import {set_Profile} from '../redux/actions/authAction';
 import Loader from './Loader';
 
-const ProfileEdit = ({ navigation, route }) => {
-  const { t, i18n } = useTranslation();
+const ProfileEdit = ({navigation, route}) => {
+  const {t, i18n} = useTranslation();
   const dispatch = useDispatch();
-  const name = !!route?.params?.first_name ? route?.params?.first_name : '';
-  const email = !!route?.params?.email ? route?.params?.email.toLowerCase() : '';
+  const name = route?.params?.first_name ? route?.params?.first_name : '';
+  const email = route?.params?.email ? route?.params?.email.toLowerCase() : '';
   const [nameProfileInput, setnameProfileInput] = useState(name);
-  const [MobileProfileInput, setMobileProfileInput] = useState(route?.params?.mobile);
+  const [MobileProfileInput, setMobileProfileInput] = useState(
+    route?.params?.mobile,
+  );
   const [emailProfileInput, setEmailProfileInput] = useState(email);
   const [nameProfileInputErr, setnameProfileInputErr] = useState(false);
   const [emailProfileInputErr, setEmailProfileInputErr] = useState(false);
   const [modal, setModal] = useState(false);
   const nameChange = e => {
     setnameProfileInput(e);
-    if (e == null || e == "") {
+    if (e == null || e == '') {
       setnameProfileInputErr(true);
     } else {
       setnameProfileInputErr(false);
     }
-  }
+  };
   const emailChange = e => {
     setEmailProfileInput(e.toLowerCase());
-    if (e == null || e == "") {
+    if (e == null || e == '') {
       setEmailProfileInputErr(true);
     } else {
       if (EMAIL.test(e) === true) {
@@ -62,15 +64,15 @@ const ProfileEdit = ({ navigation, route }) => {
         setEmailProfileInputErr(true);
       }
     }
-  }
+  };
   const updateProfile = async () => {
     if (nameProfileInputErr || emailProfileInputErr) {
-      alert("Please enter name and email");
+      alert('Please enter name and email');
     } else {
       var payload = {
         email: emailProfileInput,
         name: nameProfileInput,
-      }
+      };
       setModal(true);
       let response = await api.profileEdit(payload);
       if (response.status == 'success') {
@@ -80,21 +82,21 @@ const ProfileEdit = ({ navigation, route }) => {
         dispatch(set_Profile(response.user));
         navigation.goBack();
       } else {
-        alert("Unable to complete your request, try again later");
+        alert('Unable to complete your request, try again later');
       }
       setModal(false);
     }
-  }
+  };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
+    <SafeAreaView style={{flex: 1}}>
+      <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
       <View
         style={{
           backgroundColor: '#09b44d',
           borderBottomLeftRadius: 25,
           borderBottomRightRadius: 25,
           justifyContent: 'center',
-          height: 45
+          height: 45,
         }}>
         <Pressable
           onPress={() => navigation.goBack()}
@@ -102,20 +104,20 @@ const ProfileEdit = ({ navigation, route }) => {
             flexDirection: 'row',
             paddingHorizontal: 15,
           }}>
-          <Image style={{ width: 9, height: 16 }} source={arrow} />
-          <Text style={{
-            color: '#fff',
-            fontSize: 18,
-            fontFamily: 'Poppins-Bold',
-            paddingLeft: 10,
-            marginTop: -5
-
-          }}>
-            {t('profileEditPage.profileEdit')}</Text>
+          <Image style={{width: 9, height: 16}} source={arrow} />
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 18,
+              fontFamily: 'Poppins-Bold',
+              paddingLeft: 10,
+              marginTop: -5,
+            }}>
+            {t('profileEditPage.profileEdit')}
+          </Text>
         </Pressable>
       </View>
       <ScrollView>
-
         {/* <View style={{ paddingHorizontal: 20, paddingTop: 18, paddingBottom: 10, borderBottomColor: '#e4e3e3', borderBottomWidth: 1, }}>
                     <View style={{ justifyContent: "space-between", flexDirection: 'row' }}>
                         <Text style={{ fontSize: 21, fontFamily: 'Poppins-Bold', color: '#000', }}>Rubav Johny dfff sssd</Text>
@@ -129,8 +131,9 @@ const ProfileEdit = ({ navigation, route }) => {
                     </View>
                 </View> */}
 
-        <View style={{ padding: 15 }}>
-          <Text style={{ fontSize: 18, fontFamily: 'Poppins-Bold', color: '#000' }}>
+        <View style={{padding: 15}}>
+          <Text
+            style={{fontSize: 18, fontFamily: 'Poppins-Bold', color: '#000'}}>
             {t('profileEditPage.editAccount')}
           </Text>
           <View>
@@ -157,10 +160,10 @@ const ProfileEdit = ({ navigation, route }) => {
               placeholderTextColor={'#000'}
               value={nameProfileInput}
               onChangeText={nameChange}
-              placeholder={"Please Enter Your Name"}
+              placeholder={'Please Enter Your Name'}
             />
             {nameProfileInputErr && (
-              <Text style={{ color: 'tomato', marginLeft: 10, marginTop: 5 }}>
+              <Text style={{color: 'tomato', marginLeft: 10, marginTop: 5}}>
                 Please Enter Name *
               </Text>
             )}
@@ -169,7 +172,7 @@ const ProfileEdit = ({ navigation, route }) => {
                 fontFamily: 'Poppins-SemiBold',
                 fontSize: 15,
                 color: '#09B44D',
-                opacity:0.5,
+                opacity: 0.5,
                 marginBottom: 0,
                 marginTop: 20,
               }}>
@@ -183,7 +186,7 @@ const ProfileEdit = ({ navigation, route }) => {
                 borderColor: '#d7ecdf',
                 paddingHorizontal: 0,
                 paddingVertical: 5,
-                opacity:0.5,
+                opacity: 0.5,
                 color: '#000',
               }}
               value={MobileProfileInput}
@@ -215,23 +218,25 @@ const ProfileEdit = ({ navigation, route }) => {
               keyboardType={'email-address'}
               autoCapitalize="none"
               placeholderTextColor={'#000'}
-              placeholder={"Please Enter Your Email"}
+              placeholder={'Please Enter Your Email'}
             />
           </View>
           {emailProfileInputErr && (
-            <Text style={{ color: 'tomato', marginLeft: 10, marginTop: 5 }}>
-              {emailProfileInput != null && emailProfileInput != ""
-                ? t("signUpPage.emailIvalidErr")
-                : t("signUpPage.emailErr")}
+            <Text style={{color: 'tomato', marginLeft: 10, marginTop: 5}}>
+              {emailProfileInput != null && emailProfileInput != ''
+                ? t('signUpPage.emailIvalidErr')
+                : t('signUpPage.emailErr')}
             </Text>
           )}
         </View>
       </ScrollView>
-      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{alignItems: 'center', justifyContent: 'center'}}>
         <TouchableOpacity
           onPress={updateProfile}
           style={{
-            position: 'absolute', bottom: 10, backgroundColor: '#09b44d',
+            position: 'absolute',
+            bottom: 10,
+            backgroundColor: '#09b44d',
             width: 160,
             borderRadius: 28,
           }}>
@@ -266,14 +271,12 @@ const styles = StyleSheet.create({
   nameTxt: {
     color: '#fff',
     fontSize: 25,
-    color: '#fff',
     marginVertical: 2,
     fontFamily: 'Poppins-Bold',
   },
   profTxt: {
     color: '#fff',
     fontSize: 18,
-    color: '#fff',
     fontFamily: 'Poppins-Bold',
     paddingVertical: 3,
   },

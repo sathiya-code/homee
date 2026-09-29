@@ -37,7 +37,7 @@ const Categories = ({navigation}) => {
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-            marginRight: index == categories.length-1 ? 30 : 10,
+            marginRight: index == categories.length - 1 ? 30 : 10,
           }}>
           <View
             style={{

@@ -6,8 +6,7 @@ import React, {
   useRef,
   useContext,
 } from 'react';
-import {
-  Dimensions,
+import {Dimensions,
   Image,
   SafeAreaView,
   ScrollView,
@@ -21,8 +20,7 @@ import {
   BackHandler,
   ToastAndroid,
   Alert,
-  Modal,
-} from 'react-native';
+  Modal, Platform} from 'react-native';
 import * as Images from '../../assets/img/Images';
 import Geolocation from '@react-native-community/geolocation';
 import {requestLocationPermission} from '../../helper/location-permission';
@@ -114,6 +112,7 @@ const PickAndDrop = prop => {
   const handleSheetChanges = useCallback(index => {
     console.log('handleSheetChanges', index);
   }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleModalClose = useCallback(() => {
     sheetRef.current?.close();
     imageModalSheetRef.current?.close();
@@ -144,7 +143,9 @@ const PickAndDrop = prop => {
     console.log('90');
     const response = await api.getPndAddresses();
     // console.log('response from adddddd', response);
-    if (response.status == 'success') setAllAddresses(response?.address);
+    if (response.status == 'success') {
+      setAllAddresses(response?.address);
+    }
   };
 
   const getCurrentLocation = () => {
@@ -162,8 +163,12 @@ const PickAndDrop = prop => {
   const getItemsList = async () => {
     const response = await api.getPndItemsAndConfigs();
     console.log('response from get items in pnd', response);
-    if (response.itemtype.length) setItemTypes(response.itemtype);
-    if (response.vehicles.length) setVehicles(response.vehicles);
+    if (response.itemtype.length) {
+      setItemTypes(response.itemtype);
+    }
+    if (response.vehicles.length) {
+      setVehicles(response.vehicles);
+    }
   };
 
   const changeAddressByRoute = async () => {
@@ -172,7 +177,7 @@ const PickAndDrop = prop => {
     console.log('===========================');
     const type = route?.params?.addressSelectType;
     const addressIdFromRoute = route?.params?.addressId;
-    if (!!addressIdFromRoute) {
+    if (addressIdFromRoute) {
       const addressById = await api.getPndAddressById(addressIdFromRoute);
       if (
         addressById?.status == 'success' &&
@@ -207,9 +212,11 @@ const PickAndDrop = prop => {
           },
         ]}
         onPress={() => {
-          if (item.id == selectedVehicle)
+          if (item.id == selectedVehicle) {
             ToastAndroid.show('Vehicle Already Selected', 1000);
-          else setSelectedVehicle(item.id);
+          } else {
+            setSelectedVehicle(item.id);
+          }
         }}
         activeOpacity={0.3}
         disabled={item.disabled}>
@@ -255,6 +262,7 @@ const PickAndDrop = prop => {
       pndCalculatePrice();
       userData();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pickupLocation, setPickupLocation, dropLocation, setDropLocation]);
 
   useEffect(() => {
@@ -263,6 +271,7 @@ const PickAndDrop = prop => {
       changeAddressByRoute();
     });
     return () => focusHandler?.();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const AddressComponent = () => {
@@ -294,7 +303,7 @@ const PickAndDrop = prop => {
               +Add New Address
             </Text>
           </TouchableOpacity>
-          {!!allAddresses?.length ? (
+          {allAddresses?.length ? (
             <>
               <Text style={styles.savedLocationText}>Saved Locations</Text>
               {allAddresses?.map((address, index) => {
@@ -316,7 +325,7 @@ const PickAndDrop = prop => {
                     {address?.name && address?.mobile && (
                       <Text style={styles.addressSubHeadText}>
                         {address?.name}
-                        {`  (`} {address?.mobile} {`)`}
+                        {'  ('} {address?.mobile} {')'}
                       </Text>
                     )}
                     <Text style={styles.addressBodyText}>
@@ -343,14 +352,18 @@ const PickAndDrop = prop => {
   const openCameraHandler = async () => {
     setIsGoodsImgModalOpen(false);
     const photo = await openCamara();
-    if (photo) setItemImages(images => [...images, photo]);
+    if (photo) {
+      setItemImages(images => [...images, photo]);
+    }
     // console.log("photo", itemImages);
   };
 
   const openGalleryHandler = async () => {
     setIsGoodsImgModalOpen(false);
     const photo = await openGallery();
-    if (photo) setItemImages(images => [...images, photo]);
+    if (photo) {
+      setItemImages(images => [...images, photo]);
+    }
   };
 
   const deleteImage = index => {
@@ -384,25 +397,25 @@ const PickAndDrop = prop => {
   // },[])
 
   const placeOrderHandler = async () => {
-    if (!termsAccept)
+    if (!termsAccept) {
       ToastAndroid.show(
         'Please Accept Terms & Conditions',
         ToastAndroid.BOTTOM,
       );
-    else if (
+    } else if (
       !pickupLocation ||
       !dropLocation ||
       !selectedItemType ||
       !selectedVehicle
-    )
+    ) {
       ToastAndroid.show(
         'Complete All the Required Fields',
         ToastAndroid.BOTTOM,
       );
-    else {
+    } else {
       setModal(true);
       setShowPlaceOrderBtn(false);
-      console.log("deliveryNotes", deliveryNotes);
+      console.log('deliveryNotes', deliveryNotes);
       var form_data = new FormData();
       form_data.append('pickup_location', pickupLocation?.id);
       form_data.append('drop_location', dropLocation?.id);
@@ -412,7 +425,7 @@ const PickAndDrop = prop => {
       form_data.append('delivery_notes', deliveryNotes);
       itemImages.forEach((image, index) => {
         console.log('image', index, image.uri);
-        if (!!image.uri)
+        if (image.uri) {
           form_data.append('image' + (index + 1), {
             uri:
               Platform.OS === 'ios'
@@ -421,6 +434,7 @@ const PickAndDrop = prop => {
             name: image.fileName,
             type: image.type,
           });
+        }
       });
       console.log('form', form_data);
       // const response = await api.pndPlaceOrder(form_data);
@@ -482,8 +496,9 @@ const PickAndDrop = prop => {
                 order_no: response.order_id,
               };
               const orderStatus = await api.pndOrderStatus(payload);
-              if (orderStatus.status == 'success')
+              if (orderStatus.status == 'success') {
                 ToastAndroid.show(orderStatus.message, ToastAndroid.BOTTOM);
+              }
               setShowPlaceOrderBtn(true);
               Alert.alert(error.error.reason, error.error.description);
             });
@@ -510,7 +525,8 @@ const PickAndDrop = prop => {
       } else if (type == 'podCash') {
         // changeWallet();
         setPaymentMode('podCash');
-      } else;
+      } else {
+      }
     };
     return (
       <View style={{marginBottom: 10}}>
@@ -669,8 +685,9 @@ const PickAndDrop = prop => {
             <View style={{marginLeft: 10, width: '85%'}}>
               {pickupLocation?.name && pickupLocation?.mobile && (
                 <>
-                  <Text
-                    style={styles.locationHeadText}>{`Pickup Location`}</Text>
+                  <Text style={styles.locationHeadText}>
+                    {'Pickup Location'}
+                  </Text>
                   <Text
                     style={
                       styles.locationSubHeadText
@@ -711,7 +728,7 @@ const PickAndDrop = prop => {
             <View style={{marginLeft: 10, width: '85%'}}>
               {dropLocation?.name && dropLocation?.mobile && (
                 <>
-                  <Text style={styles.locationHeadText}>{`Drop Location`}</Text>
+                  <Text style={styles.locationHeadText}>{'Drop Location'}</Text>
                   <Text
                     style={
                       styles.locationSubHeadText
@@ -760,7 +777,7 @@ const PickAndDrop = prop => {
               <Text style={[styles.addressSelectText, {marginLeft: 7}]}>
                 Goods Image
                 <Text style={[styles.addressSelectText, {fontSize: 10}]}>
-                  {`  (Optional)`}
+                  {'  (Optional)'}
                 </Text>
               </Text>
             </View>
@@ -893,7 +910,7 @@ const PickAndDrop = prop => {
               <View style={styles.billDetailsContainer}>
                 <View style={styles.billInfo}>
                   <Text style={styles.billDetailsText}>
-                    {`Ride Fare  `}
+                    {'Ride Fare  '}
                     {/* <View style={styles.toolTipMainContainer}> */}
                     {tooltipInfo?.length && (
                       <ControlledTooltip
@@ -1039,7 +1056,7 @@ const PickAndDrop = prop => {
               onPress={() => console.log('ranjith')}>
               Accept Terms and Condition
               <Text style={[styles.termsText, {color: '#63B7A6'}]}>
-                {`  view`}
+                {'  view'}
               </Text>
             </Text>
           </View>

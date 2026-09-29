@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import { nav, switchTgl, notif } from '../assets/img/Images';
-import { Picker } from '@react-native-picker/picker';
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {nav, switchTgl, notif} from '../assets/img/Images';
+import {Picker} from '@react-native-picker/picker';
 import CheckBox from '@react-native-community/checkbox';
 
-const AddFood = ({ navigation }) => {
+const AddFood = ({navigation}) => {
   const [selectedLanguage, setSelectedLanguage] = useState(
     (catFood = [
-      { label: 'Football', value: 'football' },
-      { label: 'Baseball', value: 'baseball' },
-      { label: 'Hockey', value: 'hockey' },
+      {label: 'Football', value: 'football'},
+      {label: 'Baseball', value: 'baseball'},
+      {label: 'Hockey', value: 'hockey'},
     ]),
   );
   // const [toggleCheckBox, setToggleCheckBox] = useState(
@@ -34,7 +34,7 @@ const AddFood = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flexDirection: 'column' }}>
+    <View style={{flexDirection: 'column'}}>
       <View style={styles.checkBox}>
         {selectedLanguage.map((item, key) => {
           return (
@@ -70,11 +70,11 @@ const AddFood = ({ navigation }) => {
                 paddingHorizontal: 15,
                 paddingVertical: 15,
               }}>
-              <Image style={{ width: 28, height: 20 }} source={nav} />
+              <Image style={{width: 28, height: 20}} source={nav} />
             </TouchableOpacity>
 
             <TouchableOpacity>
-              <Text style={[styles.pageTitle, { alignItems: 'center' }]}>
+              <Text style={[styles.pageTitle, {alignItems: 'center'}]}>
                 Homee Foodz
               </Text>
             </TouchableOpacity>
@@ -86,11 +86,11 @@ const AddFood = ({ navigation }) => {
               justifyContent: 'flex-end',
               alignItems: 'center',
             }}>
-            <TouchableOpacity style={{ paddingHorizontal: 10 }}>
-              <Image source={switchTgl} style={{ width: 38, height: 22 }} />
+            <TouchableOpacity style={{paddingHorizontal: 10}}>
+              <Image source={switchTgl} style={{width: 38, height: 22}} />
             </TouchableOpacity>
-            <TouchableOpacity style={{ paddingRight: 20, paddingLeft: 10 }}>
-              <Image source={notif} style={{ width: 22, height: 26 }} />
+            <TouchableOpacity style={{paddingRight: 20, paddingLeft: 10}}>
+              <Image source={notif} style={{width: 22, height: 26}} />
               <Text style={styles.notifCnt}>25</Text>
             </TouchableOpacity>
           </View>
@@ -186,14 +186,12 @@ const styles = StyleSheet.create({
   nameTxt: {
     color: '#fff',
     fontSize: 25,
-    color: '#fff',
     marginVertical: 2,
     fontFamily: 'Poppins-Bold',
   },
   profTxt: {
     color: '#fff',
     fontSize: 18,
-    color: '#fff',
     fontFamily: 'Poppins-Bold',
     paddingVertical: 3,
   },

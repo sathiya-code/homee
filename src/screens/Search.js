@@ -64,7 +64,6 @@ const Search = ({navigation, route}) => {
   const [sortby, setSortby] = useState({LH: false, HL: false});
   const [filterType, setFilterType] = useState(null);
   const [services, setServices] = useState([]);
-  
 
   useEffect(() => {
     const focusHandler = navigation?.addListener?.('focus', () => {
@@ -108,11 +107,15 @@ const Search = ({navigation, route}) => {
     const response = await JSON.stringify(res.data);
     console.log('response from ranjith in new node api', response);
     const foodList = res.data.filter(item => {
-      if (item?.food_image) return item;
+      if (item?.food_image) {
+        return item;
+      }
     });
     setFoodList(foodList);
     const cookList = res.data.filter(item => {
-      if (!item?.food_image) return item;
+      if (!item?.food_image) {
+        return item;
+      }
     });
     setCookList(cookList);
     // console.log("ranjith", cookList);
@@ -211,7 +214,9 @@ const Search = ({navigation, route}) => {
   const getServices = async () => {
     const response = await api.getOurServices();
     console.log('response for ser title in search page', response);
-    if (response.status == 'success') setServices(response.services);
+    if (response.status == 'success') {
+      setServices(response.services);
+    }
   };
 
   useEffect(() => {
@@ -221,6 +226,7 @@ const Search = ({navigation, route}) => {
   useEffect(() => {
     // (sortby.HL == true && sortby.LH != true) ? setSortType("HL") : setSortType("LH");
     searchChange(searchText);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortType]);
 
   const searchSubmit = async () => {
@@ -520,6 +526,7 @@ const Search = ({navigation, route}) => {
   };
   const _renderFilterItem = ({item, index}) => {
     return (
+      // eslint-disable-next-line no-undef
       <TouchableOpacity
         onPress={() => selectedFoodType(item.id, index)}
         style={{
@@ -564,7 +571,9 @@ const Search = ({navigation, route}) => {
     return (
       <>
         <TouchableOpacity
-          onPress={() => navigation.navigate('FoodDetail', {id: item.id, searchText})}
+          onPress={() =>
+            navigation.navigate('FoodDetail', {id: item.id, searchText})
+          }
           style={{justifyContent: 'center', alignItems: 'center'}}>
           <View
             style={{
@@ -660,7 +669,7 @@ const Search = ({navigation, route}) => {
                     }}>
                     {!!item?.street && item?.street != 'null'
                       ? item?.street
-                      : !!item?.area
+                      : item?.area
                       ? item?.area
                       : item?.cit}
                   </Text>
@@ -746,7 +755,7 @@ const Search = ({navigation, route}) => {
                 <Text style={{color: '#8D9601', fontFamily: 'Poppins-Regular'}}>
                   {!!item?.street && item?.street != 'null'
                     ? item?.street
-                    : !!item?.area
+                    : item?.area
                     ? item?.area
                     : item?.city}
                 </Text>
@@ -980,14 +989,12 @@ const styles = StyleSheet.create({
   nameTxt: {
     color: '#fff',
     fontSize: 25,
-    color: '#fff',
     marginVertical: 2,
     fontFamily: 'Poppins-Bold',
   },
   profTxt: {
     color: '#fff',
     fontSize: 18,
-    color: '#fff',
     fontFamily: 'Poppins-Bold',
     paddingVertical: 3,
   },

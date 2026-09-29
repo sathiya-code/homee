@@ -2,18 +2,21 @@ import 'react-native-gesture-handler/jestSetup';
 
 jest.mock('react-native/Libraries/Utilities/Appearance', () => ({
   getColorScheme: jest.fn(() => 'light'),
-  addChangeListener: jest.fn(() => ({ remove: jest.fn() })),
+  addChangeListener: jest.fn(() => ({remove: jest.fn()})),
   removeChangeListener: jest.fn(),
 }));
 
-jest.mock('react-native/Libraries/Components/AccessibilityInfo/AccessibilityInfo', () => ({
-  isReduceMotionEnabled: jest.fn(() => Promise.resolve(false)),
-  isScreenReaderEnabled: jest.fn(() => Promise.resolve(false)),
-  setAccessibilityFocus: jest.fn(),
-  announceForAccessibility: jest.fn(),
-  addEventListener: jest.fn(() => ({ remove: jest.fn() })),
-  removeEventListener: jest.fn(),
-}));
+jest.mock(
+  'react-native/Libraries/Components/AccessibilityInfo/AccessibilityInfo',
+  () => ({
+    isReduceMotionEnabled: jest.fn(() => Promise.resolve(false)),
+    isScreenReaderEnabled: jest.fn(() => Promise.resolve(false)),
+    setAccessibilityFocus: jest.fn(),
+    announceForAccessibility: jest.fn(),
+    addEventListener: jest.fn(() => ({remove: jest.fn()})),
+    removeEventListener: jest.fn(),
+  }),
+);
 
 jest.mock('@react-navigation/native/lib/commonjs/useBackButton.native', () => ({
   __esModule: true,
@@ -22,35 +25,36 @@ jest.mock('@react-navigation/native/lib/commonjs/useBackButton.native', () => ({
 
 jest.mock('@react-navigation/native/lib/commonjs/useLinking.native', () => ({
   __esModule: true,
-  default: () => ({ getInitialState: () => Promise.resolve(undefined) }),
+  default: () => ({getInitialState: () => Promise.resolve(undefined)}),
 }));
 
 jest.mock('react-native-paper/lib/commonjs/utils/addEventListener', () => ({
-  addEventListener: jest.fn(() => ({ remove: jest.fn() })),
-  addListener: jest.fn(() => ({ remove: jest.fn() })),
+  addEventListener: jest.fn(() => ({remove: jest.fn()})),
+  addListener: jest.fn(() => ({remove: jest.fn()})),
 }));
 
 const patchRN = () => {
   try {
     const RN = require('react-native');
     if (RN.StyleSheet && !RN.StyleSheet.flatten) {
-      RN.StyleSheet.flatten = (style) => (Array.isArray(style) ? Object.assign({}, ...style) : style || {});
+      RN.StyleSheet.flatten = style =>
+        Array.isArray(style) ? Object.assign({}, ...style) : style || {};
     }
     if (RN.BackHandler) {
       try {
         Object.defineProperty(RN.BackHandler, 'addEventListener', {
-          value: jest.fn(() => ({ remove: jest.fn() })),
+          value: jest.fn(() => ({remove: jest.fn()})),
           writable: true,
           configurable: true,
         });
       } catch (e) {
-        RN.BackHandler.addEventListener = jest.fn(() => ({ remove: jest.fn() }));
+        RN.BackHandler.addEventListener = jest.fn(() => ({remove: jest.fn()}));
       }
     }
     if (RN.Appearance) {
       try {
         Object.defineProperty(RN.Appearance, 'addChangeListener', {
-          value: jest.fn(() => ({ remove: jest.fn() })),
+          value: jest.fn(() => ({remove: jest.fn()})),
           writable: true,
           configurable: true,
         });
@@ -65,24 +69,24 @@ const patchRN = () => {
           configurable: true,
         });
       } catch (e) {
-        RN.Appearance.addChangeListener = jest.fn(() => ({ remove: jest.fn() }));
+        RN.Appearance.addChangeListener = jest.fn(() => ({remove: jest.fn()}));
       }
     }
     if (RN.Linking) {
       try {
         Object.defineProperty(RN.Linking, 'addEventListener', {
-          value: jest.fn(() => ({ remove: jest.fn() })),
+          value: jest.fn(() => ({remove: jest.fn()})),
           writable: true,
           configurable: true,
         });
       } catch (e) {
-        RN.Linking.addEventListener = jest.fn(() => ({ remove: jest.fn() }));
+        RN.Linking.addEventListener = jest.fn(() => ({remove: jest.fn()}));
       }
     }
     if (RN.AccessibilityInfo) {
       try {
         Object.defineProperty(RN.AccessibilityInfo, 'addEventListener', {
-          value: jest.fn(() => ({ remove: jest.fn() })),
+          value: jest.fn(() => ({remove: jest.fn()})),
           writable: true,
           configurable: true,
         });
@@ -92,7 +96,9 @@ const patchRN = () => {
           configurable: true,
         });
       } catch (e) {
-        RN.AccessibilityInfo.addEventListener = jest.fn(() => ({ remove: jest.fn() }));
+        RN.AccessibilityInfo.addEventListener = jest.fn(() => ({
+          remove: jest.fn(),
+        }));
       }
     }
   } catch (e) {}
@@ -103,27 +109,30 @@ beforeEach(() => {
   patchRN();
 });
 
-
 jest.mock('react-native-paper', () => {
   const React = require('react');
-  const { View } = require('react-native');
+  const {View} = require('react-native');
   const Actual = jest.requireActual('react-native-paper');
-  const ProviderMock = (props) => React.createElement(View, props, props.children);
+  const ProviderMock = props =>
+    React.createElement(View, props, props.children);
   return {
     ...Actual,
     Provider: ProviderMock,
     PaperProvider: ProviderMock,
-    Modal: (props) => (props.visible ? React.createElement(View, props, props.children) : null),
+    Modal: props =>
+      props.visible ? React.createElement(View, props, props.children) : null,
   };
 });
 jest.mock('@react-navigation/stack', () => {
   const React = require('react');
-  const { View } = require('react-native');
+  const {View} = require('react-native');
   return {
     createStackNavigator: () => ({
-      Navigator: ({ children }) => React.createElement(View, null, children),
-      Screen: ({ component, children }) => {
-        if (component) return React.createElement(component);
+      Navigator: ({children}) => React.createElement(View, null, children),
+      Screen: ({component, children}) => {
+        if (component) {
+          return React.createElement(component);
+        }
         return React.createElement(View, null, children);
       },
     }),
@@ -132,12 +141,14 @@ jest.mock('@react-navigation/stack', () => {
 
 jest.mock('@react-navigation/bottom-tabs', () => {
   const React = require('react');
-  const { View } = require('react-native');
+  const {View} = require('react-native');
   return {
     createBottomTabNavigator: () => ({
-      Navigator: ({ children }) => React.createElement(View, null, children),
-      Screen: ({ component, children }) => {
-        if (component) return React.createElement(component);
+      Navigator: ({children}) => React.createElement(View, null, children),
+      Screen: ({component, children}) => {
+        if (component) {
+          return React.createElement(component);
+        }
         return React.createElement(View, null, children);
       },
     }),
@@ -162,15 +173,17 @@ jest.mock('react-native-push-notification', () => ({
 
 jest.mock('@sentry/react-native', () => ({
   init: jest.fn(),
-  wrap: (component) => component,
+  wrap: component => component,
   captureException: jest.fn(),
 }));
 
 jest.mock('react-native-version-check', () => ({
-  needUpdate: jest.fn(() => Promise.resolve({ isNeeded: false })),
+  needUpdate: jest.fn(() => Promise.resolve({isNeeded: false})),
 }));
 
-jest.mock('react-native-store-version', () => jest.fn(() => Promise.resolve({ result: 'equal' })));
+jest.mock('react-native-store-version', () =>
+  jest.fn(() => Promise.resolve({result: 'equal'})),
+);
 
 jest.mock('@react-native-community/geolocation', () => ({
   addListener: jest.fn(),
@@ -191,96 +204,114 @@ jest.mock('react-native-geolocation-service', () => ({
 }));
 
 jest.mock('react-native-android-location-enabler', () => ({
-  promptForEnableLocationIfNeeded: jest.fn(() => Promise.resolve('already-enabled')),
+  promptForEnableLocationIfNeeded: jest.fn(() =>
+    Promise.resolve('already-enabled'),
+  ),
 }));
 
 jest.mock('react-native-location-enabler', () => ({
   isLocationEnabled: jest.fn(() => Promise.resolve(true)),
-  promptForEnableLocationIfNeeded: jest.fn(() => Promise.resolve('already-enabled')),
+  promptForEnableLocationIfNeeded: jest.fn(() =>
+    Promise.resolve('already-enabled'),
+  ),
 }));
 
 jest.mock('react-native-geocoding', () => ({
   init: jest.fn(),
-  from: jest.fn(() => Promise.resolve({ results: [] })),
+  from: jest.fn(() => Promise.resolve({results: []})),
 }));
 
 jest.mock('react-native-google-places-autocomplete', () => {
   const React = require('react');
-  const { View } = require('react-native');
+  const {View} = require('react-native');
   return {
-    GooglePlacesAutocomplete: (props) => React.createElement(View, props),
+    GooglePlacesAutocomplete: props => React.createElement(View, props),
   };
 });
 
 jest.mock('react-native-radio-buttons-group', () => {
   const React = require('react');
-  const { View } = require('react-native');
-  const Component = (props) => React.createElement(View, props, props.children);
+  const {View} = require('react-native');
+  const Component = props => React.createElement(View, props, props.children);
   Component.default = Component;
   return Component;
 });
 
-jest.mock('@react-native-picker/picker', () => {
-  const React = require('react');
-  const { View } = require('react-native');
-  const MockPicker = (props) => React.createElement(View, props, props.children);
-  MockPicker.Item = (props) => React.createElement(View, props);
-  return {
-    Picker: MockPicker,
-  };
-}, { virtual: true });
+jest.mock(
+  '@react-native-picker/picker',
+  () => {
+    const React = require('react');
+    const {View} = require('react-native');
+    const MockPicker = props =>
+      React.createElement(View, props, props.children);
+    MockPicker.Item = props => React.createElement(View, props);
+    return {
+      Picker: MockPicker,
+    };
+  },
+  {virtual: true},
+);
 
-jest.mock('react-native-element-dropdown', () => {
-  const React = require('react');
-  const { View } = require('react-native');
-  return {
-    Dropdown: (props) => React.createElement(View, props),
-  };
-}, { virtual: true });
+jest.mock(
+  'react-native-element-dropdown',
+  () => {
+    const React = require('react');
+    const {View} = require('react-native');
+    return {
+      Dropdown: props => React.createElement(View, props),
+    };
+  },
+  {virtual: true},
+);
 
-jest.mock('react-native-text-gradient', () => {
-  const React = require('react');
-  const { Text } = require('react-native');
-  return {
-    LinearTextGradient: (props) => React.createElement(Text, props, props.children),
-  };
-}, { virtual: true });
+jest.mock(
+  'react-native-text-gradient',
+  () => {
+    const React = require('react');
+    const {Text} = require('react-native');
+    return {
+      LinearTextGradient: props =>
+        React.createElement(Text, props, props.children),
+    };
+  },
+  {virtual: true},
+);
 
 jest.mock('react-native-date-picker', () => {
   const React = require('react');
-  const { View } = require('react-native');
-  return (props) => React.createElement(View, props);
+  const {View} = require('react-native');
+  return props => React.createElement(View, props);
 });
 
 jest.mock('react-native-calendars', () => {
   const React = require('react');
-  const { View } = require('react-native');
+  const {View} = require('react-native');
   return {
-    Calendar: (props) => React.createElement(View, props),
+    Calendar: props => React.createElement(View, props),
   };
 });
 
 jest.mock('react-native-ratings', () => {
   const React = require('react');
-  const { View } = require('react-native');
+  const {View} = require('react-native');
   return {
-    Rating: (props) => React.createElement(View, props),
-    AirbnbRating: (props) => React.createElement(View, props),
+    Rating: props => React.createElement(View, props),
+    AirbnbRating: props => React.createElement(View, props),
   };
 });
 
 jest.mock('react-native-webview', () => {
   const React = require('react');
-  const { View } = require('react-native');
+  const {View} = require('react-native');
   return {
-    WebView: (props) => React.createElement(View, props),
+    WebView: props => React.createElement(View, props),
   };
 });
 
 jest.mock('react-native-app-intro-slider', () => {
   const React = require('react');
-  const { View } = require('react-native');
-  return (props) => React.createElement(View, props);
+  const {View} = require('react-native');
+  return props => React.createElement(View, props);
 });
 
 jest.mock('react-native-image-picker', () => ({
@@ -290,56 +321,60 @@ jest.mock('react-native-image-picker', () => ({
 
 jest.mock('@rneui/base', () => {
   const React = require('react');
-  const { View } = require('react-native');
+  const {View} = require('react-native');
   return {
-    Tooltip: (props) => React.createElement(View, props, props.children),
-    Icon: (props) => React.createElement(View, props),
+    Tooltip: props => React.createElement(View, props, props.children),
+    Icon: props => React.createElement(View, props),
   };
 });
 
 jest.mock('@rneui/themed', () => {
   const React = require('react');
-  const { View } = require('react-native');
+  const {View} = require('react-native');
   return {
-    Tooltip: (props) => React.createElement(View, props, props.children),
-    Icon: (props) => React.createElement(View, props),
+    Tooltip: props => React.createElement(View, props, props.children),
+    Icon: props => React.createElement(View, props),
   };
 });
 
-jest.mock('react-native-reanimated', () => {
-  const React = require('react');
-  const { View } = require('react-native');
-  return {
-    __esModule: true,
-    default: {
-      View: (props) => React.createElement(View, props),
-      Text: (props) => React.createElement(View, props),
-      Image: (props) => React.createElement(View, props),
-      ScrollView: (props) => React.createElement(View, props),
-      createAnimatedComponent: (component) => component,
-      Value: jest.fn(),
-      event: jest.fn(),
-      add: jest.fn(),
-      eq: jest.fn(),
-      set: jest.fn(),
-      cond: jest.fn(),
+jest.mock(
+  'react-native-reanimated',
+  () => {
+    const React = require('react');
+    const {View} = require('react-native');
+    return {
+      __esModule: true,
+      default: {
+        View: props => React.createElement(View, props),
+        Text: props => React.createElement(View, props),
+        Image: props => React.createElement(View, props),
+        ScrollView: props => React.createElement(View, props),
+        createAnimatedComponent: component => component,
+        Value: jest.fn(),
+        event: jest.fn(),
+        add: jest.fn(),
+        eq: jest.fn(),
+        set: jest.fn(),
+        cond: jest.fn(),
+        interpolate: jest.fn(),
+        Extrapolate: {CLAMP: 'clamp'},
+      },
+      useAnimatedStyle: jest.fn(() => ({})),
+      useSharedValue: jest.fn(val => ({value: val})),
+      withTiming: jest.fn(val => val),
+      withSpring: jest.fn(val => val),
       interpolate: jest.fn(),
-      Extrapolate: { CLAMP: 'clamp' },
-    },
-    useAnimatedStyle: jest.fn(() => ({})),
-    useSharedValue: jest.fn((val) => ({ value: val })),
-    withTiming: jest.fn((val) => val),
-    withSpring: jest.fn((val) => val),
-    interpolate: jest.fn(),
-    Extrapolate: { CLAMP: 'clamp' },
-  };
-}, { virtual: true });
+      Extrapolate: {CLAMP: 'clamp'},
+    };
+  },
+  {virtual: true},
+);
 
 jest.mock('react-native-maps', () => {
   const React = require('react');
-  const { View } = require('react-native');
-  const MockMapView = (props) => React.createElement(View, props, props.children);
-  const MockMarker = (props) => React.createElement(View, props, props.children);
+  const {View} = require('react-native');
+  const MockMapView = props => React.createElement(View, props, props.children);
+  const MockMarker = props => React.createElement(View, props, props.children);
   return {
     __esModule: true,
     default: MockMapView,
@@ -350,20 +385,20 @@ jest.mock('react-native-maps', () => {
 
 jest.mock('react-native-maps-directions', () => {
   const React = require('react');
-  const { View } = require('react-native');
-  return (props) => React.createElement(View, props);
+  const {View} = require('react-native');
+  return props => React.createElement(View, props);
 });
 
 jest.mock('lottie-react-native', () => {
   const React = require('react');
-  const { View } = require('react-native');
-  return (props) => React.createElement(View, props);
+  const {View} = require('react-native');
+  return props => React.createElement(View, props);
 });
 
 jest.mock('react-native-fast-image', () => {
   const React = require('react');
-  const { View } = require('react-native');
-  const Component = (props) => React.createElement(View, props);
+  const {View} = require('react-native');
+  const Component = props => React.createElement(View, props);
   Component.resizeMode = {
     contain: 'contain',
     cover: 'cover',
@@ -380,8 +415,8 @@ jest.mock('react-native-fast-image', () => {
 
 jest.mock('react-native-linear-gradient', () => {
   const React = require('react');
-  const { View } = require('react-native');
-  return (props) => React.createElement(View, props, props.children);
+  const {View} = require('react-native');
+  return props => React.createElement(View, props, props.children);
 });
 
 jest.mock('react-native-razorpay', () => ({
@@ -401,20 +436,20 @@ jest.mock('react-native-device-info', () => ({
 
 jest.mock('react-native-shimmer-placeholder', () => {
   const React = require('react');
-  const { View } = require('react-native');
-  return (props) => React.createElement(View, props, props.children);
+  const {View} = require('react-native');
+  return props => React.createElement(View, props, props.children);
 });
 
 jest.mock('react-native-snap-carousel', () => {
   const React = require('react');
-  const { View } = require('react-native');
-  return (props) => React.createElement(View, props, props.children);
+  const {View} = require('react-native');
+  return props => React.createElement(View, props, props.children);
 });
 
 jest.mock('@gorhom/bottom-sheet', () => {
   const React = require('react');
-  const { View } = require('react-native');
-  const Component = (props) => React.createElement(View, props, props.children);
+  const {View} = require('react-native');
+  const Component = props => React.createElement(View, props, props.children);
   return {
     __esModule: true,
     default: Component,
@@ -424,6 +459,10 @@ jest.mock('@gorhom/bottom-sheet', () => {
     BottomSheetFlatList: Component,
     BottomSheetSectionList: Component,
     BottomSheetBackdrop: Component,
-    useBottomSheet: () => ({ expand: jest.fn(), collapse: jest.fn(), close: jest.fn() }),
+    useBottomSheet: () => ({
+      expand: jest.fn(),
+      collapse: jest.fn(),
+      close: jest.fn(),
+    }),
   };
 });

@@ -31,7 +31,7 @@ const BannerCarouselImg = Dimensions.get('window').width;
 // ];
 
 const Categories = () => {
-  const _renderItem = ({ item, index }) => {
+  const _renderItem = ({item, index}) => {
     return (
       <View>
         <Image source={item.img} style={styles.carouselImg} />

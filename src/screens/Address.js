@@ -129,6 +129,7 @@ const Address = ({navigation, route}) => {
         setAddressEditTempFix(1);
       }, 1500);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // const [enabled, requestResolution] = useLocationSettings(
@@ -206,16 +207,20 @@ const Address = ({navigation, route}) => {
   useEffect(() => {
     !!route?.params?.auto_detected && setModal(true);
     onChangeRegion();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onChangeRegion = (location = null) => {
     console.log('location', location);
     if (!!address && addressEditTempFix === 0) {
       // !!address?.latitude ? parseFloat(address.latitude)
-      updateAddress(parseFloat(address.latitude), parseFloat(address.longitude));
+      updateAddress(
+        parseFloat(address.latitude),
+        parseFloat(address.longitude),
+      );
       setEditLocation(address);
     }
-    if (!!location) {
+    if (location) {
       updateAddress(location.latitude, location.longitude);
       setEditLocation(location);
     }
@@ -234,7 +239,10 @@ const Address = ({navigation, route}) => {
 
   const updateLocation = (data, address = null) => {
     console.log('daaaaaaaaaaaa', address);
-    changeRegion(address?.geometry?.location?.lat, address?.geometry?.location?.lng);
+    changeRegion(
+      address?.geometry?.location?.lat,
+      address?.geometry?.location?.lng,
+    );
     // Geocoder.from(address.formatted_address)
     //   .then(json => {
     //     var location = json.results[0].geometry.location;
@@ -269,7 +277,7 @@ const Address = ({navigation, route}) => {
         var parload = {
           door_no: door,
           street: street,
-          address_type: !!addressType.length ? addressType : address_type,
+          address_type: addressType.length ? addressType : address_type,
           address: JSON.stringify(addressComponent),
           longitude: EditLocation.longitude,
           latitude: EditLocation.latitude,
@@ -347,7 +355,7 @@ const Address = ({navigation, route}) => {
           await storage.setToken(response.token);
           await storage.setUserData(response.user);
           await dispatch(set_Profile(response.user));
-          axios.defaults.headers.common['Authorization'] =
+          axios.defaults.headers.common.Authorization =
             'Bearer ' + response.token;
           await navigation.navigate('Home');
         } else {
@@ -378,7 +386,7 @@ const Address = ({navigation, route}) => {
           await storage.setToken(response.token);
           await storage.setUserData(response.user);
           dispatch(set_Profile(response.user));
-          axios.defaults.headers.common['Authorization'] =
+          axios.defaults.headers.common.Authorization =
             'Bearer ' + response.token;
           await navigation.navigate('Home');
         } else {
@@ -402,6 +410,7 @@ const Address = ({navigation, route}) => {
         addrConfirm();
       }, 1000);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     addressComponent,
     setAddressComponent,
@@ -440,12 +449,13 @@ const Address = ({navigation, route}) => {
   }
 
   const getCurrentLocation = () => {
-    if (!!address && addressEditTempFix === 0)
+    if (!!address && addressEditTempFix === 0) {
       changeRegion(parseFloat(address.latitude), parseFloat(address.longitude));
-    else
+    } else {
       Geolocation.getCurrentPosition(location => {
         changeRegion(location.coords.latitude, location.coords.longitude);
       });
+    }
   };
 
   const changeRegion = (latitude, longitude) => {
@@ -517,8 +527,11 @@ const Address = ({navigation, route}) => {
     });
     newRadioButtons[buttonIndex - 1].selected = true;
     setRadioButtons(newRadioButtons);
-    if (buttonIndex == 3) setOthers(true);
-    else setOthers(false);
+    if (buttonIndex == 3) {
+      setOthers(true);
+    } else {
+      setOthers(false);
+    }
   };
 
   const openContacts = async () => {
@@ -613,9 +626,9 @@ const Address = ({navigation, route}) => {
             marginTop: 50,
           }}>
           <GooglePlacesAutocomplete
-          enableHighAccuracyLocation={true}
+            enableHighAccuracyLocation={true}
             placeholder="Search Your Locality Here"
-            onFail={(err)=>console.log("errrr", err)}
+            onFail={err => console.log('errrr', err)}
             minLength={2}
             autoFocus={false}
             returnKeyType={'search'}
@@ -631,7 +644,7 @@ const Address = ({navigation, route}) => {
             enablePoweredByContainer={false}
             GooglePlacesSearchQuery={{
               rankby: 'distance',
-              location:'IN'
+              location: 'IN',
               // type: 'cafe',
             }}
             GooglePlacesDetailsQuery={{fields: 'geometry,formatted_address'}}
@@ -671,10 +684,10 @@ const Address = ({navigation, route}) => {
             showsUserLocation={true}
             showsMyLocationButton={true}
             initialRegion={{
-              latitude: !!address?.latitude
+              latitude: address?.latitude
                 ? parseFloat(address.latitude)
                 : 13.007519778022951,
-              longitude: !!address?.longitude
+              longitude: address?.longitude
                 ? parseFloat(address.longitude)
                 : 80.25388327589093,
               latitudeDelta: 0.015,
@@ -807,7 +820,7 @@ const Address = ({navigation, route}) => {
                     // keyboardType='phone-pad'
                     placeholderTextColor={'#c9c9c9'}
                     style={{
-                      borderColor: !!userName ? '#09b44d' : 'tomato',
+                      borderColor: userName ? '#09b44d' : 'tomato',
                       borderStyle: 'solid',
                       borderWidth: 1,
                       paddingVertical: 5,
@@ -827,7 +840,7 @@ const Address = ({navigation, route}) => {
                   placeholder="Enter your Door No*"
                   placeholderTextColor={'#c9c9c9'}
                   style={{
-                    borderColor: !!door ? '#09b44d' : 'tomato',
+                    borderColor: door ? '#09b44d' : 'tomato',
                     borderStyle: 'solid',
                     borderWidth: 1,
                     paddingVertical: 5,
@@ -852,7 +865,7 @@ const Address = ({navigation, route}) => {
                   placeholder="Enter your street Name*"
                   placeholderTextColor={'#c9c9c9'}
                   style={{
-                    borderColor: !!street ? '#09b44d' : 'tomato',
+                    borderColor: street ? '#09b44d' : 'tomato',
                     borderStyle: 'solid',
                     borderWidth: 1,
                     paddingVertical: 5,
@@ -873,7 +886,7 @@ const Address = ({navigation, route}) => {
                 <View
                   style={{
                     flexDirection: 'row',
-                    borderColor: !!mobile ? '#09b44d' : 'tomato',
+                    borderColor: mobile ? '#09b44d' : 'tomato',
                     borderStyle: 'solid',
                     borderWidth: 1,
                     height: 40,
@@ -990,7 +1003,7 @@ const Address = ({navigation, route}) => {
               paddingHorizontal: 20,
               marginBottom: 150,
             }}>
-            Hold Tight! {`\n`} We are getting your Location 📍{'\n'} To serve
+            Hold Tight! {'\n'} We are getting your Location 📍{'\n'} To serve
             you better 🥰
           </Text>
         </View>

@@ -22,11 +22,11 @@ import {
   orderImg,
 } from '../assets/img/Images';
 
-const Home = ({ navigation }) => {
+const Home = ({navigation}) => {
   return (
     <ScrollView>
       <StatusBar barStyle="light-content" backgroundColor="#09b44d" />
-      <View style={{ flexDirection: 'column' }}>
+      <View style={{flexDirection: 'column'}}>
         <ImageBackground
           source={wcBg}
           style={{
@@ -36,7 +36,7 @@ const Home = ({ navigation }) => {
             borderBottomStartRadius: 30,
             overflow: 'hidden',
           }}>
-          <View style={{ flex: 1 }}>
+          <View style={{flex: 1}}>
             <View
               style={{
                 padding: 1,
@@ -55,11 +55,11 @@ const Home = ({ navigation }) => {
                     paddingHorizontal: 15,
                     paddingVertical: 15,
                   }}>
-                  <Image style={{ width: 28, height: 20 }} source={nav} />
+                  <Image style={{width: 28, height: 20}} source={nav} />
                 </TouchableOpacity>
 
                 <TouchableOpacity>
-                  <Text style={[styles.pageTitle, { alignItems: 'center' }]}>
+                  <Text style={[styles.pageTitle, {alignItems: 'center'}]}>
                     Homee Foodz
                   </Text>
                 </TouchableOpacity>
@@ -71,18 +71,18 @@ const Home = ({ navigation }) => {
                   justifyContent: 'flex-end',
                   alignItems: 'center',
                 }}>
-                <TouchableOpacity style={{ paddingHorizontal: 10 }}>
-                  <Image source={switchTgl} style={{ width: 38, height: 22 }} />
+                <TouchableOpacity style={{paddingHorizontal: 10}}>
+                  <Image source={switchTgl} style={{width: 38, height: 22}} />
                 </TouchableOpacity>
-                <TouchableOpacity style={{ paddingRight: 20, paddingLeft: 10 }}>
-                  <Image source={notif} style={{ width: 22, height: 26 }} />
+                <TouchableOpacity style={{paddingRight: 20, paddingLeft: 10}}>
+                  <Image source={notif} style={{width: 22, height: 26}} />
                   <Text style={styles.notifCnt}>25</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </View>
-          <View style={{ flex: 2 }}>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{flex: 2}}>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <Text style={styles.wcTxt}>Welcome Back</Text>
               <Text style={styles.nameTxt}>Rubesh John Raj</Text>
               <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
@@ -92,7 +92,6 @@ const Home = ({ navigation }) => {
           </View>
         </ImageBackground>
       </View>
-
 
       <View
         style={{
@@ -106,31 +105,31 @@ const Home = ({ navigation }) => {
             flexDirection: 'row',
             flexWrap: 'wrap',
           }}>
-          <View style={[styles.boxDash, { backgroundColor: '#eee6ba' }]}>
+          <View style={[styles.boxDash, {backgroundColor: '#eee6ba'}]}>
             <Image source={receive} style={styles.dashIcon} />
             <Text style={styles.cntTxt}>65</Text>
-            <Text style={[styles.constTxt, { color: '#978719' }]}>
+            <Text style={[styles.constTxt, {color: '#978719'}]}>
               Total Recived Order
             </Text>
           </View>
-          <View style={[styles.boxDash, { backgroundColor: '#f4daef' }]}>
+          <View style={[styles.boxDash, {backgroundColor: '#f4daef'}]}>
             <Image source={complete} style={styles.dashIcon} />
             <Text style={styles.cntTxt}>65</Text>
-            <Text style={[styles.constTxt, { color: '#b86ea9' }]}>
+            <Text style={[styles.constTxt, {color: '#b86ea9'}]}>
               Total Recived Order
             </Text>
           </View>
-          <View style={[styles.boxDash, { backgroundColor: '#cbd8f6' }]}>
+          <View style={[styles.boxDash, {backgroundColor: '#cbd8f6'}]}>
             <Image source={queue} style={styles.dashIcon} />
             <Text style={styles.cntTxt}>65</Text>
-            <Text style={[styles.constTxt, { color: '#4e6fb3' }]}>
+            <Text style={[styles.constTxt, {color: '#4e6fb3'}]}>
               Total Recived Order
             </Text>
           </View>
-          <View style={[styles.boxDash, { backgroundColor: '#d1f0dd' }]}>
+          <View style={[styles.boxDash, {backgroundColor: '#d1f0dd'}]}>
             <Image source={delivery} style={styles.dashIcon} />
             <Text style={styles.cntTxt}>65</Text>
-            <Text style={[styles.constTxt, { color: '#09b44d' }]}>
+            <Text style={[styles.constTxt, {color: '#09b44d'}]}>
               Total Recived Order
             </Text>
           </View>
@@ -159,7 +158,6 @@ const styles = StyleSheet.create({
   wcTxt: {
     color: '#fff',
     fontSize: 18,
-    color: '#000',
     fontFamily: 'Poppins-Bold',
   },
   pageTitle: {
@@ -171,14 +169,12 @@ const styles = StyleSheet.create({
   nameTxt: {
     color: '#fff',
     fontSize: 25,
-    color: '#fff',
     marginVertical: 2,
     fontFamily: 'Poppins-Bold',
   },
   profTxt: {
     color: '#fff',
     fontSize: 18,
-    color: '#fff',
     fontFamily: 'Poppins-Bold',
     paddingVertical: 3,
   },
@@ -215,7 +211,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 33,
     marginTop: 15,
-    color: '#000',
     fontFamily: 'Poppins-Bold',
     textAlign: 'center',
   },

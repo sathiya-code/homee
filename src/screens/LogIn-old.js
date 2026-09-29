@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -14,9 +14,9 @@ import {
   StatusBar,
 } from 'react-native';
 import * as api from '../components/api';
-import { backImg, mobileIcon, inputBorder } from '../assets/img/Images';
+import {backImg, mobileIcon, inputBorder} from '../assets/img/Images';
 
-const LogIn = ({ navigation }) => {
+const LogIn = ({navigation}) => {
   const [MobileNo, setMobileNo] = useState('');
   const MobileNoLegnth = 10;
   const onProceed = async () => {
@@ -25,7 +25,7 @@ const LogIn = ({ navigation }) => {
     });
     if (data?.user) {
       console.log(data.user.otp);
-      navigation.navigate('Otp', { user: data.user });
+      navigation.navigate('Otp', {user: data.user});
       if (data?.user?.otp) {
         alert(
           `Your OTP is : ${data.user.otp}.\n App in Debug Mode.\nNeed to remove otp key in production mode and this alert will also disabled`,
@@ -54,7 +54,7 @@ const LogIn = ({ navigation }) => {
           <Text style={styles.font1}> Welcome Back</Text>
           <Text style={styles.font4}>Sign into continue</Text>
         </View>
-        <View style={{ flex: 3, paddingHorizontal: 25 }}>
+        <View style={{flex: 3, paddingHorizontal: 25}}>
           <ImageBackground source={inputBorder} style={styles.inputBorder}>
             <Text style={styles.labelInput}>Mobile No</Text>
             <View>
@@ -69,7 +69,7 @@ const LogIn = ({ navigation }) => {
             </View>
           </ImageBackground>
 
-          <Pressable onPress={onProceed} style={{ alignItems: 'center' }}>
+          <Pressable onPress={onProceed} style={{alignItems: 'center'}}>
             <Text style={styles.buttonStyle}>Proceed</Text>
           </Pressable>
 
@@ -83,7 +83,7 @@ const LogIn = ({ navigation }) => {
             onPress={() => navigation.navigate('SignUp')}>
             <Text style={styles.font3}>
               Don't have an account?
-              <Text style={{ color: '#000', fontFamily: 'Poppins-Bold' }}>
+              <Text style={{color: '#000', fontFamily: 'Poppins-Bold'}}>
                 {' '}
                 SignUp Now!
               </Text>

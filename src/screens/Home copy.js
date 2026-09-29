@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ScrollView,
   View,
@@ -23,16 +23,16 @@ import {
   distanceIcon,
   tagIcon,
 } from '../assets/img/Images';
-import { api, storage } from '../services/index';
-import { useSelector } from 'react-redux';
+import {api, storage} from '../services/index';
+import {useSelector} from 'react-redux';
 import Loader from './Loader';
-import { FlatList } from 'react-native-gesture-handler';
-import { useTranslation } from 'react-i18next';
-import { useFocusEffect } from '@react-navigation/core';
+import {FlatList} from 'react-native-gesture-handler';
+import {useTranslation} from 'react-i18next';
+import {useFocusEffect} from '@react-navigation/core';
 const BannerCarouselImg = Dimensions.get('window').width;
 
-const HomeNew = ({ navigation, route }) => {
-  const { t, i18n } = useTranslation();
+const HomeNew = ({navigation, route}) => {
+  const {t, i18n} = useTranslation();
   const [user, setUser] = useState(null);
   const [modal, setModal] = useState(false);
   const [banner, setBanner] = useState([]);
@@ -43,7 +43,7 @@ const HomeNew = ({ navigation, route }) => {
   const [food_types, setFood_types] = useState([]);
   const [nearby_cooks, setNearby_cooks] = useState([]);
   const [top_rated_cooks, setTop_rated_cooks] = useState([]);
-  var { width, height } = Dimensions.get('window');
+  var {width, height} = Dimensions.get('window');
 
   useEffect(() => {
     const handleBackButton = () => {
@@ -72,6 +72,7 @@ const HomeNew = ({ navigation, route }) => {
   );
   useEffect(() => {
     home_page();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route]);
   const getBanners = async () => {
     let response = await api.homeBanners();
@@ -133,10 +134,10 @@ const HomeNew = ({ navigation, route }) => {
     // setTop_rated_cooks(response.top_rated_cooks);
     setModal(false);
   };
-  const render_Banner_Item = ({ item, index }) => {
+  const render_Banner_Item = ({item, index}) => {
     return (
       <Image
-        source={{ uri: item.image }}
+        source={{uri: item.image}}
         style={{
           width: width * 0.98,
           height: 200,
@@ -146,7 +147,7 @@ const HomeNew = ({ navigation, route }) => {
       />
     );
   };
-  const _renderItem = ({ item, index }) => {
+  const _renderItem = ({item, index}) => {
     let backgroundImg = null;
     // if (index % 2) {
     //   backgroundImg = require('../assets/img/coupon/1.png');
@@ -155,10 +156,13 @@ const HomeNew = ({ navigation, route }) => {
     // }
     return (
       <View>
-        <ImageBackground tintColor='#fc62e0' style={styles.couponBack} source={backgroundImg}>
+        <ImageBackground
+          tintColor="#fc62e0"
+          style={styles.couponBack}
+          source={backgroundImg}>
           <View style={styles.iconBack}>
             <Image
-              source={{ uri: item.image }}
+              source={{uri: item.image}}
               style={{
                 width: 95,
                 height: 95,
@@ -174,13 +178,13 @@ const HomeNew = ({ navigation, route }) => {
     );
   };
 
-  const _renderItem1 = ({ item, index }) => {
+  const _renderItem1 = ({item, index}) => {
     return (
       <TouchableOpacity
-        style={{ marginRight: 20 }}
-        onPress={() => navigation.navigate('FoodDetail', { id: item.cook_id })}>
+        style={{marginRight: 20}}
+        onPress={() => navigation.navigate('FoodDetail', {id: item.cook_id})}>
         <Image
-          source={{ uri: item.image }}
+          source={{uri: item.image}}
           style={{
             width: 95,
             height: 95,
@@ -203,14 +207,14 @@ const HomeNew = ({ navigation, route }) => {
     );
   };
 
-  const poprenderItem = ({ item, index }) => {
+  const poprenderItem = ({item, index}) => {
     return (
-      <View style={{ marginLeft: 10 }}>
+      <View style={{marginLeft: 10}}>
         <TouchableOpacity
           onPress={() => navigation.navigate('FoodListFilter', item)}
-          style={{ alignItems: 'center' }}>
+          style={{alignItems: 'center'}}>
           <Image
-            source={{ uri: item?.icon }}
+            source={{uri: item?.icon}}
             style={{
               width: 80,
               height: 80,
@@ -225,7 +229,7 @@ const HomeNew = ({ navigation, route }) => {
               marginTop: 5,
               textAlign: 'center',
               lineHeight: 25,
-              maxWidth: 100
+              maxWidth: 100,
             }}>
             {item?.userlanguage?.name}
           </Text>
@@ -234,7 +238,7 @@ const HomeNew = ({ navigation, route }) => {
     );
   };
 
-  const newrenderItem = ({ item, index }) => {
+  const newrenderItem = ({item, index}) => {
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('FoodDetail', item)}
@@ -243,16 +247,16 @@ const HomeNew = ({ navigation, route }) => {
           paddingHorizontal: 10,
           marginBottom: 10,
         }}>
-        <View style={{ flex: 4 }}>
-          <View style={{ width: '100%', borderRadius: 5 }}>
+        <View style={{flex: 4}}>
+          <View style={{width: '100%', borderRadius: 5}}>
             <Image
-              source={{ uri: item?.viewmenuitem?.image }}
-              style={{ width: 120, height: 120, borderRadius: 5 }}
+              source={{uri: item?.viewmenuitem?.image}}
+              style={{width: 120, height: 120, borderRadius: 5}}
             />
           </View>
         </View>
-        <View style={{ flex: 5, marginBottom: 20 }}>
-          <Text style={{ fontSize: 16, fontFamily: 'Poppins-Bold' }}>
+        <View style={{flex: 5, marginBottom: 20}}>
+          <Text style={{fontSize: 16, fontFamily: 'Poppins-Bold'}}>
             {item.first_name}
           </Text>
           <View style={styles.delLoc}>
@@ -290,7 +294,7 @@ const HomeNew = ({ navigation, route }) => {
             </Text>
           </View>
           <View style={styles.delLoc}>
-            <Image style={{ width: 18, height: 18 }} source={timingIcon} />
+            <Image style={{width: 18, height: 18}} source={timingIcon} />
             <Text
               style={{
                 fontSize: 13.5,
@@ -317,7 +321,7 @@ const HomeNew = ({ navigation, route }) => {
           </View> */}
           {item.cook_offer == 1 ? (
             <View style={styles.delLoc}>
-              <Image style={{ width: 18, height: 18 }} source={offerIcon} />
+              <Image style={{width: 18, height: 18}} source={offerIcon} />
               <Text
                 style={{
                   fontSize: 14.5,
@@ -336,16 +340,22 @@ const HomeNew = ({ navigation, route }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{flex: 1}}>
       {modal == false ? (
         <FlatList
           showsVerticalScrollIndicator={false}
-          style={{ marginBottom: -30 }}
+          style={{marginBottom: -30}}
           data={[1]}
-          renderItem={({ item }) => {
+          renderItem={({item}) => {
             return (
               <View>
-                <TouchableOpacity onPress={() => navigation.navigate('AddressChoose', { type: 'Home', profile: home_page })}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('AddressChoose', {
+                      type: 'Home',
+                      profile: home_page,
+                    })
+                  }>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -363,7 +373,7 @@ const HomeNew = ({ navigation, route }) => {
                         }}>
                         <Image
                           source={locatIcon}
-                          style={{ width: 14, height: 20, resizeMode: 'stretch' }}
+                          style={{width: 14, height: 20, resizeMode: 'stretch'}}
                         />
                         <Text
                           style={{
@@ -375,7 +385,8 @@ const HomeNew = ({ navigation, route }) => {
                         </Text>
                       </View>
                       <View>
-                        <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 15 }}>
+                        <Text
+                          style={{fontFamily: 'Poppins-Regular', fontSize: 15}}>
                           {user?.defaultaddress?.door_no
                             ? user.defaultaddress.door_no + ' ,'
                             : null}
@@ -399,15 +410,16 @@ const HomeNew = ({ navigation, route }) => {
                     </View>
                   </View>
                 </TouchableOpacity>
-                <View style={{ marginBottom: 130 }}>
+                <View style={{marginBottom: 130}}>
                   <View>
                     {banner && banner.length > 0 && (
-                      <View style={{
-                        borderBottomColor: '#deece5',
-                        borderBottomWidth: 8,
-                      }}>
+                      <View
+                        style={{
+                          borderBottomColor: '#deece5',
+                          borderBottomWidth: 8,
+                        }}>
                         <Carousel
-                          style={{ borderRadius: 25, overflow: 'hidden' }}
+                          style={{borderRadius: 25, overflow: 'hidden'}}
                           loop={true}
                           data={banner}
                           renderItem={render_Banner_Item}
@@ -428,10 +440,11 @@ const HomeNew = ({ navigation, route }) => {
                         />
                       </View>
                     )}
-                    <View style={{
-                      borderBottomColor: '#deece5',
-                      borderBottomWidth: 8,
-                    }}>
+                    <View
+                      style={{
+                        borderBottomColor: '#deece5',
+                        borderBottomWidth: 8,
+                      }}>
                       <Text
                         style={{
                           color: '#262626',
@@ -443,7 +456,7 @@ const HomeNew = ({ navigation, route }) => {
                         {t('homePage.popularFoods')}
                       </Text>
                       <FlatList
-                        style={{ margin: 10, marginBottom: 0, }}
+                        style={{margin: 10, marginBottom: 0}}
                         horizontal={true}
                         data={popular_foods}
                         keyExtractor={(item, index) => index.toString()}
@@ -463,7 +476,7 @@ const HomeNew = ({ navigation, route }) => {
                           {t('homePage.couponsForYou')}
                         </Text>
                         <FlatList
-                          style={{ margin: 10, }}
+                          style={{margin: 10}}
                           horizontal={true}
                           data={coupons}
                           keyExtractor={(item, index) => index.toString()}
@@ -491,7 +504,7 @@ const HomeNew = ({ navigation, route }) => {
                           {t('homePage.quickFilter')}
                         </Text>
                         <FlatList
-                          style={{ margin: 10 }}
+                          style={{margin: 10}}
                           horizontal={true}
                           data={food_types}
                           keyExtractor={(item, index) => index.toString()}
@@ -526,14 +539,17 @@ const HomeNew = ({ navigation, route }) => {
                               })
                             }>
                             <Text
-                              style={{ fontSize: 13, fontFamily: 'Poppins-Regular' }}>
+                              style={{
+                                fontSize: 13,
+                                fontFamily: 'Poppins-Regular',
+                              }}>
                               {t('homePage.seeAll')}{' '}
                             </Text>
                           </TouchableOpacity>
                         </View>
 
                         <View>
-                          <View style={{ marginLeft: 0 }}>
+                          <View style={{marginLeft: 0}}>
                             <Carousel
                               loop={false}
                               data={top_new_cooks}
@@ -551,7 +567,9 @@ const HomeNew = ({ navigation, route }) => {
                         </View>
                       </View>
                     )}
-                    {(top_rated_cooks && top_rated_cooks.length > 0) || (nearby_cooks && nearby_cooks.length > 0) || (nearby_cooks && nearby_cooks.length > 0) ?
+                    {(top_rated_cooks && top_rated_cooks.length > 0) ||
+                    (nearby_cooks && nearby_cooks.length > 0) ||
+                    (nearby_cooks && nearby_cooks.length > 0) ? (
                       <View>
                         {top_rated_cooks && top_rated_cooks.length > 0 && (
                           <View>
@@ -578,14 +596,17 @@ const HomeNew = ({ navigation, route }) => {
                                   })
                                 }>
                                 <Text
-                                  style={{ fontSize: 13, fontFamily: 'Poppins-Regular' }}>
+                                  style={{
+                                    fontSize: 13,
+                                    fontFamily: 'Poppins-Regular',
+                                  }}>
                                   {t('homePage.seeAll')}{' '}
                                 </Text>
                               </TouchableOpacity>
                             </View>
 
                             <View>
-                              <View style={{ marginLeft: 0 }}>
+                              <View style={{marginLeft: 0}}>
                                 <Carousel
                                   loop={false}
                                   data={top_rated_cooks}
@@ -616,7 +637,11 @@ const HomeNew = ({ navigation, route }) => {
                               {t('homePage.cookNearByYou')}
                             </Text>
                             <FlatList
-                              style={{ margin: 10, marginLeft: 0, marginRight: 25 }}
+                              style={{
+                                margin: 10,
+                                marginLeft: 0,
+                                marginRight: 25,
+                              }}
                               data={nearby_cooks}
                               keyExtractor={(item, index) => index.toString()}
                               renderItem={newrenderItem}
@@ -625,11 +650,11 @@ const HomeNew = ({ navigation, route }) => {
                           </View>
                         )}
                       </View>
-                      :
-                      <View style={{ marginTop: 10 }}>
+                    ) : (
+                      <View style={{marginTop: 10}}>
                         <Loader />
                       </View>
-                    }
+                    )}
                   </View>
                 </View>
               </View>
@@ -637,7 +662,7 @@ const HomeNew = ({ navigation, route }) => {
           }}
         />
       ) : (
-        <Text></Text>
+        <Text />
       )}
 
       <View>
@@ -704,7 +729,7 @@ const styles = StyleSheet.create({
   delLoc: {
     flexDirection: 'row',
     marginTop: 5,
-    alignItems: 'center'
+    alignItems: 'center',
   },
 });
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,17 +14,28 @@ import {
   StatusBar,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
-import { arrow, tagIcon, timingIcon, offerIcon, distanceIcon, emptyCartIcon } from '../assets/img/Images';
-import { useTranslation } from 'react-i18next';
-import { api } from '../services';
-import { useFocusEffect } from '@react-navigation/core';
+import {
+  arrow,
+  tagIcon,
+  timingIcon,
+  offerIcon,
+  distanceIcon,
+  emptyCartIcon,
+} from '../assets/img/Images';
+import {useTranslation} from 'react-i18next';
+import {api} from '../services';
+import {useFocusEffect} from '@react-navigation/core';
 import Loader from './Loader';
-import { AppBackground, HomeBgColor, SecondaryGreen } from '../helper/styles.helper';
+import {
+  AppBackground,
+  HomeBgColor,
+  SecondaryGreen,
+} from '../helper/styles.helper';
 // import Shimmer from 'react-native-shimmer';
 import Shimmer from 'react-native-shimmer-placeholder';
 
-const Favourites = ({ navigation }) => {
-  const { t, i18n } = useTranslation();
+const Favourites = ({navigation}) => {
+  const {t, i18n} = useTranslation();
   const [modal, setModal] = useState(true);
   const [listItems, setListItems] = useState([]);
   const [paginate, setPaginate] = useState(1);
@@ -42,39 +53,41 @@ const Favourites = ({ navigation }) => {
     } else {
       setModal(true);
       let response = await api.favourite_list(paginate);
-      setModal(false)
+      setModal(false);
       if (response.status == 'success') {
         setListItems(response.cooks);
         setPagination(response.pagination);
       }
     }
-  }
+  };
   useFocusEffect(
     React.useCallback(() => {
       getList();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
   useEffect(() => {
     getList();
-  }, [paginate])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paginate]);
   var onReached = e => {
     if (pagination?.current_page < pagination?.last_page) {
       setPaginate(paginate + 1);
     }
   };
 
-  const getActivityAnalytics = async (cook_id) => {
-    console.log("cook_id", cook_id);
-    await api.getActivityStatus({ history_type: 2, cook_id })
+  const getActivityAnalytics = async cook_id => {
+    console.log('cook_id', cook_id);
+    await api.getActivityStatus({history_type: 2, cook_id});
   };
 
-  const _renderItem = ({ item, index }) => {
-    index == 0 && console.log("itemmmm,", item);
+  const _renderItem = ({item, index}) => {
+    index == 0 && console.log('itemmmm,', item);
     return (
       <TouchableOpacity
         onPress={() => {
           getActivityAnalytics(item?.id);
-          navigation.navigate('FoodDetail', {id: item?.id})
+          navigation.navigate('FoodDetail', {id: item?.id});
         }}
         style={{
           flexDirection: 'row',
@@ -85,21 +98,45 @@ const Favourites = ({ navigation }) => {
           backgroundColor: '#fff',
           borderRadius: 25,
         }}>
-        <View style={{ flex: 4, }}>
-          <View style={{ width: '100%', borderRadius: 5, backgroundColor: '#fff', borderRadius: 25 }}>
-            {item?.image ? <Image
-              source={{ uri: item?.image }}
-              style={{ width: '100%', height: 120, borderTopLeftRadius: 25, borderBottomLeftRadius: 25 }}
-            /> : <Shimmer tilt={30}>
-              <View style={{ height: 120, backgroundColor: 'silver', borderRadius: 25, alignSelf: 'center' }} />
-            </Shimmer>}
+        <View style={{flex: 4}}>
+          <View
+            style={{
+              width: '100%',
+              borderRadius: 5,
+              backgroundColor: '#fff',
+            }}>
+            {item?.image ? (
+              <Image
+                source={{uri: item?.image}}
+                style={{
+                  width: '100%',
+                  height: 120,
+                  borderTopLeftRadius: 25,
+                  borderBottomLeftRadius: 25,
+                }}
+              />
+            ) : (
+              <Shimmer tilt={30}>
+                <View
+                  style={{
+                    height: 120,
+                    backgroundColor: 'silver',
+                    borderRadius: 25,
+                    alignSelf: 'center',
+                  }}
+                />
+              </Shimmer>
+            )}
           </View>
         </View>
         <View
           style={{
-            flex: 5, paddingLeft: 8, marginTop: -5, paddingVertical: 5
+            flex: 5,
+            paddingLeft: 8,
+            marginTop: -5,
+            paddingVertical: 5,
           }}>
-          <Text style={{ fontSize: 16, fontFamily: 'Poppins-Bold' }}>
+          <Text style={{fontSize: 16, fontFamily: 'Poppins-Bold'}}>
             {item.first_name}
           </Text>
 
@@ -113,7 +150,7 @@ const Favourites = ({ navigation }) => {
                 lineHeight: 23,
                 justifyContent: 'center',
                 marginLeft: 3,
-                marginTop: -5
+                marginTop: -5,
               }}>
               {item?.viewmenuitem?.cuisine
                 ? item.viewmenuitem.cuisine.userlanguage.name + ' ,'
@@ -140,19 +177,21 @@ const Favourites = ({ navigation }) => {
               {item.distance} km
             </Text>
           </View>
-          {item.delivery_time && <View style={styles.delLoc}>
-            <Image style={{ width: 17, height: 17 }} source={timingIcon} />
-            <Text
-              style={{
-                fontSize: 13.5,
-                fontFamily: 'Poppins-Bold',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginLeft: 6,
-              }}>
-              {item.delivery_time} mins
-            </Text>
-          </View>}
+          {item.delivery_time && (
+            <View style={styles.delLoc}>
+              <Image style={{width: 17, height: 17}} source={timingIcon} />
+              <Text
+                style={{
+                  fontSize: 13.5,
+                  fontFamily: 'Poppins-Bold',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginLeft: 6,
+                }}>
+                {item.delivery_time} mins
+              </Text>
+            </View>
+          )}
           {/* <View style={styles.delLoc}>
             <Image style={{ width: 16, height: 16 }} source={tagIcon} />
             <Text
@@ -168,7 +207,7 @@ const Favourites = ({ navigation }) => {
           </View> */}
           {item.cookoffer == 1 ? (
             <View style={styles.delLoc}>
-              <Image style={{ width: 18, height: 18 }} source={offerIcon} />
+              <Image style={{width: 18, height: 18}} source={offerIcon} />
               <Text
                 style={{
                   fontSize: 14.5,
@@ -184,20 +223,20 @@ const Favourites = ({ navigation }) => {
           ) : null}
         </View>
       </TouchableOpacity>
-    )
-  }
+    );
+  };
 
   useEffect(() => {
     const focusHandler = navigation?.addListener?.('focus', () => {
       getList();
     });
     return () => focusHandler?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation]);
 
-
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
+    <SafeAreaView style={{flex: 1}}>
+      <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
       <View
         style={{
           backgroundColor: '#09b44d',
@@ -212,43 +251,52 @@ const Favourites = ({ navigation }) => {
             flexDirection: 'row',
             paddingHorizontal: 15,
           }}>
-          <Image style={{ width: 9, height: 16 }} source={arrow} />
-          <Text style={{
-            color: '#fff',
-            fontSize: 18,
-            fontFamily: 'Poppins-Bold',
-            paddingLeft: 10,
-            marginTop: -5
-
-          }}>{t("favouritesPage.favourites")}</Text>
+          <Image style={{width: 9, height: 16}} source={arrow} />
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 18,
+              fontFamily: 'Poppins-Bold',
+              paddingLeft: 10,
+              marginTop: -5,
+            }}>
+            {t('favouritesPage.favourites')}
+          </Text>
         </Pressable>
       </View>
-      {modal != true && listItems.length > 0 ?
+      {modal != true && listItems.length > 0 ? (
         <FlatList
           data={listItems}
-          style={{ backgroundColor: AppBackground, paddingTop: 15 }}
+          style={{backgroundColor: AppBackground, paddingTop: 15}}
           renderItem={_renderItem}
           onEndReachedThreshold={0}
           onEndReached={onReached}
           showsVerticalScrollIndicator={false}
         />
-        :
-        modal != true &&
-        (
-          <View style={{ flex: 1, paddingVertical: 300, alignItems: 'center' }}>
-            <Image style={{ height: 100, width: 100, alignItems: 'center' }} source={emptyCartIcon} />
-            <Text style={{
-              textAlign: 'center', fontFamily: 'Poppins-Bold',
-              fontSize: 14, opacity: 0.25
-            }}>No data available...</Text>
+      ) : (
+        modal != true && (
+          <View style={{flex: 1, paddingVertical: 300, alignItems: 'center'}}>
+            <Image
+              style={{height: 100, width: 100, alignItems: 'center'}}
+              source={emptyCartIcon}
+            />
+            <Text
+              style={{
+                textAlign: 'center',
+                fontFamily: 'Poppins-Bold',
+                fontSize: 14,
+                opacity: 0.25,
+              }}>
+              No data available...
+            </Text>
           </View>
         )
-      }
-      {loader &&
-        <View style={{ padding: 10 }}>
+      )}
+      {loader && (
+        <View style={{padding: 10}}>
           <Loader />
         </View>
-      }
+      )}
       {modal && (
         <Modal transparent={true} visible={modal}>
           <Loader />

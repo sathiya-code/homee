@@ -1,4 +1,4 @@
-import { Alert } from 'react-native';
+import {Alert} from 'react-native';
 import axios from 'axios';
 
 export const login = async (data = {}, config = {}) =>
@@ -29,11 +29,11 @@ const get = async (url, config) => {
 };
 
 const prepareResponse = res => {
-  let { data, status, statusText, headers, config, request } = res;
+  let {data, status, statusText, headers, config, request} = res;
   if (status <= 299 && status >= 200) {
     if (data.status == 'error') {
       Alert.alert('Sorry for your inconvenient', data.message);
-      return { ...res.data, api_valid_flag: false };
+      return {...res.data, api_valid_flag: false};
     } else {
       return res.data;
     }
@@ -44,7 +44,7 @@ const prepareResponse = res => {
 };
 
 const handleException = err => {
-  let { data, status, statusText, headers, config, request } = err.response;
+  let {data, status, statusText, headers, config, request} = err.response;
   if (status == 400) {
     Alert.alert(
       'Validation Faild',

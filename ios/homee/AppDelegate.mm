@@ -7,7 +7,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  if ([FIRApp defaultApp] == nil) {
+  NSString *filePath = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info" ofType:@"plist"];
+  if (filePath != nil && [FIRApp defaultApp] == nil) {
     [FIRApp configure];
   }
   self.moduleName = @"Homee";

@@ -1,6 +1,5 @@
-/* eslint-disable react/self-closing-comp */
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -34,25 +33,25 @@ import {
   wallet,
   manageAddress,
   orderHistory,
-  wishListFillRed
+  wishListFillRed,
 } from '../assets/img/Images';
-import { useTranslation } from 'react-i18next';
-import { api, storage } from '../services/index';
+import {useTranslation} from 'react-i18next';
+import {api, storage} from '../services/index';
 import Loader from './Loader';
-import { useFocusEffect } from '@react-navigation/core';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { HomeBgColor, PrimaryGreen } from '../helper/styles.helper';
+import {useFocusEffect} from '@react-navigation/core';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {HomeBgColor, PrimaryGreen} from '../helper/styles.helper';
 import backButton from '../assets/img/back_button.png';
 import NotificationIcon from '../assets/img/bel_icon.png';
 import FavouriteIcon from '../assets/img/favr_icon.png';
 import SettingsIcon from '../assets/img/setting_icon.png';
 import VersionCheck from 'react-native-version-check';
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { PROFILE, TOKEN, COUPON_CODE } from '../redux/actions/actionTypes';
-import { checkForUpdate } from '../helper/app.helper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {PROFILE, TOKEN, COUPON_CODE} from '../redux/actions/actionTypes';
+import {checkForUpdate} from '../helper/app.helper';
 
-const Profile = ({ navigation }) => {
-  const { t, i18n } = useTranslation();
+const Profile = ({navigation}) => {
+  const {t, i18n} = useTranslation();
   const [vegCheckBox, setVegCheckBox] = useState(false);
   const [nonVegCheckBox, setNonVegCheckBox] = useState(false);
   const [modal, setModal] = useState(false);
@@ -79,7 +78,6 @@ const Profile = ({ navigation }) => {
     return () => backHandler?.remove?.();
   }, [navigation]);
 
-
   const get_UserData = async () => {
     setModal(true);
     var user = await storage.getUserData();
@@ -100,12 +98,12 @@ const Profile = ({ navigation }) => {
           logoutApi();
         },
       },
-      { text: 'cancel' },
+      {text: 'cancel'},
     ]);
   };
   const logoutApi = async () => {
     let response = await api.logout();
-    console.log("vybnbok", response);
+    console.log('vybnbok', response);
     // storage.clearAsyncStorage();
     if (response.status == 'success') {
       AsyncStorage.removeItem(COUPON_CODE);
@@ -113,7 +111,7 @@ const Profile = ({ navigation }) => {
       AsyncStorage.removeItem(TOKEN);
       navigation.reset({
         index: 0,
-        routes: [{ name: 'LocationPermission' }]
+        routes: [{name: 'LocationPermission'}],
       });
       navigation.navigate('LocationPermission');
       // if (Platform.OS == 'ios') {
@@ -125,13 +123,13 @@ const Profile = ({ navigation }) => {
 
   return (
     <>
-      <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
+      <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
       <View
         style={{
           height: 60,
           backgroundColor: HomeBgColor,
-          flexDirection:'row',
-          alignItems:'center',
+          flexDirection: 'row',
+          alignItems: 'center',
           justifyContent: 'space-between',
         }}>
         <TouchableOpacity
@@ -154,19 +152,22 @@ const Profile = ({ navigation }) => {
               color: '#000',
               fontSize: 18,
               fontFamily: 'Poppins-Bold',
-              textAlignVertical:'top',
+              textAlignVertical: 'top',
               paddingLeft: 10,
             }}>
             {t('profilePage.account')}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-        style={{width:40}}
-        onPress={() =>navigation.navigate('Favourites')}>
-          <Image source={wishListFillRed} style={{ width:25, resizeMode:'contain' }}/>
+          style={{width: 40}}
+          onPress={() => navigation.navigate('Favourites')}>
+          <Image
+            source={wishListFillRed}
+            style={{width: 25, resizeMode: 'contain'}}
+          />
         </TouchableOpacity>
       </View>
-      <ScrollView style={{ backgroundColor: HomeBgColor }}>
+      <ScrollView style={{backgroundColor: HomeBgColor}}>
         {user != null && modal != null && (
           <View>
             <TouchableOpacity
@@ -206,7 +207,7 @@ const Profile = ({ navigation }) => {
                     fontWeight: '500',
                     color: '#000',
                   }}>
-                  {!!user?.first_name ? user?.first_name : 'New User'}
+                  {user?.first_name ? user?.first_name : 'New User'}
                 </Text>
                 <Text
                   style={{
@@ -228,8 +229,19 @@ const Profile = ({ navigation }) => {
                   }}>
                   {user?.email?.toLowerCase()}
                 </Text>
-                <View style={{ width: '100%', alignItems: 'flex-end', marginTop: -25 }}>
-                  <Image source={backButton} style={{ tintColor: PrimaryGreen, transform: [{ rotate: '180deg' }] }} />
+                <View
+                  style={{
+                    width: '100%',
+                    alignItems: 'flex-end',
+                    marginTop: -25,
+                  }}>
+                  <Image
+                    source={backButton}
+                    style={{
+                      tintColor: PrimaryGreen,
+                      transform: [{rotate: '180deg'}],
+                    }}
+                  />
                 </View>
               </View>
             </TouchableOpacity>
@@ -317,10 +329,10 @@ const Profile = ({ navigation }) => {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                   }}>
-                  <View style={{ flexDirection: 'row' }}>
+                  <View style={{flexDirection: 'row'}}>
                     <Image
                       source={manageAddress}
-                      style={{ width: 35, height: 35 }}
+                      style={{width: 35, height: 35}}
                     />
                     <Text
                       style={{
@@ -338,12 +350,19 @@ const Profile = ({ navigation }) => {
                       width: 8,
                       height: 14,
                       tintColor: '#000',
-                      transform: [{ rotate: '180deg' }],
+                      transform: [{rotate: '180deg'}],
                     }}
                   />
                 </TouchableOpacity>
-                <View style={{ width: '100%', height: 2, alignItems: 'flex-end' }}>
-                  <View style={{ width: '90%', height: 1.5, backgroundColor: '#ececec' }} />
+                <View
+                  style={{width: '100%', height: 2, alignItems: 'flex-end'}}>
+                  <View
+                    style={{
+                      width: '90%',
+                      height: 1.5,
+                      backgroundColor: '#ececec',
+                    }}
+                  />
                 </View>
 
                 {/* <TouchableOpacity
@@ -452,11 +471,8 @@ const Profile = ({ navigation }) => {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                 }}>
-                <View style={{ flexDirection: 'row' }}>
-                  <Image
-                    source={wallet}
-                    style={{ width: 35, height: 35 }}
-                  />
+                <View style={{flexDirection: 'row'}}>
+                  <Image source={wallet} style={{width: 35, height: 35}} />
                   <Text
                     style={{
                       fontFamily: 'Poppins-Regular',
@@ -473,12 +489,18 @@ const Profile = ({ navigation }) => {
                     width: 8,
                     height: 14,
                     tintColor: '#000',
-                    transform: [{ rotate: '180deg' }],
+                    transform: [{rotate: '180deg'}],
                   }}
                 />
               </TouchableOpacity>
-              <View style={{ width: '100%', height: 2, alignItems: 'flex-end' }}>
-                <View style={{ width: '90%', height: 1.5, backgroundColor: '#ececec' }} />
+              <View style={{width: '100%', height: 2, alignItems: 'flex-end'}}>
+                <View
+                  style={{
+                    width: '90%',
+                    height: 1.5,
+                    backgroundColor: '#ececec',
+                  }}
+                />
               </View>
               {/* <TouchableOpacity
                 onPress={() => {
@@ -510,9 +532,8 @@ const Profile = ({ navigation }) => {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image source={TrackOrder}
-                    style={{ width: 35, height: 35 }} />
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Image source={TrackOrder} style={{width: 35, height: 35}} />
                   <Text
                     style={{
                       fontFamily: 'Poppins-Regular',
@@ -529,12 +550,18 @@ const Profile = ({ navigation }) => {
                     width: 8,
                     height: 14,
                     tintColor: '#000',
-                    transform: [{ rotate: '180deg' }],
+                    transform: [{rotate: '180deg'}],
                   }}
                 />
               </TouchableOpacity>
-              <View style={{ width: '100%', height: 2, alignItems: 'flex-end' }}>
-                <View style={{ width: '90%', height: 1.5, backgroundColor: '#ececec' }} />
+              <View style={{width: '100%', height: 2, alignItems: 'flex-end'}}>
+                <View
+                  style={{
+                    width: '90%',
+                    height: 1.5,
+                    backgroundColor: '#ececec',
+                  }}
+                />
               </View>
 
               <TouchableOpacity
@@ -547,9 +574,11 @@ const Profile = ({ navigation }) => {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image source={orderHistory}
-                    style={{ width: 35, height: 35 }} />
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Image
+                    source={orderHistory}
+                    style={{width: 35, height: 35}}
+                  />
                   <Text
                     style={{
                       fontFamily: 'Poppins-Regular',
@@ -565,12 +594,18 @@ const Profile = ({ navigation }) => {
                     width: 8,
                     height: 14,
                     tintColor: '#000',
-                    transform: [{ rotate: '180deg' }],
+                    transform: [{rotate: '180deg'}],
                   }}
                 />
               </TouchableOpacity>
-              <View style={{ width: '100%', height: 2, alignItems: 'flex-end' }}>
-                <View style={{ width: '90%', height: 1.5, backgroundColor: '#ececec' }} />
+              <View style={{width: '100%', height: 2, alignItems: 'flex-end'}}>
+                <View
+                  style={{
+                    width: '90%',
+                    height: 1.5,
+                    backgroundColor: '#ececec',
+                  }}
+                />
               </View>
 
               <TouchableOpacity
@@ -583,15 +618,20 @@ const Profile = ({ navigation }) => {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image source={orderHistory}
-                    style={{ width: 35, height: 35 }} />
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Image
+                    source={orderHistory}
+                    style={{width: 35, height: 35}}
+                  />
                   <Text
                     style={{
                       fontFamily: 'Poppins-Regular',
                       fontSize: 15,
                       marginLeft: 8,
-                    }}> Advance Order History</Text>
+                    }}>
+                    {' '}
+                    Advance Order History
+                  </Text>
                 </View>
                 <Image
                   source={arrow}
@@ -599,17 +639,23 @@ const Profile = ({ navigation }) => {
                     width: 8,
                     height: 14,
                     tintColor: '#000',
-                    transform: [{ rotate: '180deg' }],
+                    transform: [{rotate: '180deg'}],
                   }}
                 />
               </TouchableOpacity>
-              <View style={{ width: '100%', height: 2, alignItems: 'flex-end' }}>
-                <View style={{ width: '90%', height: 1.5, backgroundColor: '#ececec' }} />
+              <View style={{width: '100%', height: 2, alignItems: 'flex-end'}}>
+                <View
+                  style={{
+                    width: '90%',
+                    height: 1.5,
+                    backgroundColor: '#ececec',
+                  }}
+                />
               </View>
 
               <TouchableOpacity
                 onPress={() => navigation.navigate('Support')}
-                style={{ paddingHorizontal: 15, paddingVertical: 11 }}>
+                style={{paddingHorizontal: 15, paddingVertical: 11}}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -617,11 +663,8 @@ const Profile = ({ navigation }) => {
                     alignItems: 'center',
                     width: '100%',
                   }}>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Image
-                      source={support}
-                      style={{ width: 35, height: 35 }}
-                    />
+                  <View style={{flexDirection: 'row'}}>
+                    <Image source={support} style={{width: 35, height: 35}} />
                     <Text
                       style={{
                         fontFamily: 'Poppins-Regular',
@@ -638,18 +681,24 @@ const Profile = ({ navigation }) => {
                       width: 8,
                       height: 14,
                       tintColor: '#000',
-                      transform: [{ rotate: '180deg' }],
+                      transform: [{rotate: '180deg'}],
                     }}
                   />
                 </View>
               </TouchableOpacity>
-              <View style={{ width: '100%', height: 2, alignItems: 'flex-end' }}>
-                <View style={{ width: '90%', height: 1.5, backgroundColor: '#ececec' }} />
+              <View style={{width: '100%', height: 2, alignItems: 'flex-end'}}>
+                <View
+                  style={{
+                    width: '90%',
+                    height: 1.5,
+                    backgroundColor: '#ececec',
+                  }}
+                />
               </View>
 
               <TouchableOpacity
                 onPress={() => navigation.navigate('Help')}
-                style={{ paddingHorizontal: 15, paddingVertical: 11 }}>
+                style={{paddingHorizontal: 15, paddingVertical: 11}}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -657,11 +706,8 @@ const Profile = ({ navigation }) => {
                     alignItems: 'center',
                     width: '100%',
                   }}>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Image
-                      source={support}
-                      style={{ width: 35, height: 35 }}
-                    />
+                  <View style={{flexDirection: 'row'}}>
+                    <Image source={support} style={{width: 35, height: 35}} />
                     <Text
                       style={{
                         fontFamily: 'Poppins-Regular',
@@ -678,7 +724,7 @@ const Profile = ({ navigation }) => {
                       width: 8,
                       height: 14,
                       tintColor: '#000',
-                      transform: [{ rotate: '180deg' }],
+                      transform: [{rotate: '180deg'}],
                     }}
                   />
                 </View>
@@ -714,8 +760,13 @@ const Profile = ({ navigation }) => {
                 alignItems: 'center',
                 marginBottom: 20,
               }}>
-              <TouchableOpacity onPress={logout} >
-                <Text style={{ fontFamily: 'Poppins-Medium', fontWeight: '500', fontSize: 18 }}>
+              <TouchableOpacity onPress={logout}>
+                <Text
+                  style={{
+                    fontFamily: 'Poppins-Medium',
+                    fontWeight: '500',
+                    fontSize: 18,
+                  }}>
                   Sign Out
                 </Text>
               </TouchableOpacity>
@@ -723,8 +774,10 @@ const Profile = ({ navigation }) => {
                 style={{
                   fontFamily: 'Poppins-Medium',
                   fontWeight: '500',
-                  fontSize: 10
-                }}>Version {VersionCheck.getCurrentVersion()}</Text>
+                  fontSize: 10,
+                }}>
+                Version {VersionCheck.getCurrentVersion()}
+              </Text>
               {/* version Info Here */}
             </View>
           </View>
@@ -745,7 +798,7 @@ const Profile = ({ navigation }) => {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-around',
-              paddingVertical: 10
+              paddingVertical: 10,
             }}
             onPress={() =>
               Linking.openURL(
@@ -772,14 +825,19 @@ const Profile = ({ navigation }) => {
                 Install and Register Homee Cook App , Tap Here.
               </Text>
             </View>
-            <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start', height: '75%' }}>
+            <View
+              style={{
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start',
+                height: '75%',
+              }}>
               <Image
                 source={arrow}
                 style={{
                   height: 15,
                   width: 10,
                   paddingRight: '5%',
-                  transform: [{ rotate: '180deg' }],
+                  transform: [{rotate: '180deg'}],
                 }}
               />
             </View>

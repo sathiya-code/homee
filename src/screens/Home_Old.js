@@ -132,8 +132,12 @@ const HomeNew = ({navigation, route}) => {
   const targetViewRef = useRef(null);
 
   useEffect(() => {
-    if (!ourServices.length && !foodType.length) setModal(true);
-    else setModal(false);
+    if (!ourServices.length && !foodType.length) {
+      setModal(true);
+    } else {
+      setModal(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ourServices, setOurServices, food_types, setFood_types]);
 
   Geocoder.init('AIzaSyAT-XE0L77pBWbwTL3PC04JUGSykZ3uB_Q');
@@ -157,6 +161,7 @@ const HomeNew = ({navigation, route}) => {
       getServiceTitles();
     });
     return focusHandler;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const get_Token = async () => {
@@ -192,6 +197,7 @@ const HomeNew = ({navigation, route}) => {
   );
   useEffect(() => {
     home_page();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route]);
 
   const getBanners = async () => {
@@ -271,8 +277,9 @@ const HomeNew = ({navigation, route}) => {
             item?.target?.length > 0 &&
             item?.target != 'preorder' &&
             item?.target != null
-          )
+          ) {
             navigation.navigate('FoodDetail', {id: item?.target});
+          }
         }}>
         <Image
           source={{uri: item?.image}}
@@ -713,7 +720,7 @@ const HomeNew = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => {
             getActivityAnalytics(item?.id);
-            !!item?.cookdistancecal
+            item?.cookdistancecal
               ? navigation.navigate('FoodDetail', {id: item.id})
               : setComingSoonModal(true);
             // console.log("camelllcase", toCamelCase(item?.first_name))
@@ -918,7 +925,8 @@ const HomeNew = ({navigation, route}) => {
             borderColor: '#fff',
             justifyContent: 'center',
             alignItems: 'center',
-          }}></View>
+          }}
+        />
         <View
           style={{
             justifyContent: 'flex-start',
@@ -932,7 +940,8 @@ const HomeNew = ({navigation, route}) => {
               color: '#fff', // happyIndex === index ? '#fff' : PrimaryGreen,
               fontSize: 14,
               fontWeight: '600',
-            }}></Text>
+            }}
+          />
         </View>
       </View>
     );
@@ -1264,7 +1273,7 @@ const HomeNew = ({navigation, route}) => {
                     style={{width: 22, aspectRatio: 1, resizeMode: 'stretch'}}
                   />
                   <View style={{height: 40}}>
-                    {!!defaultAddress ? (
+                    {defaultAddress ? (
                       <>
                         <Text
                           style={{
@@ -1658,7 +1667,6 @@ const HomeNew = ({navigation, route}) => {
                               marginTop: -7,
                               marginLeft: 15,
                               fontWeight: '300',
-                              color: '#1f2220',
                             }}>
                             {t('homePage.discoverYourFavouriteRecipes')}
                           </Text>
@@ -1690,7 +1698,8 @@ const HomeNew = ({navigation, route}) => {
                                     : '#DADCDB',
                                   top: 0,
                                   // zIndex: 3
-                                }}></View>
+                                }}
+                              />
                               <Text
                                 style={{
                                   zIndex: 99,
@@ -1723,7 +1732,8 @@ const HomeNew = ({navigation, route}) => {
                                     : '#29C270',
                                   top: 0,
                                   // zIndex: 3
-                                }}></View>
+                                }}
+                              />
                               <Text
                                 style={{
                                   zIndex: 99,
@@ -2018,7 +2028,11 @@ const HomeNew = ({navigation, route}) => {
                                 fontFamily: 'Poppins-Regular',
                                 fontSize: 14,
                                 textAlign: 'center',
-                              }}>{`Your Cook is Accepting Advance Orders only For Now\nPlease Click Below👇 Button to proceed with Advance Ordering`}</Text>
+                              }}>
+                              {
+                                'Your Cook is Accepting Advance Orders only For Now\nPlease Click Below👇 Button to proceed with Advance Ordering'
+                              }
+                            </Text>
                             <TouchableOpacity
                               style={{
                                 backgroundColor: PrimaryGreen,

@@ -18,7 +18,7 @@ import {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {set_Profile} from '../redux/actions/authAction';
 import axios from 'axios';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 
 const {width, height} = Dimensions.get('window');
 
@@ -140,8 +140,7 @@ const AutoDetectLocation = ({navigation, route}) => {
       await storage.setToken(response.token);
       await storage.setUserData(response.user);
       await dispatch(set_Profile(response.user));
-      axios.defaults.headers.common['Authorization'] =
-        'Bearer ' + response.token;
+      axios.defaults.headers.common.Authorization = 'Bearer ' + response.token;
       await navigation.navigate('Home');
     } else {
       Alert.alert('Unable to complete your request');
@@ -151,6 +150,7 @@ const AutoDetectLocation = ({navigation, route}) => {
 
   useEffect(() => {
     userLocation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -180,7 +180,7 @@ const AutoDetectLocation = ({navigation, route}) => {
             paddingHorizontal: 20,
             marginBottom: 150,
           }}>
-          Hold Tight! {`\n`} We are getting your Location 📍{'\n'} To serve you
+          Hold Tight! {'\n'} We are getting your Location 📍{'\n'} To serve you
           better 🥰
         </Text>
       </View>

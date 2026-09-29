@@ -34,9 +34,12 @@ const LogIn = ({ navigation, route }) => {
   const MobileNoLegnth = 10;
   const get_Token = async () => {
     // setModal(true);
-    var fcm_token = await messaging().getToken();
-    //  console.log('token*****',fcm_token);
-    setFcm_token(fcm_token);
+    try {
+      var fcm_token = await messaging().getToken();
+      setFcm_token(fcm_token);
+    } catch (err) {
+      console.log('FCM token error:', err);
+    }
     var id = await storage.getToken();
     if (id != null) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + id;

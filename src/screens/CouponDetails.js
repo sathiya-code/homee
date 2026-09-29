@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   View,
   Text,
@@ -11,15 +11,15 @@ import {
   TouchableOpacity,
   Modal,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useDispatch } from 'react-redux';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {useDispatch} from 'react-redux';
 
-import { arrow } from '../assets/img/Images';
-import { set_CouponCode } from '../redux/actions/apiActions';
-import { api, storage } from '../services';
+import {arrow} from '../assets/img/Images';
+import {set_CouponCode} from '../redux/actions/apiActions';
+import {api, storage} from '../services';
 import Loader from './Loader';
 
-var { width, height } = Dimensions.get('window');
+var {width, height} = Dimensions.get('window');
 
 // const categoriesImage = [
 //   {
@@ -42,8 +42,8 @@ var { width, height } = Dimensions.get('window');
 //   },
 // ];
 
-const CouponDetails = ({ navigation, route }) => {
-  const { t, i18 } = useTranslation();
+const CouponDetails = ({navigation, route}) => {
+  const {t, i18} = useTranslation();
   const dispatch = useDispatch();
   const [listItems, setListItems] = useState([]);
   const [modal, setModal] = useState(true);
@@ -57,10 +57,10 @@ const CouponDetails = ({ navigation, route }) => {
       setListItems(response.coupons);
     }
     setModal(false);
-  }
-  const applyCoupon = async (value) => {
+  };
+  const applyCoupon = async value => {
     setModal(true);
-    let response = await api.apply_coupon({ coupon_code: value });
+    let response = await api.apply_coupon({coupon_code: value});
     setModal(false);
     if (response.status == 'success') {
       storage.setCouponCode(value);
@@ -69,8 +69,8 @@ const CouponDetails = ({ navigation, route }) => {
       storage.setCouponCode(null);
       alert(response?.message);
     }
-  }
-  const _renderItem = ({ item, index }) => {
+  };
+  const _renderItem = ({item, index}) => {
     return (
       <View
         key={index}
@@ -85,11 +85,11 @@ const CouponDetails = ({ navigation, route }) => {
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{flexDirection: 'row'}}>
             {/* <View style={styles.iconBack}> */}
-            <Image source={{ uri: item?.image }} style={styles.carouselImg} />
+            <Image source={{uri: item?.image}} style={styles.carouselImg} />
             {/* </View> */}
-            <View style={{ marginLeft: 10 }}>
+            <View style={{marginLeft: 10}}>
               <Text style={styles.package}>{item?.code}</Text>
               <Text style={styles.offer}> Discount - {item?.value} %</Text>
             </View>
@@ -104,7 +104,7 @@ const CouponDetails = ({ navigation, route }) => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <Text style={{ color: '#fff', textAlignVertical: 'center' }}>
+            <Text style={{color: '#fff', textAlignVertical: 'center'}}>
               APPLY
             </Text>
           </TouchableOpacity>
@@ -129,18 +129,20 @@ const CouponDetails = ({ navigation, route }) => {
             paddingHorizontal: 15,
             paddingVertical: 15,
           }}>
-          <Image style={{ width: 13, height: 22 }} source={arrow} />
+          <Image style={{width: 13, height: 22}} source={arrow} />
         </TouchableOpacity>
-        <Text style={styles.pageTitle}>{t('couponDetailsPage.couponDetails')}</Text>
+        <Text style={styles.pageTitle}>
+          {t('couponDetailsPage.couponDetails')}
+        </Text>
       </View>
-      {modal != true && listItems.length > 0 &&
+      {modal != true && listItems.length > 0 && (
         <FlatList
           loop={true}
           data={listItems}
           renderItem={_renderItem}
           keyExtractor={(item, index) => item.backgroundImg}
         />
-      }
+      )}
       <View>
         {modal && (
           <Modal transparent={true} visible={modal}>
@@ -175,7 +177,7 @@ const styles = StyleSheet.create({
     resizeMode: 'stretch',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 100
+    borderRadius: 100,
   },
 
   h2: {

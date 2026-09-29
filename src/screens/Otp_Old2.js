@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   StatusBar,
   View,
@@ -11,26 +11,26 @@ import {
   TouchableOpacity,
   Image,
   Modal,
-  Dimensions
+  Dimensions,
 } from 'react-native';
-var { width, height } = Dimensions.get('window');
-import { backImg, loaderIcon, arrow, reload } from '../assets/img/Images';
+var {width, height} = Dimensions.get('window');
+import {backImg, loaderIcon, arrow, reload} from '../assets/img/Images';
 import Loader from './Loader';
 import axios from 'axios';
-import { api, storage } from '../services/index';
-import { useDispatch } from 'react-redux';
-import { set_Profile } from '../redux/actions/authAction';
-import { useTranslation } from 'react-i18next';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { PrimaryGreen, SecondaryGreen } from '../helper/styles.helper';
+import {api, storage} from '../services/index';
+import {useDispatch} from 'react-redux';
+import {set_Profile} from '../redux/actions/authAction';
+import {useTranslation} from 'react-i18next';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {PrimaryGreen, SecondaryGreen} from '../helper/styles.helper';
 
-const Otp = ({ navigation, route }) => {
-  const { t, i18n } = useTranslation();
+const Otp = ({navigation, route}) => {
+  const {t, i18n} = useTranslation();
   const dispatch = useDispatch();
   let otpInput = useRef(null);
   const lengthOtp = 4;
   var clockCall;
-  const { params: { user: { id = 0, mobile = 0 } = {} } = {} } = route;
+  const {params: {user: {id = 0, mobile = 0} = {}} = {}} = route;
   const defaultCountdown = 90;
   const [otpValue, setOtpValue] = useState('');
   const [countDown, setCountDown] = useState(defaultCountdown);
@@ -43,18 +43,18 @@ const Otp = ({ navigation, route }) => {
       mobile: mobile,
       otp: parseInt(otpValue),
     });
-    console.log("dataaaaaaaaaaaaaa from verify", data);
+    console.log('dataaaaaaaaaaaaaa from verify', data);
     if (data?.user?.id) {
       //axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.token;
       if (data?.registered_status) {
         storage.setToken(data.token);
         storage.setUserData(data.user);
-        storage.setIsOldUser("TRUE");
+        storage.setIsOldUser('TRUE');
         dispatch(set_Profile(data.user));
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + data.token;
-        navigation.navigate('Home', { user: data.user });
+        axios.defaults.headers.common.Authorization = 'Bearer ' + data.token;
+        navigation.navigate('Home', {user: data.user});
       } else {
-        navigation.navigate('SignUp', { user: data.user });
+        navigation.navigate('SignUp', {user: data.user});
       }
     }
     // console.log(data?.user);
@@ -72,6 +72,7 @@ const Otp = ({ navigation, route }) => {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     clockCall = setInterval(() => {
       decrementClock();
     }, 1000);
@@ -128,8 +129,11 @@ const Otp = ({ navigation, route }) => {
           <View style={styles.headerStyle}>
             <TouchableOpacity
               onPress={() => navigation.goBack()}
-              style={{ paddingHorizontal: 5, paddingVertical: 2 }}>
-              <Image style={{ width: 11, height: 18, tintColor: '#000' }} source={arrow} />
+              style={{paddingHorizontal: 5, paddingVertical: 2}}>
+              <Image
+                style={{width: 11, height: 18, tintColor: '#000'}}
+                source={arrow}
+              />
               <Text style={styles.headerText}>{t('otpPage.back')}</Text>
             </TouchableOpacity>
           </View>
@@ -141,13 +145,19 @@ const Otp = ({ navigation, route }) => {
             justifyContent: 'center',
             alignContent: 'center',
             padding: 20,
-            marginTop: '-15%'
+            marginTop: '-15%',
           }}>
           <Text style={styles.font1}>{t('otpPage.verifyYourMobileNo')} </Text>
           <Text style={styles.font4}>{t('otpPage.enterYourOtpHere')}</Text>
         </View>
 
-        <View style={{ marginTop: '35%', flex: 3, paddingHorizontal: 2, alignContent: 'center' }}>
+        <View
+          style={{
+            marginTop: '35%',
+            flex: 3,
+            paddingHorizontal: 2,
+            alignContent: 'center',
+          }}>
           <View>
             <TextInput
               ref={input => (otpInput = input)}
@@ -171,7 +181,7 @@ const Otp = ({ navigation, route }) => {
                         borderBottomColor:
                           index === otpValue.length ? '#78bf94' : '#c5c5c5',
                       },
-                      { marginTop: index === otpValue.length ? 7 : 0 },
+                      {marginTop: index === otpValue.length ? 7 : 0},
                     ]}>
                     <Text
                       style={styles.cellText}
@@ -192,7 +202,7 @@ const Otp = ({ navigation, route }) => {
             <Text
               style={[
                 styles.resentOtp,
-                { color: enableResend ? '#000' : 'gray' },
+                {color: enableResend ? '#000' : 'gray'},
               ]}>
               {t('otpPage.resendOtp')} ({countDown})
             </Text>
@@ -200,20 +210,20 @@ const Otp = ({ navigation, route }) => {
               <Image source={reload} style={[styles.loaderOtp]} />
             )}
           </Pressable>
-          <Pressable onPress={otpHandler}
+          <Pressable
+            onPress={otpHandler}
             style={{
               marginTop: height - 550,
               backgroundColor: PrimaryGreen,
-              width: "90%",
+              width: '90%',
               height: 50,
               borderRadius: 10,
               alignItems: 'center',
               justifyContent: 'center',
-              alignSelf: 'center'
+              alignSelf: 'center',
             }}>
             <Text style={styles.buttonStyle}>{t('otpPage.proceed')}</Text>
           </Pressable>
-
         </View>
       </KeyboardAvoidingView>
       {/* </ImageBackground> */}
@@ -231,7 +241,7 @@ const Otp = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: SecondaryGreen
+    backgroundColor: SecondaryGreen,
   },
   containerAvoidngView: {
     flex: 1,

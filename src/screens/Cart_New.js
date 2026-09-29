@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -35,12 +35,12 @@ import {
   Qrcode,
   cash,
 } from '../assets/img/Images';
-import { api, storage } from '../services/index';
+import {api, storage} from '../services/index';
 import Loader from './Loader';
 import RazorpayCheckout from 'react-native-razorpay';
-import { useFocusEffect } from '@react-navigation/core';
-import { useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
+import {useFocusEffect} from '@react-navigation/core';
+import {useSelector} from 'react-redux';
+import {useTranslation} from 'react-i18next';
 import LottieView from 'lottie-react-native';
 import {
   HomeBgColor,
@@ -53,16 +53,16 @@ import avoidCalling from '../assets/img/cart/avoidcall.png';
 import directionToReach from '../assets/img/cart/directionToReach.png';
 import handoverToSecurity from '../assets/img/cart/handoverToSecurity.png';
 import leaveAtDoor from '../assets/img/cart/leaveAtDoor.png';
-import { checkForUpdate } from '../helper/app.helper';
+import {checkForUpdate} from '../helper/app.helper';
 import moment from 'moment';
-import { Portal, Modal as PaperModal } from 'react-native-paper';
+import {Portal, Modal as PaperModal} from 'react-native-paper';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
-const Cart = ({ navigation, route }) => {
+const Cart = ({navigation, route}) => {
   const isPreOrdeRoute = route?.params?.preOrder;
   // //console.log("isPreOrdeRoute", isPreOrdeRoute);
-  const { t, i18 } = useTranslation();
+  const {t, i18} = useTranslation();
   const [checkDeliver, setCheckDeliver] = useState(false);
   const [cardDetails, setCardDetails] = useState(null);
   const [modal, setModal] = useState(true);
@@ -84,12 +84,14 @@ const Cart = ({ navigation, route }) => {
   const [selectedDeliveryDate, setSelectedDeliveryDate] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const shakeAnimation = useRef(new Animated.Value(0)).current;
-  const [paymentMethods, setPaymentMethods] = useState([{
-    description: "(UPI, Credit / Debit Cards)",
-    display_name: "Online",
-    icon: "user_payment_method/CreditCard.png",
-    payment_type: "normal",
-  }])
+  const [paymentMethods, setPaymentMethods] = useState([
+    {
+      description: '(UPI, Credit / Debit Cards)',
+      display_name: 'Online',
+      icon: 'user_payment_method/CreditCard.png',
+      payment_type: 'normal',
+    },
+  ]);
 
   const scrollViewRef = useRef(null);
 
@@ -160,6 +162,7 @@ const Cart = ({ navigation, route }) => {
       setOneToOneCooks();
     });
     return () => focusHandler?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation]);
 
   const checkDeliverHandler = () => {
@@ -180,7 +183,6 @@ const Cart = ({ navigation, route }) => {
     return () => backHandler?.remove?.();
   }, [navigation]);
 
-
   useEffect(() => {
     setShowCheckout(true);
   }, [modal]);
@@ -189,6 +191,7 @@ const Cart = ({ navigation, route }) => {
     React.useCallback(() => {
       getCartItems();
       userData();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
 
@@ -203,6 +206,7 @@ const Cart = ({ navigation, route }) => {
 
   useEffect(() => {
     get_UserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const userData = async () => {
@@ -212,28 +216,35 @@ const Cart = ({ navigation, route }) => {
 
   const singleAdvanceOrderCheckout = async () => {
     if (!selectedDeliveryDate) {
-      scrollViewRef.current.scrollToEnd({ animated: true });
+      scrollViewRef.current.scrollToEnd({animated: true});
       shake();
-    } else await checkOut();
+    } else {
+      await checkOut();
+    }
   };
-  const changeModalState = (setValue) => {
+  const changeModalState = setValue => {
     setValue(true);
     setTimeout(() => {
       setValue(false);
     }, 5000);
-  }
+  };
 
   const checkOut = async () => {
     changeModalState(setModal);
-    if (paymentMode == 'wallet') await onlineCheckOut();
-    else if (paymentMode == 'podQr') payOnDelivery('podQr');
-    else if (paymentMode == 'podCash') payOnDelivery('podCash');
-    else onlineCheckOut();
+    if (paymentMode == 'wallet') {
+      await onlineCheckOut();
+    } else if (paymentMode == 'podQr') {
+      payOnDelivery('podQr');
+    } else if (paymentMode == 'podCash') {
+      payOnDelivery('podCash');
+    } else {
+      onlineCheckOut();
+    }
     setModal(false);
   };
 
   const onlineCheckOut = async () => {
-    if (!!user?.first_name) {
+    if (user?.first_name) {
       //   setShowCheckout(false);
       var data = {};
       console.log('====================================');
@@ -284,12 +295,12 @@ const Cart = ({ navigation, route }) => {
               contact: userDetails.mobile,
               name: userDetails.first_name,
             },
-            theme: { color: '#09b44d' },
+            theme: {color: '#09b44d'},
           };
-          console.log("razorpay data options", options);
+          console.log('razorpay data options', options);
           RazorpayCheckout.open(options)
             .then(data => {
-              console.log("razorpay data", data);
+              console.log('razorpay data', data);
               var payload = {
                 status: 1,
                 razor_pay_order_id: data.razorpay_order_id,
@@ -301,7 +312,7 @@ const Cart = ({ navigation, route }) => {
               transactionStatus(payload);
             })
             .catch(error => {
-              console.log("eror from rp", error);
+              console.log('eror from rp', error);
               var payload = {
                 status: 0,
                 payment_response: response,
@@ -327,18 +338,19 @@ const Cart = ({ navigation, route }) => {
       } else {
         alert('Unable to complete your process');
       }
-    } else
+    } else {
       Alert.alert('', 'complete Your Profile Detail to Checkout', [
         {
           text: 'Proceed',
           onPress: () => navigation.navigate('profileEdit', user),
         },
-        { text: 'Cancel', onPress: () => null },
+        {text: 'Cancel', onPress: () => null},
       ]);
+    }
   };
 
   const payOnDelivery = async type => {
-    if (!!user?.first_name) {
+    if (user?.first_name) {
       const payload = {
         total_amount: cardDetails.amount,
         net_amount: cardDetails.total,
@@ -351,28 +363,37 @@ const Cart = ({ navigation, route }) => {
         selectedDeliveryDate,
       };
       const capitalizedWord = type.charAt(0).toUpperCase() + type.slice(1);
-      Alert.alert('Confirm Payment Method!', 'Are You Sure Want To Proceed with ' + capitalizedWord, [{
-        text: 'Proceed', onPress: async () => {
-          // setModal(true);
-          changeModalState(setModal);
-          console.log('data from pod order place start');
-          let data = await api.placePodOrder(payload);
-          console.log('data from pod order place', data);
-          if (data.status == 'success') {
-            navigation.navigate('SuccessScreen', data);
-            await emptyCart();
-          }
-        }
-      }, { text: 'Cancel', onPress: () => null }])
+      Alert.alert(
+        'Confirm Payment Method!',
+        'Are You Sure Want To Proceed with ' + capitalizedWord,
+        [
+          {
+            text: 'Proceed',
+            onPress: async () => {
+              // setModal(true);
+              changeModalState(setModal);
+              console.log('data from pod order place start');
+              let data = await api.placePodOrder(payload);
+              console.log('data from pod order place', data);
+              if (data.status == 'success') {
+                navigation.navigate('SuccessScreen', data);
+                await emptyCart();
+              }
+            },
+          },
+          {text: 'Cancel', onPress: () => null},
+        ],
+      );
       setModal(false);
-    } else
+    } else {
       Alert.alert('', 'complete Your Profile Detail to Checkout', [
         {
           text: 'Proceed',
           onPress: () => navigation.navigate('profileEdit', user),
         },
-        { text: 'Cancel', onPress: () => null },
+        {text: 'Cancel', onPress: () => null},
       ]);
+    }
   };
 
   const emptyCart = async () => {
@@ -382,9 +403,9 @@ const Cart = ({ navigation, route }) => {
     }
   };
   const transactionStatus = async data => {
-    console.log("transactionStatus", data);
+    console.log('transactionStatus', data);
     let response = await api.paymentStatus(data);
-    console.log("transactionStatus response", response);
+    console.log('transactionStatus response', response);
     if (data.status == 1 && response.status == 'success') {
       emptyCart();
       // alert('Ordered successfully');
@@ -411,9 +432,9 @@ const Cart = ({ navigation, route }) => {
     console.log('get cart2');
     if (useWallet) {
       if (code) {
-        let res = await api.apply_coupon({ coupon_code: code });
+        let res = await api.apply_coupon({coupon_code: code});
         if (res.status == 'success') {
-          let response = await api.show_wallet({ applied_coupon: code });
+          let response = await api.show_wallet({applied_coupon: code});
           if (response.status == 'success') {
             // //console.log("card details1111111", response);
             setCardDetails(response);
@@ -446,9 +467,9 @@ const Cart = ({ navigation, route }) => {
       }
     } else {
       if (code) {
-        let res = await api.apply_coupon({ coupon_code: code });
+        let res = await api.apply_coupon({coupon_code: code});
         if (res.status == 'success') {
-          let response = await api.show_cart({ applied_coupon: code });
+          let response = await api.show_cart({applied_coupon: code});
           if (response.status == 'success') {
             storage.setCartStatus(1);
             setCardDetails(response);
@@ -487,9 +508,9 @@ const Cart = ({ navigation, route }) => {
     let code = await storage.getCouponCode();
     if (value) {
       if (code) {
-        let res = await api.apply_coupon({ coupon_code: code });
+        let res = await api.apply_coupon({coupon_code: code});
         if (res.status == 'success') {
-          let response = await api.show_wallet({ applied_coupon: code });
+          let response = await api.show_wallet({applied_coupon: code});
           if (response.status == 'success') {
             setCardDetails(response);
             storage.setCartStatus(1);
@@ -519,9 +540,9 @@ const Cart = ({ navigation, route }) => {
       }
     } else {
       if (code) {
-        let res = await api.apply_coupon({ coupon_code: code });
+        let res = await api.apply_coupon({coupon_code: code});
         if (res.status == 'success') {
-          let response = await api.show_cart({ applied_coupon: code });
+          let response = await api.show_cart({applied_coupon: code});
           if (response.status == 'success') {
             storage.setCartStatus(1);
             setCardDetails(response);
@@ -558,6 +579,7 @@ const Cart = ({ navigation, route }) => {
   }, []);
   useEffect(() => {
     getCartItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [useWallet]);
   // useEffect(() => {
   //   getCartItems();
@@ -611,14 +633,19 @@ const Cart = ({ navigation, route }) => {
       setUseWallet(false);
     });
     return () => focusHandler?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation]);
 
   useEffect(() => {
-    if (isPreOrdeRoute) setPreOrderCart(true);
+    if (isPreOrdeRoute) {
+      setPreOrderCart(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     getPOCDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [preOrderCart, setPreOrderCart, useWalletPO, setUseWalletPO]);
 
   // const AddButton = ({ item }) => {
@@ -667,7 +694,7 @@ const Cart = ({ navigation, route }) => {
   };
 
   const preOrderCheckout = async () => {
-    if (!!user?.first_name) {
+    if (user?.first_name) {
       const data = {
         total_amount: preOrderCartDetails?.totalAmount,
         net_amount: preOrderCartDetails?.transaction_amount,
@@ -695,7 +722,7 @@ const Cart = ({ navigation, route }) => {
               contact: userDetails.mobile,
               name: userDetails.first_name,
             },
-            theme: { color: '#29C270' },
+            theme: {color: '#29C270'},
           };
           RazorpayCheckout.open(options)
             .then(data => {
@@ -737,14 +764,15 @@ const Cart = ({ navigation, route }) => {
       } else {
         alert('Unable to complete your process');
       }
-    } else
+    } else {
       Alert.alert('', 'complete Your Profile Detail to Checkout', [
         {
           text: 'Proceed',
           onPress: () => navigation.navigate('profileEdit', user),
         },
-        { text: 'Cancel', onPress: () => null },
+        {text: 'Cancel', onPress: () => null},
       ]);
+    }
   };
 
   const addToCart = async data => {
@@ -754,12 +782,12 @@ const Cart = ({ navigation, route }) => {
     getPOCDetails();
   };
 
-  const minusFromCart = async ({ id, cartId, menu_list_length }) => {
+  const minusFromCart = async ({id, cartId, menu_list_length}) => {
     //required params {menu_item_id, cook_id, pre_order_date, pre_order_time}
     //console.log(":iddddddddddddddddddddddddddddddddddddddd", id, menu_list_length);
     const response = await api.preOrderCartMinus(id);
     if (menu_list_length == 1 && response.quantity == 0) {
-      const res = await api.preOrderCartRemove({ cart_id: cartId });
+      const res = await api.preOrderCartRemove({cart_id: cartId});
       //console.log("res from remove cart", res);
     }
     //console.log("response from minus from cart", response);
@@ -855,11 +883,11 @@ const Cart = ({ navigation, route }) => {
     return (
       <>
         {cardDetails ? (
-          <SafeAreaView style={{ flex: 1, position: 'relative' }}>
+          <SafeAreaView style={{flex: 1, position: 'relative'}}>
             <ScrollView
               ref={scrollViewRef}
               showsVerticalScrollIndicator={false}
-              style={{ marginTop: 10 }}>
+              style={{marginTop: 10}}>
               {cardDetails.cart &&
                 cardDetails.cart.map((list, index) => {
                   return (
@@ -878,7 +906,7 @@ const Cart = ({ navigation, route }) => {
                         paddingVertical: 7,
                         marginTop: 10,
                       }}>
-                      <View style={{ flex: 3 }}>
+                      <View style={{flex: 3}}>
                         <View
                           style={{
                             flexDirection: 'row',
@@ -892,13 +920,13 @@ const Cart = ({ navigation, route }) => {
                               backgroundColor: 'red',
                               marginRight: 5,
                             }}
-                            source={{ uri: list?.menuitem?.foodtype?.icon }}
+                            source={{uri: list?.menuitem?.foodtype?.icon}}
                           />
                           <Text
-                            style={{ fontFamily: 'Poppins-Bold', width: '80%' }}>
+                            style={{fontFamily: 'Poppins-Bold', width: '80%'}}>
                             {list?.menuitem?.userlanguage?.name}
                           </Text>
-                          <View style={{ style: 1 }}>
+                          <View style={{style: 1}}>
                             <Text
                               style={{
                                 fontSize: 16,
@@ -974,7 +1002,7 @@ const Cart = ({ navigation, route }) => {
                             }}>
                             <Image
                               source={deleteIcon}
-                              style={{ height: 25, width: 25 }}
+                              style={{height: 25, width: 25}}
                             />
                             <Text
                               style={{
@@ -1000,12 +1028,15 @@ const Cart = ({ navigation, route }) => {
                     fontSize: 14,
                   }}
                   onPress={() =>
-                    navigation.navigate('FoodDetail', {id: cardDetails?.cook?.id})
+                    navigation.navigate('FoodDetail', {
+                      id: cardDetails?.cook?.id,
+                    })
                   }>
-                  {`+Add more from ${cardDetails?.cook?.first_name
-                    ? cardDetails?.cook?.first_name
-                    : 'this Vendor'
-                    }`}
+                  {`+Add more from ${
+                    cardDetails?.cook?.first_name
+                      ? cardDetails?.cook?.first_name
+                      : 'this Vendor'
+                  }`}
                 </Text>
               )}
               {/* <Text
@@ -1151,15 +1182,16 @@ const Cart = ({ navigation, route }) => {
                               fontFamily: 'Poppins-Regular',
                               color: '#2b2b2b',
                             }}>
-                            {`Discount  ${cardDetails?.flatDiscountValueText
-                              ? '(' + cardDetails?.flatDiscountValueText + ')'
-                              : ''
-                              }`}
+                            {`Discount  ${
+                              cardDetails?.flatDiscountValueText
+                                ? '(' + cardDetails?.flatDiscountValueText + ')'
+                                : ''
+                            }`}
                           </Text>
                         </View>
                       )}
                     </View>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{flexDirection: 'row'}}>
                       {/* {cardDetails?.amount &&
                                                     <Text
                                                         style={{
@@ -1173,7 +1205,7 @@ const Cart = ({ navigation, route }) => {
                                                         ₹ {cardDetails?.amount}
                                                     </Text>
                                                 } */}
-                      <View style={{ alignItems: 'center', padding: 1 }}>
+                      <View style={{alignItems: 'center', padding: 1}}>
                         {!!cardDetails?.discountAmount &&
                           !!cardDetails?.totalAfterDiscount && (
                             <>
@@ -1199,10 +1231,11 @@ const Cart = ({ navigation, route }) => {
                           color: '#000',
                           marginLeft: 5,
                         }}>
-                        {`  ₹ ${cardDetails?.totalAfterDiscount
-                          ? cardDetails?.totalAfterDiscount
-                          : cardDetails.amount
-                          }`}
+                        {`  ₹ ${
+                          cardDetails?.totalAfterDiscount
+                            ? cardDetails?.totalAfterDiscount
+                            : cardDetails.amount
+                        }`}
                       </Text>
                     </View>
                   </View>
@@ -1364,7 +1397,7 @@ const Cart = ({ navigation, route }) => {
                 showsHorizontalScrollIndicator={false}>
                 <TouchableOpacity
                   onPress={() =>
-                    setInstructions({ ac: true, ld: false, hs: false, dr: false })
+                    setInstructions({ac: true, ld: false, hs: false, dr: false})
                   }
                   style={{
                     backgroundColor: instructions.ac ? PrimaryGreen : '#fff',
@@ -1389,13 +1422,13 @@ const Cart = ({ navigation, route }) => {
                       tintColor: instructions.ac ? '#fff' : PrimaryGreen,
                     }}
                   />
-                  <Text style={{ color: instructions.ac ? '#fff' : '#000' }}>
+                  <Text style={{color: instructions.ac ? '#fff' : '#000'}}>
                     Avoid Calling
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() =>
-                    setInstructions({ ac: false, ld: true, hs: false, dr: false })
+                    setInstructions({ac: false, ld: true, hs: false, dr: false})
                   }
                   style={{
                     backgroundColor: instructions.ld ? PrimaryGreen : '#fff',
@@ -1420,13 +1453,13 @@ const Cart = ({ navigation, route }) => {
                       tintColor: instructions.ld ? '#fff' : PrimaryGreen,
                     }}
                   />
-                  <Text style={{ color: instructions.ld ? '#fff' : '#000' }}>
+                  <Text style={{color: instructions.ld ? '#fff' : '#000'}}>
                     leave at the Door
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() =>
-                    setInstructions({ ac: false, ld: false, hs: true, dr: false })
+                    setInstructions({ac: false, ld: false, hs: true, dr: false})
                   }
                   style={{
                     backgroundColor: instructions.hs ? PrimaryGreen : '#fff',
@@ -1451,13 +1484,13 @@ const Cart = ({ navigation, route }) => {
                       tintColor: instructions.hs ? '#fff' : PrimaryGreen,
                     }}
                   />
-                  <Text style={{ color: instructions.hs ? '#fff' : '#000' }}>
+                  <Text style={{color: instructions.hs ? '#fff' : '#000'}}>
                     Handover to Security
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() =>
-                    setInstructions({ ac: false, ld: false, hs: false, dr: true })
+                    setInstructions({ac: false, ld: false, hs: false, dr: true})
                   }
                   style={{
                     backgroundColor: instructions.dr ? PrimaryGreen : '#fff',
@@ -1482,7 +1515,7 @@ const Cart = ({ navigation, route }) => {
                       tintColor: instructions.dr ? '#fff' : PrimaryGreen,
                     }}
                   />
-                  <Text style={{ color: instructions.dr ? '#fff' : '#000' }}>
+                  <Text style={{color: instructions.dr ? '#fff' : '#000'}}>
                     Directions to Reach
                   </Text>
                 </TouchableOpacity>
@@ -1547,8 +1580,8 @@ const Cart = ({ navigation, route }) => {
                                         </View>
                                     </View> */}
 
-                  <View style={{ marginLeft: 10 }}>
-                    <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 14 }}>
+                  <View style={{marginLeft: 10}}>
+                    <Text style={{fontFamily: 'Poppins-Bold', fontSize: 14}}>
                       {t('cartPage.deliverTo')}{' '}
                       {userDetails?.defaultaddress?.type}
                     </Text>
@@ -1564,7 +1597,7 @@ const Cart = ({ navigation, route }) => {
                       {userDetails?.defaultaddress?.area}
                     </Text>
                     {cardDetails?.delivery_time && (
-                      <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 14 }}>
+                      <Text style={{fontFamily: 'Poppins-Bold', fontSize: 14}}>
                         {cardDetails?.delivery_time} {t('cartPage.mins')}
                       </Text>
                     )}
@@ -1639,7 +1672,7 @@ const Cart = ({ navigation, route }) => {
                     }}>
                     <Animated.View
                       style={{
-                        transform: [{ translateX: shakeAnimation }],
+                        transform: [{translateX: shakeAnimation}],
                       }}>
                       <TouchableOpacity
                         style={{
@@ -1647,7 +1680,7 @@ const Cart = ({ navigation, route }) => {
                           flexDirection: 'row',
                           borderRadius: 10,
                           borderWidth: 0.5,
-                          borderColor: !!selectedDeliveryDate
+                          borderColor: selectedDeliveryDate
                             ? PrimaryGreen
                             : 'tomato',
                           backfaceVisibility: SecondaryGreen,
@@ -1660,16 +1693,16 @@ const Cart = ({ navigation, route }) => {
                         onPress={() => setShowDatePicker(true)}>
                         <Text
                           style={{
-                            color: !!selectedDeliveryDate
+                            color: selectedDeliveryDate
                               ? PrimaryGreen
                               : 'tomato',
                             fontFamily: 'Poppins-Bold',
                             fontSize: 15,
                           }}>
-                          {!!selectedDeliveryDate
+                          {selectedDeliveryDate
                             ? moment(selectedDeliveryDate).format(
-                              'DD-MMMM-YYYY',
-                            )
+                                'DD-MMMM-YYYY',
+                              )
                             : moment().format('DD-MMMM-YYYY')}
                         </Text>
                         <Image
@@ -1678,7 +1711,7 @@ const Cart = ({ navigation, route }) => {
                             width: 20,
                             height: 20,
                             marginLeft: 10,
-                            tintColor: !!selectedDeliveryDate
+                            tintColor: selectedDeliveryDate
                               ? PrimaryGreen
                               : 'tomato',
                           }}
@@ -1783,10 +1816,10 @@ const Cart = ({ navigation, route }) => {
             </ScrollView>
             {
               cardDetails?.cook?.status == 1 &&
-                cardDetails?.cook?.current_status == 1 &&
-                cardDetails.remove_status == 1 &&
-                cardDetails.delivery_boy_status != 0 &&
-                !!cardDetails.isServicable ? (
+              cardDetails?.cook?.current_status == 1 &&
+              cardDetails.remove_status == 1 &&
+              cardDetails.delivery_boy_status != 0 &&
+              !!cardDetails.isServicable ? (
                 <View>
                   {showCheckout && (
                     <TouchableOpacity
@@ -1802,7 +1835,7 @@ const Cart = ({ navigation, route }) => {
                         paddingHorizontal: 25,
                       }}
                       onPress={
-                        !!cardDetails?.isSingleAdvanceOrderCook
+                        cardDetails?.isSingleAdvanceOrderCook
                           ? singleAdvanceOrderCheckout
                           : checkOut
                       }>
@@ -1835,7 +1868,7 @@ const Cart = ({ navigation, route }) => {
                         </Text>
                         <Image
                           source={cartIcon}
-                          style={{ width: 23, height: 20, tintColor: '#fff' }}
+                          style={{width: 23, height: 20, tintColor: '#fff'}}
                         />
                       </View>
                     </TouchableOpacity>
@@ -1863,15 +1896,15 @@ const Cart = ({ navigation, route }) => {
                       fontSize: 16,
                     }}>
                     {cardDetails.remove_status == 0
-                      ? `Remove unavailable items \n`
+                      ? 'Remove unavailable items \n'
                       : null}
                     {cardDetails?.cook?.status != 1 ||
-                      cardDetails?.cook?.current_status != 1
-                      ? `Cook isn't available ! \n`
+                    cardDetails?.cook?.current_status != 1
+                      ? "Cook isn't available ! \n"
                       : null}
                     {cardDetails.delivery_boy_status == 0 ||
-                      cardDetails?.isServicable == false
-                      ? `Delivery service unavailable`
+                    cardDetails?.isServicable == false
+                      ? 'Delivery service unavailable'
                       : null}
                   </Text>
                 </View>
@@ -1891,7 +1924,7 @@ const Cart = ({ navigation, route }) => {
                   alignItems: 'center',
                 }}>
                 <Image
-                  style={{ height: 100, width: 100, alignItems: 'center' }}
+                  style={{height: 100, width: 100, alignItems: 'center'}}
                   source={emptyCartIcon}
                 />
                 <Text
@@ -1915,14 +1948,14 @@ const Cart = ({ navigation, route }) => {
     // //console.log("preordercartdetails,", preOrderCartDetails);
     return (
       <>
-        {!!preOrderCartDetails?.cart_date_time.length ? (
+        {preOrderCartDetails?.cart_date_time.length ? (
           // <SafeAreaView style={{ flex: 1, position: 'relative', }}>
           //     <StatusBar backgroundColor={HomeBgColor} barStyle="dark-content" />
           <>
             <ScrollView
               showsVerticalScrollIndicator={false}
-              style={{ marginTop: 10 }}>
-              <View style={{ width: '100%' }}>
+              style={{marginTop: 10}}>
+              <View style={{width: '100%'}}>
                 <Text
                   style={{
                     fontSize: 18,
@@ -1939,7 +1972,7 @@ const Cart = ({ navigation, route }) => {
                       const menu_list = JSON.parse(item?.menu_list);
                       return (
                         <>
-                          <View style={{ width: '95%', alignSelf: 'center' }}>
+                          <View style={{width: '95%', alignSelf: 'center'}}>
                             {/* <View> */}
                             {menu_list && (
                               <>
@@ -1966,7 +1999,7 @@ const Cart = ({ navigation, route }) => {
                                           marginRight: 10,
                                         }}>
                                         <Image
-                                          source={{ uri: menu?.food_image }}
+                                          source={{uri: menu?.food_image}}
                                           style={{
                                             width: '15%',
                                             height: 60,
@@ -2015,8 +2048,9 @@ const Cart = ({ navigation, route }) => {
                                                 paddingLeft: 10,
                                                 fontFamily: 'Poppins-Medium',
                                                 fontSize: 14,
-                                              }}>{`₹  ${menu?.final_price * menu?.quantity
-                                                }`}</Text>
+                                              }}>{`₹  ${
+                                              menu?.final_price * menu?.quantity
+                                            }`}</Text>
                                           </View>
                                         </View>
                                       </View>
@@ -2055,16 +2089,17 @@ const Cart = ({ navigation, route }) => {
                       marginRight: 5,
                     }}
                   />
-                  <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 14 }}>
-                    {`Use Wallet  `}
+                  <Text style={{fontFamily: 'Poppins-Bold', fontSize: 14}}>
+                    {'Use Wallet  '}
                   </Text>
-                  <Text style={{ fontFamily: 'Poppins-Regular', fontSize: 14 }}>
-                    {`( ₹ ${!!preOrderCartDetails?.wallet_bal
-                      ? preOrderCartDetails?.wallet_bal
-                      : !!preOrderCartDetails?.wallet?.balence
+                  <Text style={{fontFamily: 'Poppins-Regular', fontSize: 14}}>
+                    {`( ₹ ${
+                      preOrderCartDetails?.wallet_bal
+                        ? preOrderCartDetails?.wallet_bal
+                        : preOrderCartDetails?.wallet?.balence
                         ? preOrderCartDetails?.wallet?.balence
                         : 0
-                      })`}
+                    })`}
                   </Text>
                 </View>
                 <CheckBox
@@ -2073,7 +2108,7 @@ const Cart = ({ navigation, route }) => {
                     // //console.log("ranjith", e);
                     setUseWalletPO(e);
                   }}
-                  tintColors={{ false: 'black' }}
+                  tintColors={{false: 'black'}}
                 />
               </View>
 
@@ -2148,17 +2183,18 @@ const Cart = ({ navigation, route }) => {
                               fontFamily: 'Poppins-Regular',
                               color: '#2b2b2b',
                             }}>
-                            {`Discount  ${preOrderCartDetails?.flatDiscountValueText
-                              ? '(' +
-                              preOrderCartDetails?.flatDiscountValueText +
-                              ')'
-                              : ''
-                              }`}
+                            {`Discount  ${
+                              preOrderCartDetails?.flatDiscountValueText
+                                ? '(' +
+                                  preOrderCartDetails?.flatDiscountValueText +
+                                  ')'
+                                : ''
+                            }`}
                           </Text>
                         </View>
                       )}
                     </View>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{flexDirection: 'row'}}>
                       {!!preOrderCartDetails?.discountAmount &&
                         !!preOrderCartDetails?.totalAfterDiscount && (
                           <Text
@@ -2333,8 +2369,8 @@ const Cart = ({ navigation, route }) => {
                     alignItems: 'flex-start',
                     width: '60%',
                   }}>
-                  <View style={{ marginLeft: 10 }}>
-                    <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 14 }}>
+                  <View style={{marginLeft: 10}}>
+                    <Text style={{fontFamily: 'Poppins-Bold', fontSize: 14}}>
                       {t('cartPage.deliverTo')}{' '}
                       {userDetails?.defaultaddress?.type}
                     </Text>
@@ -2405,7 +2441,7 @@ const Cart = ({ navigation, route }) => {
                         }}>
                         ₹{preOrderCartDetails?.transaction_amount}
                       </Text>
-                      <View style={{ flexDirection: 'row' }}>
+                      <View style={{flexDirection: 'row'}}>
                         <Text
                           style={{
                             color: '#fff',
@@ -2418,7 +2454,7 @@ const Cart = ({ navigation, route }) => {
                         </Text>
                         <Image
                           source={cartIcon}
-                          style={{ width: 23, height: 20, tintColor: '#fff' }}
+                          style={{width: 23, height: 20, tintColor: '#fff'}}
                         />
                       </View>
                     </>
@@ -2458,7 +2494,7 @@ const Cart = ({ navigation, route }) => {
                 alignItems: 'center',
               }}>
               <Image
-                style={{ height: 100, width: 100, alignItems: 'center' }}
+                style={{height: 100, width: 100, alignItems: 'center'}}
                 source={emptyCartIcon}
               />
               <Text
@@ -2481,7 +2517,7 @@ const Cart = ({ navigation, route }) => {
 
   const getPaymentmethods = async () => {
     const response = await api.paymentMethods();
-    console.log("paymentMethods", response);
+    console.log('paymentMethods', response);
     if (response.status == 'success') {
       setPaymentMethods(response.paymentMethods);
     }
@@ -2491,7 +2527,7 @@ const Cart = ({ navigation, route }) => {
   }, []);
 
   const PaymentMethods = () => {
-    const setMode = async (type) => {
+    const setMode = async type => {
       if (type == 'razorpay') {
         changeWallet();
         setPaymentMode('razorpay');
@@ -2504,98 +2540,107 @@ const Cart = ({ navigation, route }) => {
       } else if (type == 'podCash') {
         changeWallet();
         setPaymentMode('podCash');
-      } else;
-
-    }
-    return (<>
-      <View>
-        {paymentMethods.flatMap(item => {
-          return (<>
-            <TouchableOpacity
-              key={item.payment_type}
-              onPress={() => { setMode(item.payment_type) }}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginHorizontal: 15,
-                marginVertical: 5,
-                backgroundColor:
-                  paymentMode == item.payment_type ? SecondaryGreen : '#fff',
-                padding: 10,
-                borderRadius: 7,
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
-                <Image
-                  source={card}
-                  style={{
-                    width: 18,
-                    height: 18,
-                    resizeMode: 'stretch',
-                    tintColor: '#000',
-                    marginRight: 10,
+      } else {
+      }
+    };
+    return (
+      <>
+        <View>
+          {paymentMethods.flatMap(item => {
+            return (
+              <>
+                <TouchableOpacity
+                  key={item.payment_type}
+                  onPress={() => {
+                    setMode(item.payment_type);
                   }}
-                />
-                <Text
                   style={{
-                    fontFamily: 'Poppins-Bold',
-                    fontSize: 14,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginHorizontal: 15,
+                    marginVertical: 5,
+                    backgroundColor:
+                      paymentMode == item.payment_type
+                        ? SecondaryGreen
+                        : '#fff',
+                    padding: 10,
+                    borderRadius: 7,
                   }}>
-                  {item.display_name}
-                  <Text
+                  <View
                     style={{
-                      fontFamily: 'Poppins-Regular',
-                      fontSize: 12,
-                      color: PrimaryGreen,
-                      marginLeft: 10,
-                    }}>{`   ${item.description}`}</Text>
-                </Text>
-              </View>
-              {/* <CheckBox
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Image
+                      source={card}
+                      style={{
+                        width: 18,
+                        height: 18,
+                        resizeMode: 'stretch',
+                        tintColor: '#000',
+                        marginRight: 10,
+                      }}
+                    />
+                    <Text
+                      style={{
+                        fontFamily: 'Poppins-Bold',
+                        fontSize: 14,
+                      }}>
+                      {item.display_name}
+                      <Text
+                        style={{
+                          fontFamily: 'Poppins-Regular',
+                          fontSize: 12,
+                          color: PrimaryGreen,
+                          marginLeft: 10,
+                        }}>{`   ${item.description}`}</Text>
+                    </Text>
+                  </View>
+                  {/* <CheckBox
                       value={useWallet}
                       onValueChange={changeWallet}
                       tintColors={{false: 'black'}}
                     /> */}
-            </TouchableOpacity>
-            {useWallet && item.payment_type == 'wallet' && (
-              <View style={{ flexDirection: 'row' }}>
-                <Text
-                  style={{
-                    fontFamily: 'Poppins-Regular',
-                    fontSize: 12,
-                    marginLeft: 5,
-                  }}>
-                  {`  (Balance:   ₹ ${!!cardDetails?.wallet_bal
-                    ? cardDetails.wallet_bal.toString()
-                    : 0
-                    })   `}
-                </Text>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Wallet')}>
-                  <Text
-                    style={{
-                      fontFamily: 'Poppins-Regular',
-                      fontSize: 12,
-                      marginLeft: 5,
-                      color: PrimaryGreen,
-                    }}>
-                    + add amount
-                  </Text>
                 </TouchableOpacity>
-              </View>
-            )}
-          </>)
-        })}
-      </View>
-    </>);
-  }
+                {useWallet && item.payment_type == 'wallet' && (
+                  <View style={{flexDirection: 'row'}}>
+                    <Text
+                      style={{
+                        fontFamily: 'Poppins-Regular',
+                        fontSize: 12,
+                        marginLeft: 5,
+                      }}>
+                      {`  (Balance:   ₹ ${
+                        cardDetails?.wallet_bal
+                          ? cardDetails.wallet_bal.toString()
+                          : 0
+                      })   `}
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('Wallet')}>
+                      <Text
+                        style={{
+                          fontFamily: 'Poppins-Regular',
+                          fontSize: 12,
+                          marginLeft: 5,
+                          color: PrimaryGreen,
+                        }}>
+                        + add amount
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </>
+            );
+          })}
+        </View>
+      </>
+    );
+  };
   return (
-    <SafeAreaView style={{ height: '100%', backgroundColor: HomeBgColor }}>
+    <SafeAreaView style={{height: '100%', backgroundColor: HomeBgColor}}>
       <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
       {preOrderCart ? (
         <TouchableOpacity
@@ -2616,7 +2661,7 @@ const Cart = ({ navigation, route }) => {
             }}
           />
           <Text
-            style={{ fontFamily: 'Poppins-Bold', fontSize: 16, marginLeft: 10 }}>
+            style={{fontFamily: 'Poppins-Bold', fontSize: 16, marginLeft: 10}}>
             Advance Order cart
           </Text>
         </TouchableOpacity>
@@ -2639,7 +2684,7 @@ const Cart = ({ navigation, route }) => {
             }}
           />
           <Text
-            style={{ fontFamily: 'Poppins-Bold', fontSize: 16, marginLeft: 10 }}>
+            style={{fontFamily: 'Poppins-Bold', fontSize: 16, marginLeft: 10}}>
             {cardDetails?.cook?.first_name
               ? cardDetails?.cook?.first_name
               : 'Cart Page'}
@@ -2756,7 +2801,7 @@ const Cart = ({ navigation, route }) => {
                 </View>
             } */}
 
-      <View >
+      <View>
         {modal && (
           <Modal transparent={true} visible={modal}>
             <Loader />

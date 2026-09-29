@@ -104,7 +104,7 @@ const StackNav = () => {
       <Stack.Screen name="PickAndDrop" component={PickAndDrop} />
       <Stack.Screen name="PndOrderTrack" component={PndOrderTrack} />
       {/*  */}
-      
+
       {/* grocery Screens */}
       <Stack.Screen name="GroceryHome" component={GroceryHome} />
       <Stack.Screen name="GroceryVendorDetails" component={VendorDetailPage} />

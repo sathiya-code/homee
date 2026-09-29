@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import { View, Image, StyleSheet, Dimensions, Modal } from 'react-native';
+import {View, Image, StyleSheet, Dimensions, Modal} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import Loader from '../screens/Loader';
 
 const BannerCarouselImg = Dimensions.get('window').width;
 
-const Banner = (props) => {
+const Banner = props => {
   const [banner, setBanner] = useState([]);
   const [isready, setIsready] = useState(false);
   const [modal, setModal] = useState(false);
-  const _renderItem = ({ item, index }) => {
-    return <Image source={{ uri: item.image }} style={styles.carouselImg} />;
+  const _renderItem = ({item, index}) => {
+    return <Image source={{uri: item.image}} style={styles.carouselImg} />;
   };
   useEffect(() => {
     setModal(true);
@@ -26,7 +26,7 @@ const Banner = (props) => {
     }
     setModal(false);
     // console.log(arr);
-  }, [])
+  }, []);
   const [bannerImage, setbannerCarousel] = useState([
     {
       image: require('../assets/img/banner/1.png'),
@@ -40,7 +40,7 @@ const Banner = (props) => {
 
   return (
     <View>
-      {isready && modal == false &&
+      {isready && modal == false && (
         <Carousel
           loop={true}
           data={banner}
@@ -53,15 +53,15 @@ const Banner = (props) => {
           autoplayDelay={1000}
           autoplayInterval={3000}
           activeSlideAlignment={'center'}
-          contentContainerCustomStyle={{ height: 200, marginLeft: 0 }}
+          contentContainerCustomStyle={{height: 200, marginLeft: 0}}
         />
-      }
+      )}
       <View>
-        {modal &&
+        {modal && (
           <Modal transparent={false} visible={modal}>
             <Loader />
           </Modal>
-        }
+        )}
       </View>
     </View>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -15,15 +15,15 @@ import {
   StatusBar,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
-import { arrow, photo1 } from '../assets/img/Images';
-import { useTranslation } from 'react-i18next';
-import { useFocusEffect } from '@react-navigation/core';
-import { api } from '../services';
+import {arrow, photo1} from '../assets/img/Images';
+import {useTranslation} from 'react-i18next';
+import {useFocusEffect} from '@react-navigation/core';
+import {api} from '../services';
 import Loader from './Loader';
 
-const OrderedHistory = ({ navigation }) => {
-  const { width, height } = Dimensions.get('window');
-  const { t, i18n } = useTranslation();
+const OrderedHistory = ({navigation}) => {
+  const {width, height} = Dimensions.get('window');
+  const {t, i18n} = useTranslation();
   const [modal, setModal] = useState(true);
   const [listItems, setListItems] = useState([]);
   const [paginate, setPaginate] = useState(1);
@@ -41,28 +41,30 @@ const OrderedHistory = ({ navigation }) => {
     } else {
       setModal(true);
       let response = await api.orders(paginate);
-      setModal(false)
+      setModal(false);
       if (response.status == 'success') {
         setListItems(response.orders);
         setPagination(response.pagination);
       }
     }
-  }
+  };
 
   useFocusEffect(
     React.useCallback(() => {
       getList();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
   useEffect(() => {
     getList();
-  }, [paginate])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paginate]);
   var onReached = e => {
     if (pagination?.current_page < pagination?.last_page) {
       setPaginate(paginate + 1);
     }
   };
-  const _renderItem = ({ item, index }) => {
+  const _renderItem = ({item, index}) => {
     return (
       <View
         style={{
@@ -72,7 +74,7 @@ const OrderedHistory = ({ navigation }) => {
           borderWidth: 1,
         }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('OrderedFoodz', { id: item.id })}
+          onPress={() => navigation.navigate('OrderedFoodz', {id: item.id})}
           style={{
             flexDirection: 'row',
             padding: 10,
@@ -92,27 +94,48 @@ const OrderedHistory = ({ navigation }) => {
               justifyContent: 'center',
             }}>
             <Text
-              style={{ fontSize: 13, fontFamily: 'Poppins-Bold', marginBottom: 4 }}>
-              {item?.order_no ? "ORDER ID : " + item.order_no : null}
+              style={{
+                fontSize: 13,
+                fontFamily: 'Poppins-Bold',
+                marginBottom: 4,
+              }}>
+              {item?.order_no ? 'ORDER ID : ' + item.order_no : null}
             </Text>
             <Text
-              style={{ fontSize: 13, fontFamily: 'Poppins-Bold', marginBottom: 4 }}>
+              style={{
+                fontSize: 13,
+                fontFamily: 'Poppins-Bold',
+                marginBottom: 4,
+              }}>
               {item?.cook?.first_name ? item.cook.first_name : null}
             </Text>
             <Text
-              style={{ fontSize: 12, fontFamily: 'Poppins-Regular', marginBottom: 4 }}>
-              {item?.address_info?.area ? item?.address_info?.area + ', ' : null}
-              {item?.address_info?.city ? item?.address_info?.city + '. ' : null}
+              style={{
+                fontSize: 12,
+                fontFamily: 'Poppins-Regular',
+                marginBottom: 4,
+              }}>
+              {item?.address_info?.area
+                ? item?.address_info?.area + ', '
+                : null}
+              {item?.address_info?.city
+                ? item?.address_info?.city + '. '
+                : null}
             </Text>
           </View>
         </TouchableOpacity>
-        <View style={{ padding: 10 }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{padding: 10}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text
               style={{
                 fontFamily: 'Poppins-Regular',
                 fontSize: 14.5,
-                color: item?.delivery_status == 6 ? '#09b44d' : item?.delivery_status == 2 ? '#cc0600' : '#ff9100',
+                color:
+                  item?.delivery_status == 6
+                    ? '#09b44d'
+                    : item?.delivery_status == 2
+                    ? '#cc0600'
+                    : '#ff9100',
               }}>
               {item?.delivery_status == 0 ? 'Payment Failed' : null}
               {item?.delivery_status == 2 ? 'Cancelled' : null}
@@ -124,7 +147,7 @@ const OrderedHistory = ({ navigation }) => {
                 fontSize: 14,
                 color: '#000',
               }}>
-              {item?.total_amount ? "₹ " + item?.total_amount : null}
+              {item?.total_amount ? '₹ ' + item?.total_amount : null}
             </Text>
             <Text
               style={{
@@ -137,52 +160,54 @@ const OrderedHistory = ({ navigation }) => {
           </View>
         </View>
       </View>
-    )
-  }
+    );
+  };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
+    <SafeAreaView style={{flex: 1}}>
+      <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
       <View
         style={{
           backgroundColor: '#09b44d',
           borderBottomLeftRadius: 25,
           borderBottomRightRadius: 25,
           justifyContent: 'center',
-          height: 60
+          height: 60,
         }}>
         <Pressable
           onPress={() => navigation.goBack()}
           style={{
             flexDirection: 'row',
             paddingHorizontal: 15,
-            alignItems: 'center'
+            alignItems: 'center',
           }}>
-          <Image style={{ width: 9, height: 16 }} source={arrow} />
-          <Text style={{
-            color: '#fff',
-            fontSize: 18,
-            fontFamily: 'Poppins-Bold',
-            paddingLeft: 10,
-            marginTop: 5
-
-          }}>Ordered List</Text>
+          <Image style={{width: 9, height: 16}} source={arrow} />
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 18,
+              fontFamily: 'Poppins-Bold',
+              paddingLeft: 10,
+              marginTop: 5,
+            }}>
+            Ordered List
+          </Text>
         </Pressable>
       </View>
 
-      {modal != true && listItems.length > 0 &&
-        < FlatList
+      {modal != true && listItems.length > 0 && (
+        <FlatList
           data={listItems}
           renderItem={_renderItem}
           onEndReachedThreshold={0}
           onEndReached={onReached}
           showsVerticalScrollIndicator={false}
         />
-      }
-      {loader &&
-        <View style={{ padding: 10 }}>
+      )}
+      {loader && (
+        <View style={{padding: 10}}>
           <Loader />
         </View>
-      }
+      )}
       {modal && (
         <Modal transparent={true} visible={modal}>
           <Loader />

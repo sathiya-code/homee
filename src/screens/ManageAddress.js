@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -13,14 +13,14 @@ import {
   StatusBar,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
-import { arrow, manageAddr, editIcon, deleteIcon } from '../assets/img/Images';
-import { api, storage } from '../services';
-import { useFocusEffect } from '@react-navigation/core';
-import { useTranslation } from 'react-i18next';
-import { set_Profile } from '../redux/actions/authAction';
-import { useDispatch } from 'react-redux';
-const ManageAddress = ({ navigation }) => {
-  const { t, i18 } = useTranslation();
+import {arrow, manageAddr, editIcon, deleteIcon} from '../assets/img/Images';
+import {api, storage} from '../services';
+import {useFocusEffect} from '@react-navigation/core';
+import {useTranslation} from 'react-i18next';
+import {set_Profile} from '../redux/actions/authAction';
+import {useDispatch} from 'react-redux';
+const ManageAddress = ({navigation}) => {
+  const {t, i18} = useTranslation();
   const [modal, setModal] = useState(true);
   const [listItems, setListItems] = useState([]);
   const dispatch = useDispatch();
@@ -29,13 +29,13 @@ const ManageAddress = ({ navigation }) => {
     let response = await api.addressList();
     setListItems(response.addresses.addresses);
     setModal(false);
-  }
+  };
   useFocusEffect(
     React.useCallback(() => {
       addressList();
     }, []),
   );
-  const deleteAddress = async (id) => {
+  const deleteAddress = async id => {
     setModal(true);
     let response = await api.deleteAddress(id);
     setModal(false);
@@ -47,13 +47,18 @@ const ManageAddress = ({ navigation }) => {
     } else if (response.status == 'error') {
       alert(response.message);
     } else {
-      alert("Unable to complete your request, try again later");
+      alert('Unable to complete your request, try again later');
     }
-  }
-  const _renderItem = ({ item, index }) => {
+  };
+  const _renderItem = ({item, index}) => {
     return (
       <View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 5 }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginTop: 5,
+          }}>
           <Text
             style={{
               fontFamily: 'Poppins-Bold',
@@ -65,16 +70,16 @@ const ManageAddress = ({ navigation }) => {
             }}>
             {item?.type ? item.type : null}
           </Text>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{flexDirection: 'row'}}>
             <TouchableOpacity
               onPress={() => navigation.navigate('EditAddress', item)}
-              style={{ paddingHorizontal: 5 }}>
-              <Image source={editIcon} style={{ width: 20, height: 20 }} />
+              style={{paddingHorizontal: 5}}>
+              <Image source={editIcon} style={{width: 20, height: 20}} />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => deleteAddress(item.id)}
-              style={{ paddingHorizontal: 5 }}>
-              <Image source={deleteIcon} style={{ width: 20, height: 20 }} />
+              style={{paddingHorizontal: 5}}>
+              <Image source={deleteIcon} style={{width: 20, height: 20}} />
             </TouchableOpacity>
           </View>
         </View>
@@ -88,27 +93,27 @@ const ManageAddress = ({ navigation }) => {
             borderBottomWidth: 1,
             paddingBottom: 10,
           }}>
-          {item?.door_no ? item.door_no + ", " : null}
-          {item?.block ? item.block + ", " : null}
-          {item?.street ? item.street + ", " : null}
-          {item?.area ? item.area + ", " : null}
-          {item?.city ? item.city + ", " : null}
-          {item?.state ? item.state + ", " : null}
-          {item?.pin_code ? item.pin_code + ". " : null}
+          {item?.door_no ? item.door_no + ', ' : null}
+          {item?.block ? item.block + ', ' : null}
+          {item?.street ? item.street + ', ' : null}
+          {item?.area ? item.area + ', ' : null}
+          {item?.city ? item.city + ', ' : null}
+          {item?.state ? item.state + ', ' : null}
+          {item?.pin_code ? item.pin_code + '. ' : null}
         </Text>
       </View>
-    )
-  }
+    );
+  };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar backgroundColor='#09B44D' barStyle={'light-content'} />
+    <SafeAreaView style={{flex: 1}}>
+      <StatusBar backgroundColor="#09B44D" barStyle={'light-content'} />
       <View
         style={{
           backgroundColor: '#09b44d',
           borderBottomLeftRadius: 25,
           borderBottomRightRadius: 25,
           justifyContent: 'center',
-          height: 60
+          height: 60,
         }}>
         <Pressable
           onPress={() => navigation.goBack()}
@@ -116,26 +121,26 @@ const ManageAddress = ({ navigation }) => {
             flexDirection: 'row',
             paddingHorizontal: 15,
           }}>
-          <Image style={{ width: 9, height: 16 }} source={arrow} />
-          <Text style={{
-            color: '#fff',
-            fontSize: 18,
-            fontFamily: 'Poppins-Bold',
-            paddingLeft: 10,
-            marginTop: -5
-          }}>{t('manageAddressPage.manageAddress')}</Text>
+          <Image style={{width: 9, height: 16}} source={arrow} />
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 18,
+              fontFamily: 'Poppins-Bold',
+              paddingLeft: 10,
+              marginTop: -5,
+            }}>
+            {t('manageAddressPage.manageAddress')}
+          </Text>
         </Pressable>
       </View>
 
-      <View style={{ margin: 10, marginBottom: '26%' }}>
-        {modal != true && listItems.length > 0 &&
-          < FlatList
-            data={listItems}
-            renderItem={_renderItem}
-          />
-        }
+      <View style={{margin: 10, marginBottom: '26%'}}>
+        {modal != true && listItems.length > 0 && (
+          <FlatList data={listItems} renderItem={_renderItem} />
+        )}
       </View>
-      <View style={{}}></View>
+      <View style={{}} />
 
       <View
         style={{
@@ -155,7 +160,8 @@ const ManageAddress = ({ navigation }) => {
             fontFamily: 'Poppins-Bold',
             textAlign: 'center',
             fontSize: 16,
-          }} onPress={() => navigation.navigate('Address', { type: "Add" })}>
+          }}
+          onPress={() => navigation.navigate('Address', {type: 'Add'})}>
           <Text
             style={{
               color: '#fff',

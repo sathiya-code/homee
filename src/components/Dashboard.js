@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {View, Text, Image, StyleSheet} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import {
   receive,
@@ -24,31 +24,31 @@ const Dashboard = () => {
           flexDirection: 'row',
           flexWrap: 'wrap',
         }}>
-        <View style={[styles.boxDash, { backgroundColor: '#eee6ba' }]}>
+        <View style={[styles.boxDash, {backgroundColor: '#eee6ba'}]}>
           <Image source={receive} style={styles.dashIcon} />
           <Text style={styles.cntTxt}>65</Text>
-          <Text style={[styles.constTxt, { color: '#978719' }]}>
+          <Text style={[styles.constTxt, {color: '#978719'}]}>
             Total Recived Order
           </Text>
         </View>
-        <View style={[styles.boxDash, { backgroundColor: '#f4daef' }]}>
+        <View style={[styles.boxDash, {backgroundColor: '#f4daef'}]}>
           <Image source={complete} style={styles.dashIcon} />
           <Text style={styles.cntTxt}>65</Text>
-          <Text style={[styles.constTxt, { color: '#b86ea9' }]}>
+          <Text style={[styles.constTxt, {color: '#b86ea9'}]}>
             Total Recived Order
           </Text>
         </View>
-        <View style={[styles.boxDash, { backgroundColor: '#cbd8f6' }]}>
+        <View style={[styles.boxDash, {backgroundColor: '#cbd8f6'}]}>
           <Image source={queue} style={styles.dashIcon} />
           <Text style={styles.cntTxt}>65</Text>
-          <Text style={[styles.constTxt, { color: '#4e6fb3' }]}>
+          <Text style={[styles.constTxt, {color: '#4e6fb3'}]}>
             Total Recived Order
           </Text>
         </View>
-        <View style={[styles.boxDash, { backgroundColor: '#d1f0dd' }]}>
+        <View style={[styles.boxDash, {backgroundColor: '#d1f0dd'}]}>
           <Image source={delivery} style={styles.dashIcon} />
           <Text style={styles.cntTxt}>65</Text>
-          <Text style={[styles.constTxt, { color: '#09b44d' }]}>
+          <Text style={[styles.constTxt, {color: '#09b44d'}]}>
             Total Recived Order
           </Text>
         </View>
@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 33,
     marginTop: 15,
-    color: '#000',
     fontFamily: 'Poppins-Bold',
     textAlign: 'center',
   },

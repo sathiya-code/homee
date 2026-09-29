@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, Pressable, ScrollView, Button } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Pressable,
+  ScrollView,
+  Button, Platform} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { arrow } from '../assets/img/Images';
-import { useTranslation } from 'react-i18next';
+import {arrow} from '../assets/img/Images';
+import {useTranslation} from 'react-i18next';
 
-
-
-const OrderReport = ({ navigation }) => {
-  const { t, i18n } = useTranslation();
+const OrderReport = ({navigation}) => {
+  const {t, i18n} = useTranslation();
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
@@ -18,7 +23,7 @@ const OrderReport = ({ navigation }) => {
     setDate(currentDate);
   };
 
-  const showMode = (currentMode) => {
+  const showMode = currentMode => {
     setShow(true);
     setMode(currentMode);
   };
@@ -51,24 +56,53 @@ const OrderReport = ({ navigation }) => {
                 paddingHorizontal: 15,
                 paddingVertical: 15,
               }}>
-              <Image style={{ width: 13, height: 22 }} source={arrow} />
+              <Image style={{width: 13, height: 22}} source={arrow} />
             </TouchableOpacity>
 
             <TouchableOpacity>
-              <Text style={[styles.pageTitle, { alignItems: 'center' }]}>
-                {t("orderReportPage.orderReport")}
+              <Text style={[styles.pageTitle, {alignItems: 'center'}]}>
+                {t('orderReportPage.orderReport')}
               </Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
       <View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 12 }}>
-          <Pressable onPress={showDatepicker} style={{ borderRadius: 25, justifyContent: 'center', height: 40, width: 150, alignItems: 'center', backgroundColor: '#09b44d', }} >
-            <Text style={{ color: '#fff', fontFamily: 'Poppins-Bold', fontSize: 18, }}>{t("orderReportPage.from")}</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            padding: 12,
+          }}>
+          <Pressable
+            onPress={showDatepicker}
+            style={{
+              borderRadius: 25,
+              justifyContent: 'center',
+              height: 40,
+              width: 150,
+              alignItems: 'center',
+              backgroundColor: '#09b44d',
+            }}>
+            <Text
+              style={{color: '#fff', fontFamily: 'Poppins-Bold', fontSize: 18}}>
+              {t('orderReportPage.from')}
+            </Text>
           </Pressable>
-          <Pressable onPress={showDatepicker} style={{ borderRadius: 25, justifyContent: 'center', height: 40, width: 150, alignItems: 'center', backgroundColor: '#09b44d', }} >
-            <Text style={{ color: '#fff', fontFamily: 'Poppins-Bold', fontSize: 18, }}>{t("orderReportPage.upTo")}</Text>
+          <Pressable
+            onPress={showDatepicker}
+            style={{
+              borderRadius: 25,
+              justifyContent: 'center',
+              height: 40,
+              width: 150,
+              alignItems: 'center',
+              backgroundColor: '#09b44d',
+            }}>
+            <Text
+              style={{color: '#fff', fontFamily: 'Poppins-Bold', fontSize: 18}}>
+              {t('orderReportPage.upTo')}
+            </Text>
           </Pressable>
         </View>
         {show && (
@@ -82,15 +116,77 @@ const OrderReport = ({ navigation }) => {
           />
         )}
       </View>
-      <View style={{ marginHorizontal: 20, paddingTop: 0, paddingBottom: 10, marginBottom: 10, borderBottomColor: '#e4e3e3', borderBottomWidth: 1, }}>
-        <Text style={{ fontSize: 18, fontFamily: 'Poppins-Bold', color: '#000', marginBottom: 6 }}>Garlic Curd Paste</Text>
-        <Text style={{ fontSize: 15, fontFamily: 'Poppins-Regular', color: '#000', marginBottom: 6 }}>{t("orderReportPage.orderId")} #890765895</Text>
-        <Text style={{ fontSize: 14, fontFamily: 'Poppins-Regular', color: '#e74c3c', }}>05-07-2021</Text>
+      <View
+        style={{
+          marginHorizontal: 20,
+          paddingTop: 0,
+          paddingBottom: 10,
+          marginBottom: 10,
+          borderBottomColor: '#e4e3e3',
+          borderBottomWidth: 1,
+        }}>
+        <Text
+          style={{
+            fontSize: 18,
+            fontFamily: 'Poppins-Bold',
+            color: '#000',
+            marginBottom: 6,
+          }}>
+          Garlic Curd Paste
+        </Text>
+        <Text
+          style={{
+            fontSize: 15,
+            fontFamily: 'Poppins-Regular',
+            color: '#000',
+            marginBottom: 6,
+          }}>
+          {t('orderReportPage.orderId')} #890765895
+        </Text>
+        <Text
+          style={{
+            fontSize: 14,
+            fontFamily: 'Poppins-Regular',
+            color: '#e74c3c',
+          }}>
+          05-07-2021
+        </Text>
       </View>
-      <View style={{ marginHorizontal: 20, paddingTop: 0, paddingBottom: 10, marginBottom: 10, borderBottomColor: '#e4e3e3', borderBottomWidth: 1, }}>
-        <Text style={{ fontSize: 18, fontFamily: 'Poppins-Bold', color: '#000', marginBottom: 6 }}>Garlic Curd Paste</Text>
-        <Text style={{ fontSize: 15, fontFamily: 'Poppins-Regular', color: '#000', marginBottom: 6 }}>{t("orderReportPage.orderId")} #890765895</Text>
-        <Text style={{ fontSize: 14, fontFamily: 'Poppins-Regular', color: '#e74c3c', }}>21-05-2021</Text>
+      <View
+        style={{
+          marginHorizontal: 20,
+          paddingTop: 0,
+          paddingBottom: 10,
+          marginBottom: 10,
+          borderBottomColor: '#e4e3e3',
+          borderBottomWidth: 1,
+        }}>
+        <Text
+          style={{
+            fontSize: 18,
+            fontFamily: 'Poppins-Bold',
+            color: '#000',
+            marginBottom: 6,
+          }}>
+          Garlic Curd Paste
+        </Text>
+        <Text
+          style={{
+            fontSize: 15,
+            fontFamily: 'Poppins-Regular',
+            color: '#000',
+            marginBottom: 6,
+          }}>
+          {t('orderReportPage.orderId')} #890765895
+        </Text>
+        <Text
+          style={{
+            fontSize: 14,
+            fontFamily: 'Poppins-Regular',
+            color: '#e74c3c',
+          }}>
+          21-05-2021
+        </Text>
       </View>
     </ScrollView>
   );
@@ -106,14 +202,12 @@ const styles = StyleSheet.create({
   nameTxt: {
     color: '#fff',
     fontSize: 25,
-    color: '#fff',
     marginVertical: 2,
     fontFamily: 'Poppins-Bold',
   },
   profTxt: {
     color: '#fff',
     fontSize: 18,
-    color: '#fff',
     fontFamily: 'Poppins-Bold',
     paddingVertical: 3,
   },
@@ -133,6 +227,6 @@ const styles = StyleSheet.create({
     paddingTop: 4,
     fontFamily: 'Poppins-Bold',
   },
-})
+});
 
 export default OrderReport;
